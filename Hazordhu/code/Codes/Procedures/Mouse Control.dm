@@ -101,7 +101,7 @@ client
 			else view_size = text2dim(view)
 			center = vec2(
 				tile_width  * view_size[1] / 2,
-				tile_height * view_size[2] / 2)
+				tile_height * view_size[2] / 2 + 16)
 
 		mouse.spos = vec2(
 			(tx - 1) * tile_width  + px,

@@ -22,15 +22,32 @@ mob
 			if(!client.mouse.over)
 				client.mouse.angle = dir2angle(dir)
 			var angle = client.mouse.angle
+
+			if(!combat_zone_indicator)
+				combat_zone_indicator = image(
+					icon = 'attack zone.dmi',
+					icon_state = "2",
+					loc = src, layer = 100)
+
+			//	combat_zone_indicator.blend_mode = BLEND_ADD
+
+			var image/i = combat_zone_indicator
+			i.alpha = 128
+
+			var matrix/m = new
+			m.Translate(0, 14)
+			m.Turn(angle)
+			m.Scale(1, 3/4)
+			m.Translate(0, -12)
+			i.transform = m
+
 			var dx = sin(angle) * 16
 			var dy = cos(angle) * 14 + 2
 
-			if(!combat_zone_indicator) combat_zone_indicator = image('code/codes/combat system/attack zone.dmi', loc=src, layer=100)
-
-			var image/i = combat_zone_indicator
-
+		/*
 			i.pixel_x = dx
 			i.pixel_y = dy
+		*/
 
 			if(combat_mode) client.images += i
 
