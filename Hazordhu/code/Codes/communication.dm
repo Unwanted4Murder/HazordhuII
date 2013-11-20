@@ -467,25 +467,15 @@ mob
 	humanoid/flat_icon()
 		var icon/i = ..()
 		if(hair_showing())
-			if(rotated_angle)
-				i.Blend(
-					icon(rotated_hair.icon, rotated_hair.icon_state),
-					ICON_OVERLAY)
-
-			else i.Blend(
+			i.Blend(
 				icon(HairObj.icon, HairObj.icon_state),
 				ICON_OVERLAY)
 
 		var equip_images[0]
 		for(var/obj/Item/item in Equipment())
 			if(item == equipment["bag"]) continue
-			if(rotated_angle)
-				if(!item.rotated_overlay) continue
-				equip_images += item.rotated_overlay
-
-			else
-				if(!item.overlay) continue
-				equip_images += item.overlay
+			if(!item.overlay) continue
+			equip_images += item.overlay
 
 		if(equip_images.len > 1)
 			ls_quicksort_cmp(
@@ -496,6 +486,9 @@ mob
 			i.Blend(
 				icon(overlay.Icon(), overlay.IconState()),
 				ICON_OVERLAY)
+
+		if(rotated_angle)
+			i.Turn(rotated_angle)
 
 		flat_icon = i
 		return i

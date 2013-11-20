@@ -18,7 +18,7 @@ mob
 
 	proc/Remhair()
 		overlays -= HairObj
-		overlays -= rotated_hair
+//		overlays -= rotated_hair
 
 obj/Hair
 	layer = FLOAT_LAYER - 1

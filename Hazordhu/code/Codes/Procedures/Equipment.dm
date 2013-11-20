@@ -13,7 +13,7 @@ obj/Item
 		tmp
 			Overlay
 				overlay
-				rotated_overlay
+//				rotated_overlay
 
 	proc
 		equipped_by(mob/m)
@@ -67,6 +67,7 @@ mob/player
 			item.equipped_by(src)
 
 mob
+/*
 	var tmp/obj/Hair/rotated_hair
 
 	//	Hair must be updated with every rotation
@@ -76,6 +77,9 @@ mob
 
 	Remhair()
 		..()
+*/
+	verb/rotate_test(angle as num)
+		icon_turn(angle)
 
 	//	Some layers are complicated when looking north
 	move_tick()
@@ -126,7 +130,7 @@ mob
 			if(!equip_type) return 1
 			equipment[equip_type] = null
 			if(i.overlay) del i.overlay
-			if(i.rotated_overlay) del i.rotated_overlay
+//			if(i.rotated_overlay) del i.rotated_overlay
 			InventoryGrid()
 			i.unequipped_by(src)
 			if(hair_showing()) Gethair()
@@ -166,6 +170,10 @@ mob
 
 		//	sets the angle of the player and his overlays to 'angle'
 		icon_turn(angle)
+			transform = matrix(angle, MATRIX_ROTATE)
+			rotated_angle = angle
+			reset_flat_icon()
+/*
 			if(isnull(angle))
 				angle = rotated_angle
 			rotated_angle = angle
@@ -202,7 +210,7 @@ mob
 					overlays += rotated_hair
 
 				else overlays += HairObj
-
+*/
 		hair_showing()
 			if(!Hair) return false
 
@@ -244,7 +252,7 @@ mob
 
 		remove_equipment_overlay(obj/Item/i)
 			del i.overlay
-			del i.rotated_overlay
+//			del i.rotated_overlay
 
 var equipment_slots[] = list(
 	"helmet", "head", "back",

@@ -20,8 +20,9 @@ mob
 			//	the icon doesn't exist yet
 			if(!status_overlays[status])
 				var image/i = image('status.dmi', src, status, 99)
-				i.pixel_x = 16
-				i.pixel_y = 16
+				i.pixel_x = 8
+				i.pixel_y = 8
+				i.transform = matrix(8, 8, MATRIX_TRANSLATE)
 				status_overlays[status] = i
 
 			overlays += status_overlays[status]
