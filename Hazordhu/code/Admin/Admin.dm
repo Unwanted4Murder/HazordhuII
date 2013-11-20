@@ -56,29 +56,6 @@ mob
 			OOC_Color
 			ghost_logged = 0
 
-		proc/apply_ghost_icon()
-			icon_reset()
-			overlays = new
-			var icon/i = flat_icon()
-			i.Blend(rgb(0, 0, 0, 150), ICON_ADD)
-			icon = i
-			reset_flat_icon()
-
-		equip()
-			. = ..()
-			if(. && GodMode)
-				apply_ghost_icon()
-
-		unequip()
-			. = ..()
-			if(. && GodMode)
-				apply_ghost_icon()
-
-		update_equipment_layers()
-			..()
-			if(GodMode)
-				apply_ghost_icon()
-
 		key_down(k)
 			if(k == "q") if(key in Admins) call(src, "admin panel")()
 			else ..()
@@ -225,8 +202,13 @@ mob
 				world << "Repopulating"
 				world.Repop()
 				world << "Repopulation Complete"
+
 			build_ver()
 				usr << build
+
+			byond_ver()
+				src << DM_VERSION
+
 			shutdown_server()
 				world << "<b>[usr.key] is shutting down the server.</b>"
 				world.log << "[usr.key] shut down the server."
@@ -328,23 +310,18 @@ mob
 
 			GhostForm()
 				set category = null
-
-				if(!GodMode)
+				GodMode = !GodMode
+				density = !GodMode
+				mouse_opacity = !GodMode
+				if(GodMode)
 					src << "Ghost form activated."
-					GodMode			=	1
-					mouse_opacity	=	0
 					see_invisible	=	99
-					density			=	0
-					apply_ghost_icon()
-
+					animate(src, alpha = 64, time = 3)
 				else
 					src << "Ghost form deactivated."
-					GodMode			=	0
-					mouse_opacity	=	1
-					invisibility	=	0
-					see_invisible	=	0
-					density			=	1
-					icon_reset()
+					invisibility	=	false
+					see_invisible	=	false
+					animate(src, alpha = 255, time = 3)
 
 			Toggle_Visibility()
 				if(!GodMode) GhostForm()

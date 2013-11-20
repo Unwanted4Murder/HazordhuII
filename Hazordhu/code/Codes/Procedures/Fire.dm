@@ -58,10 +58,25 @@ obj
 			del src
 
 	Smoke
-		icon='code/Icons/Smoke.dmi'
-		layer = 25
-		Flammable = 0
+		icon = 'code/Icons/Smoke.dmi'
+		layer = 51
+		Flammable = FALSE
+		mouse_opacity = FALSE
 
+		New()
+			..()
+			//	Use animate() to make smoke better
+			var lifetime = rand(100, 150)
+			spawn(lifetime) del src
+			icon_state = "1"
+			animate(src,
+				pixel_x = lifetime * randn(-0.5, 0.5),
+				pixel_y = lifetime * randn(-0.5, 1),
+				alpha = 0,
+				transform = matrix()*4,
+				time = lifetime)
+
+/*
 		var lifetime
 		var lived_time
 		var px, py
@@ -82,6 +97,7 @@ obj
 			if(lived_time >= lifetime)
 				loc = null
 				fps30_loop.remove(src)
+*/
 
 atom/movable
 	var
