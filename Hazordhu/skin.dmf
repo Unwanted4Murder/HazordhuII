@@ -1297,7 +1297,7 @@ window "chat"
 	elem "chat"
 		type = MAIN
 		pos = 281,0
-		size = 216x280
+		size = 466x280
 		anchor1 = none
 		anchor2 = none
 		font-family = ""
@@ -1335,7 +1335,7 @@ window "chat"
 		on-close = ""
 	elem "button21"
 		type = BUTTON
-		pos = 176,248
+		pos = 426,248
 		size = 32x24
 		anchor1 = 100,100
 		anchor2 = none
@@ -1364,7 +1364,7 @@ window "chat"
 	elem "child_mr"
 		type = CHILD
 		pos = 8,8
-		size = 200x40
+		size = 448x48
 		anchor1 = 0,0
 		anchor2 = 100,0
 		font-family = ""
@@ -1389,8 +1389,8 @@ window "chat"
 		lock = none
 	elem "label10"
 		type = LABEL
-		pos = 16,56
-		size = 184x16
+		pos = 16,64
+		size = 434x16
 		anchor1 = 0,0
 		anchor2 = 100,0
 		font-family = "Tempus Sans ITC"
@@ -1444,7 +1444,7 @@ window "chat"
 	elem "input"
 		type = INPUT
 		pos = 40,248
-		size = 136x24
+		size = 386x24
 		anchor1 = 0,100
 		anchor2 = 100,100
 		font-family = "Tempus Sans ITC"
@@ -1467,8 +1467,8 @@ window "chat"
 		no-command = false
 	elem "output"
 		type = OUTPUT
-		pos = 8,72
-		size = 200x176
+		pos = 8,80
+		size = 450x168
 		anchor1 = 0,0
 		anchor2 = 100,100
 		font-family = "Tempus Sans ITC"
@@ -1493,8 +1493,8 @@ window "chat"
 		image = ""
 	elem "child_bl_off"
 		type = CHILD
-		pos = 8,103
-		size = 104x145
+		pos = 8,104
+		size = 104x144
 		anchor1 = 0,100
 		anchor2 = none
 		font-family = ""
@@ -1822,6 +1822,8 @@ window "crafting"
 		on-show = ""
 		on-hide = ""
 		on-tab = ""
+		prefix-color = none
+		suffix-color = none
 
 window "default"
 	elem "default"
@@ -2168,6 +2170,8 @@ window "group"
 		on-size = ""
 		icon-size = 0
 		text-mode = false
+		letterbox = true
+		zoom = 0
 		on-show = ""
 		on-hide = ""
 		style = ""
@@ -2402,6 +2406,8 @@ window "group_create"
 		on-size = ""
 		icon-size = 0
 		text-mode = false
+		letterbox = true
+		zoom = 0
 		on-show = ""
 		on-hide = ""
 		style = ""
@@ -3776,8 +3782,8 @@ window "screen"
 		on-close = ""
 	elem "map"
 		type = MAP
-		pos = 0,1
-		size = 808x600
+		pos = 0,0
+		size = 808x601
 		anchor1 = 0,0
 		anchor2 = 100,100
 		font-family = "Tempus Sans ITC"
@@ -3793,9 +3799,11 @@ window "screen"
 		drop-zone = true
 		right-click = true
 		saved-params = "icon-size"
-		on-size = "update-view-size"
+		on-size = ""
 		icon-size = 0
 		text-mode = false
+		letterbox = true
+		zoom = 0
 		on-show = ""
 		on-hide = ""
 		style = ""

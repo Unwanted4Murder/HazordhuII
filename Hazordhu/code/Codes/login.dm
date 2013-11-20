@@ -30,7 +30,7 @@ mob/player
 	Login()
 		..()
 		get_client_info(client)
-		winset(src, null, "reset=true")
+	//	winset(src, null, "reset=true")
 
 		client.focus = src
 
@@ -85,6 +85,9 @@ mob/player
 		for(var/mob/title/m) title_list.Add(m)
 		var mob/title/title = pick(title_list)
 		title.start_wandering(client)
+
+		winset(src, "map", "on-size='update-view-size'")
+
 		while(AtTitleScreen || client.char_creator) sleep 1
 		set_game_screen()
 
