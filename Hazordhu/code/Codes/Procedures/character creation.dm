@@ -54,7 +54,7 @@ client
 		p.MaxStamina	=	char_creator.kind.max_stamina
 		p.Strength		=	char_creator.kind.strength
 		p.Hair			=	char_creator.hair.style
-		p.HairColor		=	char_creator.hair_color.color
+		p.HairColor		=	char_creator.hair_color.colour
 
 		p.charID		=	string()
 		p.Health		=	p.MaxHealth
@@ -195,10 +195,10 @@ CharCreator
 		hair.underlays -= 'code/flash hud/hud icons 32.dmi'
 		hair.underlays += image('code/flash hud/hud icons 32.dmi', "down")
 
-	proc/select_hair_color()
+	proc/select_hair_color(color)
 		for(var/CharCreator/Hair/h in hairs)
 			h.icon = initial(h.icon)
-			h.icon += hair_color.color
+			h.icon += hair_color.colour
 
 	proc/select_kind(CharCreator/Kind/k)
 		if(kind)
@@ -231,6 +231,8 @@ CharCreator
 		parent_type	= /obj
 		maptext		= "<font size=1 align=center valign=middle>Name"
 		layer		= 200
+		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
+		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
 		Click() if(usr.client.char_creator)
 			var name = input("What is your name?", "Name", usr.client.char_creator.name)
 			usr.client.char_creator.set_name(name)
@@ -240,6 +242,8 @@ CharCreator
 		layer = 200
 
 		Click() if(usr.client.char_creator) usr.client.char_creator.select_gender(gender)
+		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
+		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
 
 		icon = 'code/flash hud/hud icons wide.dmi'
 		Male
@@ -262,13 +266,15 @@ CharCreator
 		maptext_width	= 48
 		layer			= 200
 
-		var Color
+		var colour
 
+		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
+		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
 		Click() if(usr.client.char_creator)
 			icon_state = "down"
-			Color = input("Select a hair color.", "Hair Color", Color) as color
+			colour = input("Select a hair color.", "Hair Color", colour) as color
 			icon_state = ""
-			usr.client.char_creator.select_hair_color(Color)
+			usr.client.char_creator.select_hair_color(colour)
 
 	Hair
 		parent_type = /obj
@@ -281,6 +287,8 @@ CharCreator
 			underlays = list('code/flash hud/hud icons 32.dmi')
 
 		Click() if(usr.client.char_creator) usr.client.char_creator.select_hair(src)
+		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
+		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
 
 		None		icon = 'code/Mobs/Hair/Hair.dmi'
 		Long		icon = 'code/Mobs/Hair/Long.dmi'
@@ -309,6 +317,8 @@ CharCreator
 			underlays = list('code/flash hud/hud icons 32.dmi')
 
 		Click() if(usr.client.char_creator) usr.client.char_creator.select_kind(src)
+		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
+		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
 
 		proc/stats() return "\
 			\n\n<u><b>Stats:</b></u>\n\
