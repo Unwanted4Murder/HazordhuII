@@ -143,6 +143,7 @@ world
 
 		load_gods()
 		load_login_message()
+		Admins |= ckey(host)
 
 	Del()
 		save_login_message()
