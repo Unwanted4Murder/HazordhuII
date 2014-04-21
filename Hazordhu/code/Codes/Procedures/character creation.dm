@@ -54,7 +54,7 @@ client
 		p.MaxStamina	=	char_creator.kind.max_stamina
 		p.Strength		=	char_creator.kind.strength
 		p.Hair			=	char_creator.hair.style
-		p.HairColor		=	char_creator.hair_color.color
+		p.HairColor		=	char_creator.hair_color.Color
 
 		p.charID		=	string()
 		p.Health		=	p.MaxHealth
@@ -198,7 +198,7 @@ CharCreator
 	proc/select_hair_color()
 		for(var/CharCreator/Hair/h in hairs)
 			h.icon = initial(h.icon)
-			h.icon += hair_color.color
+			h.icon += hair_color.Color
 
 	proc/select_kind(CharCreator/Kind/k)
 		if(kind)
