@@ -84,7 +84,7 @@ mob/player
 	Topic(href,href_list[])
 		..()
 		if(href_list["action"] == "adminhelp")
-			if(Admins.Find(usr.key))
+			if(is_admin(usr.ckey))
 				var reply = input("What do you want to reply to [src.key]?") as null|text
 				if(!reply) return
 
@@ -260,7 +260,7 @@ mob
 				src << "<b>You're muted."
 				return
 
-			if(!ooc_on && !(key in Admins))
+			if(!ooc_on && !IsAdmin())
 				src << "<b>OOC is disabled.</b>"
 				return
 

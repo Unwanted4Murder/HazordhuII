@@ -38,11 +38,13 @@ client
 		. = ..()
 		if("action" in hlist)
 			if(hlist["action"] == "admin_tele")
-				if(!Admins.Find(key)) return
+				if(!is_admin(ckey)) return
 				var dx = text2num(hlist["dx"])
 				var dy = text2num(hlist["dy"])
 				var dz = text2num(hlist["dz"])
 				mob.set_loc(locate(dx, dy, dz))
+
+proc/is_admin(ckey) return (ckey in (Admins | NewGods))
 
 mob
 	var GodMode
@@ -56,8 +58,49 @@ mob
 			OOC_Color
 			ghost_logged = 0
 
+		proc/IsAdmin()
+			return is_admin(ckey)
+
+		proc/ApplyAdmin()
+			verbs += typesof(/mob/Admin/verb)
+			AdminsOnline += src
+			isAdmin = true
+			client.control_freak = false
+			if(key in NewGods)
+				src << "<i>You're now an admin</i>"
+
+		proc/RemoveAdmin()
+			verbs -= typesof(/mob/Admin/verb)
+			AdminsOnline -= src
+			isAdmin = false
+			client.control_freak = true
+			src << "<i>You're no longer an admin</i>"
+
+		proc/apply_ghost_icon()
+			icon_reset()
+			overlays = new
+			var icon/i = flat_icon()
+			i.Blend(rgb(0, 0, 0, 150), ICON_ADD)
+			icon = i
+			reset_flat_icon()
+
+		equip()
+			. = ..()
+			if(. && GodMode)
+				apply_ghost_icon()
+
+		unequip()
+			. = ..()
+			if(. && GodMode)
+				apply_ghost_icon()
+
+		update_equipment_layers()
+			..()
+			if(GodMode)
+				apply_ghost_icon()
+
 		key_down(k)
-			if(k == "q") if(key in Admins) call(src, "admin panel")()
+			if(k == "q") if(IsAdmin()) call(src, "admin panel")()
 			else ..()
 
 		var tmp/devmode = 0
@@ -76,6 +119,15 @@ mob
 		parent_type = /mob/player
 
 		verb
+			add_admin(ckey as text)
+				if(is_admin(ckey))
+					src << "[ckey] is an admin."
+				else
+					add_god(ckey)
+
+			remove_admin(ckey in NewGods)
+				remove_god(ckey)
+
 		#if !PIXEL_MOVEMENT
 			Test_Tile_Movement()
 				. = list()
@@ -111,7 +163,7 @@ mob
 						Admin Help:\t[M.can_admin_help ? "Enabled" : "Disabled"]",
 						"Player Permissions") as null|anything in list("OOC", "Combat", "Admin Help"))
 					if("OOC")
-						if(M.key in Admins)
+						if(M.IsAdmin())
 							usr << "You can't do that to an Admin."
 							return
 
@@ -125,7 +177,7 @@ mob
 							world << "[key] has OOC muted [M.key]."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has OOC muted [M.key]<br>")
 					if("Combat")
-						if(M.key in Admins)
+						if(M.IsAdmin())
 							usr << "You can't do that to an Admin."
 							return
 						if(!M.pvp)
@@ -139,7 +191,7 @@ mob
 							M << "[key] has disabled your combat."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has disabled combat for [M.key]<br>")
 					if("Admin Help")
-						if(M.key in Admins)
+						if(M.IsAdmin())
 							usr << "You can't do that to an Admin."
 							return
 						if(!M.can_admin_help)
@@ -149,9 +201,7 @@ mob
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has enabled admin help for [M.key]<br>")
 						else
 							M.can_admin_help = false
-							for(var/mob/m)
-								if(m.key in Admins)
-									m << "[key] has disabled Admin Help for [M] ([M.key])."
+							AdminsOnline << "[key] has disabled Admin Help for [M] ([M.key])."
 							M << "[key] has disabled your Admin Help access."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has disabled admin help for [M.key]<br>")
 
@@ -227,7 +277,7 @@ mob
 				Players -= src
 				ghost_logged = true
 				for(var/mob/player/m)
-					if(m.key in Admins)
+					if(m.IsAdmin())
 						m << "[key] has logged out. (Ghost)"
 					m << "<i>[key] has logged out.</i>"
 
@@ -236,7 +286,7 @@ mob
 				Players |= src
 				ghost_logged = false
 				for(var/mob/player/m)
-					if(m.key in Admins)
+					if(m.IsAdmin())
 						m << "[key] has logged in. (Ghost)"
 					m << "<i>[key] has logged in.</i>"
 
@@ -423,7 +473,7 @@ mob
 				var mob/player/M = choosePlayer("Who will you mute/unmute?", "Mute")
 				if(!M) return
 
-				if(M.key in Admins)
+				if(M.IsAdmin())
 					usr << "You can't mute an admin."
 					return
 
@@ -440,7 +490,7 @@ mob
 			Boot()
 				var mob/player/M = choosePlayer("Who will you kick out of the world?", "Boot")
 				if(!M) return
-				if(M.key in Admins)
+				if(M.IsAdmin())
 					usr << "You can't boot an admin."
 					return
 				world << "[key] has booted [M.key]."
@@ -478,7 +528,7 @@ mob
 				var default="File"
 				var typeof = M.vars[variable]
 				if(ismob(M))
-					if((M.key in Admins) && M != src)
+					if(is_admin(M.ckey) && M != src)
 						usr<<"You can't edit an admin."
 						return
 
