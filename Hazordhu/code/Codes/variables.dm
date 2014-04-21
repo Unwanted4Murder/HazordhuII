@@ -27,13 +27,13 @@ var
 	NewGods[0]
 
 	Admins[] = list(
-		"F0lak",
-		"Ayemel",
-		"Ceojac",
-		"Eksadus",
-		"Kai",
-		"Kaiochao",
-		"Zerstorung"
+		"f0lak",
+		"ayemel",
+		"ceojac",
+		"eksadus",
+		"kai",
+		"kaiochao",
+		"zerstorung"
 	)
 
 	StaffLog = ""
@@ -83,7 +83,45 @@ More detailed information on what is and is not acceptable can be found <a href=
 "}
 
 var const/newgods_save = "Data/new gods.sav"
+proc/load_gods()
+	if(fexists(newgods_save))
+		var savefile/s = new (newgods_save)
+		s["newgods"] >> NewGods
+	if(!NewGods) NewGods = new
+	if(!(world.host in NewGods))
+		NewGods += world.host
 
+proc/save_gods()
+	fdel(newgods_save)
+	if(NewGods.len)
+		var savefile/s = new (newgods_save)
+		s["newgods"] << NewGods
+
+proc/add_god(ckey)
+	ckey = ckey(ckey)
+	if(!(ckey in NewGods))
+		NewGods += ckey
+		save_gods()
+
+		var mob/player/player = get_player_by_ckey(ckey)
+		if(player)
+			player.ApplyAdmin()
+
+proc/remove_god(ckey)
+	ckey = ckey(ckey)
+	if(ckey in NewGods)
+		NewGods -= ckey
+		save_gods()
+
+		var mob/player/player = get_player_by_ckey(ckey)
+		if(player)
+			player.RemoveAdmin()
+
+proc/get_player_by_ckey(ckey)
+	ckey = ckey(ckey)
+	for(var/mob/player/player)
+		if(player.ckey == ckey)
+			return player
 
 world
 	view = 8
@@ -103,22 +141,12 @@ world
 
 		status = name
 
-		if(fexists(newgods_save))
-			var savefile/s = new (newgods_save)
-			s["newgods"] >> NewGods
-		if(!NewGods) NewGods = list()
-		if(!NewGods.Find(host))
-			NewGods += host
-
+		load_gods()
 		load_login_message()
 
 	Del()
 		save_login_message()
-
-		fdel(newgods_save)
-		if(NewGods.len)
-			var savefile/s = new (newgods_save)
-			s["newgods"] << NewGods
+		save_gods()
 		..()
 
 atom/movable

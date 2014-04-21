@@ -8,8 +8,6 @@ var Players[0]
 //	a list containing online admins.
 var AdminsOnline[0]
 
-proc/is_admin(mob/player/p) return istype(p) && (p.key in Admins)
-
 world
 	mob = /mob/player
 
@@ -36,11 +34,9 @@ mob/player
 
 		cid = client.computer_id
 
-		if(Admins.Find(key) || NewGods.Find(key))
-			verbs += typesof(/mob/Admin/verb)
-			AdminsOnline.Add(src)
-			isAdmin = true
-			client.control_freak = false
+
+		if(IsAdmin())
+			ApplyAdmin()
 
 		set_loc()
 
@@ -55,12 +51,10 @@ mob/player
 		for(var/client/C)
 			if(C == client) continue
 			if(C.mob && C.mob.isAdmin) continue
-			if(key in Admins) continue
-			else
-				if(C.computer_id == client.computer_id)
-					spawn(-1) s_alert("Only one user can be logged in from your computer at a time.", "Invalid Login", "OK")
-					del src
-					return
+			if(C.computer_id == client.computer_id)
+				spawn(-1) s_alert("Only one user can be logged in from your computer at a time.", "Invalid Login", "OK")
+				del src
+				return
 	#endif
 
 		client.screen += newlist(	/obj/Title_Screen/Hazordhu,

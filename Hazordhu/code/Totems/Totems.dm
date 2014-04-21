@@ -14,7 +14,7 @@ obj/Built/Totem
 		var mob/player/p = usr
 		if(params["right"])
 			show_coverage(p)
-		else if(is_admin(p))
+		else if(is_admin(p.ckey))
 			if(p.has_key("ctrl")) set_range(p)
 			else toggle(p)
 		..()
