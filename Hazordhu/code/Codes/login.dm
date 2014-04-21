@@ -35,7 +35,7 @@ mob/player
 		cid = client.computer_id
 
 
-		if(IsAdmin())
+		if(IsAdmin() || world.host == key)
 			ApplyAdmin()
 
 		set_loc()

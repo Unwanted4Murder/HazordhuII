@@ -66,16 +66,19 @@ mob
 			AdminsOnline += src
 			isAdmin = true
 			client.control_freak = false
-			if(key in NewGods)
+			if(ckey in NewGods)
 				src << "<i>You're now an admin</i>"
 
 		proc/RemoveAdmin()
+			if(GodMode)
+				var mob/Admin/a = src
+				a.GhostForm()
 			verbs -= typesof(/mob/Admin/verb)
 			AdminsOnline -= src
 			isAdmin = false
 			client.control_freak = true
 			src << "<i>You're no longer an admin</i>"
-
+/*
 		proc/apply_ghost_icon()
 			icon_reset()
 			overlays = new
@@ -98,7 +101,7 @@ mob
 			..()
 			if(GodMode)
 				apply_ghost_icon()
-
+*/
 		key_down(k)
 			if(k == "q") if(IsAdmin()) call(src, "admin panel")()
 			else ..()
@@ -126,7 +129,12 @@ mob
 					add_god(ckey)
 
 			remove_admin(ckey in NewGods)
-				remove_god(ckey)
+				if(ckey in Admins)
+					src << "ha ha"
+				else if(!(ckey in NewGods))
+					src << "[ckey] isn't an admin."
+				else
+					remove_god(ckey)
 
 		#if !PIXEL_MOVEMENT
 			Test_Tile_Movement()
