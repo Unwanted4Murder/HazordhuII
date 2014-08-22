@@ -11,7 +11,7 @@
 
 // BEGIN_INCLUDE
 #include "skin.dmf"
-#include "test map.dmm"
+#include "map.dmm"
 #include "__libs\library definitions.dm"
 #include "__libs\keyboard\_readme.dm"
 #include "__libs\keyboard\default.dm"
