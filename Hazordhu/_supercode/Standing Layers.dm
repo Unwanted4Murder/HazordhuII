@@ -1,13 +1,14 @@
 //	My side-map layering system
 
 atom/movable
-	//	Set this to true if you want the atom to
+	//	Set this to TRUE if you want the atom to
 	//	layer like it's standing up
 	var standing
 	var bottom_offset
 
 	proc/update_layer()
-		var max_py = world.maxy * tile_height
+		if(!standing) return
+		var max_py = world.maxy * tile_height()
 		if(!max_py) return
 
 		//	The base layer
@@ -25,26 +26,27 @@ atom/movable
 		standing && update_layer()
 
 mob
-	standing = true
+	standing = TRUE
 	Corpse
-		standing = false
+		standing = FALSE
 		layer = TURF_LAYER + 2
 
 
-obj/click_void/standing = false
+obj/click_void/standing = FALSE
 
 obj
-	Mining/Deposits/standing = true
-	Woodcutting/standing = true
-	Flag/standing = true
+	Mining/Deposits/standing = TRUE
+	Woodcutting/standing = TRUE
+	Flag/standing = TRUE
 	Built
-		standing = true
-		Boat/standing = false
-		Path/standing = false
-		Floor/standing = false
-		Stone_Floor/standing = false
-		Sandstone_Floor/standing = false
-		tutorial_circle/standing = false
-		Transporter/standing = false
-		Bed/standing = false
-		firepit/standing = false
+		standing = TRUE
+		Boat/standing = FALSE
+		Path/standing = FALSE
+		Floor/standing = FALSE
+		Stone_Floor/standing = FALSE
+		Sandstone_Floor/standing = FALSE
+		tutorial_circle/standing = FALSE
+		Transporter/standing = FALSE
+		Bed/standing = FALSE
+		firepit/standing = FALSE
+

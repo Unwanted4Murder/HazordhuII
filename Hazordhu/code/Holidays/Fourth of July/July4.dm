@@ -7,8 +7,8 @@ mob
 		Stoof
 			Uncle_Sam
 				icon = 'Sam_Stoof.dmi'
-				can_harness = false
-				attackable = false
+				can_harness = FALSE
+				attackable = FALSE
 obj
 	fourth_of_july
 		banner

@@ -45,7 +45,7 @@ mob
 			var ahead[] = front()
 
 			var atom/filler
-			var frozen = false
+			var frozen = FALSE
 			var liquid = "Water"
 
 			var turf/Environment/Water/water
@@ -53,9 +53,9 @@ mob
 				var covered = locate(/obj/Built) in water
 				if(!covered)
 					if(water.is_frozen())
-						frozen = true
+						frozen = TRUE
 					else
-						frozen = false
+						frozen = FALSE
 						break
 
 			if(frozen) aux_output("The water is frozen solid!")
@@ -83,7 +83,7 @@ mob
 				aux_output("You're not thirsty enough to drink.")
 
 			else
-				Locked = true
+				Locked = TRUE
 				status_overlay("thirst", container.thirst)
 				emote("starts drinking [initial(container.name)] from the [container.container]")
 
@@ -99,7 +99,7 @@ mob
 
 				emote("finishes drinking [initial(container.name)] from the [container.container]")
 				status_overlay_remove("thirst")
-				Locked = false
+				Locked = FALSE
 
 				container.thirst = initial(container.thirst)
 				if(container.drinks <= 0)
@@ -140,24 +140,24 @@ obj/Item
 
 		proc/mylk(mob/humanoid/m)
 			if(loc == m && !m.Locked)
-				var mob/Animal/Mur/mur, found_male = false
+				var mob/Animal/Mur/mur, found_male = FALSE
 				for(mur in m.front(8))
 					if(mur.gender == FEMALE)
 						break
-					else found_male = true
+					else found_male = TRUE
 				if(mur)
 					m.emote("attempts to mylk the mur")
-					mur.Locked = true
+					mur.Locked = TRUE
 					m._do_work(30)
-					mur.Locked = false
-					mur.milked = true
+					mur.Locked = FALSE
+					mur.milked = TRUE
 					if(prob(75))
 						m.emote("mylks the mur")
 						filled(m, "Mylk")
 					else
 						m.emote("fails to mylk the mur")
 						if(!mur.rider) step_away(mur, m)
-					return true
+					return TRUE
 				else if(found_male) m.aux_output("You can't mylk this male mur!")
 
 		use(mob/m) if(loc == m)
@@ -175,41 +175,41 @@ obj/Item
 		thirst = 6
 
 		Water
-			Stackable = false
+			Stackable = FALSE
 			icon_state = "Water"
 			name = "Water"
 
 		Mylk
-			Stackable = false
+			Stackable = FALSE
 			icon_state = "mylk"
 			hunger = 4
 			name = "Mylk"
 
 		Beer
-			Stackable = false
+			Stackable = FALSE
 			icon_state = "beer"
 			name = "Beer"
 
 		Wine
-			Stackable = false
+			Stackable = FALSE
 			icon_state = "wine"
 			name = "Wine"
 
 	Canteen
 		parent_type = /obj/Item/Container
 		container = "Canteen"
-		Water/Stackable = false
+		Water/Stackable = FALSE
 
 	Bowl
 		parent_type = /obj/Item/Container
 		container = "Bowl"
-		Water/Stackable = false
+		Water/Stackable = FALSE
 
 	Bucket
 		parent_type = /obj/Item/Container
 		container = "Bucket"
-		Water/Stackable = false
-		Mylk/Stackable = false
+		Water/Stackable = FALSE
+		Mylk/Stackable = FALSE
 
 		/*	Mylking
 		use_alt(mob/humanoid/m)
@@ -218,22 +218,22 @@ obj/Item
 
 		proc/mylk(mob/humanoid/m)
 			if(loc == m && !m.Locked)
-				var mob/Animal/Mur/mur, found_male = false
+				var mob/Animal/Mur/mur, found_male = FALSE
 				for(mur in m.front(8))
 					if(mur.gender == FEMALE)
 						break
-					else found_male = true
+					else found_male = TRUE
 				if(mur)
 					m.emote("attempts to mylk the mur")
-					mur.Locked = true
+					mur.Locked = TRUE
 					m._do_work(30)
-					mur.Locked = false
-					mur.milked = true
+					mur.Locked = FALSE
+					mur.milked = TRUE
 					if(prob(75))
 						m.emote("mylks the mur")
 						filled(m, "Mylk")
 					else
 						m.emote("fails to mylk the mur")
 						if(!mur.rider) step_away(mur, m)
-					return true
+					return TRUE
 				else if(found_male) m.aux_output("You can't mylk this male mur!")*/

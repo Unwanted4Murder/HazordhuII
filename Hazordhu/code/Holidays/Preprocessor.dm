@@ -5,7 +5,7 @@
 #endif
 
 
-#define JULY4 true
+#define JULY4 1
 
 #if JULY4
 	#include "Fourth of July\July4.dm"

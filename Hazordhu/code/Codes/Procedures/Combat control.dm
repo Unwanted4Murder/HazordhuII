@@ -60,15 +60,15 @@ mob
 		else combat_on()
 
 	proc/combat_on()
-		combat_mode = true
+		combat_mode = TRUE
 		status_overlay("combat")
-		track_mouse(true, 1, 1000 + EFFECTS_LAYER)
+	//	track_mouse(TRUE, 1, 1000 + EFFECTS_LAYER)
 
 	proc/combat_off()
-		combat_mode = false
+		combat_mode = FALSE
 		status_overlay_remove("combat")
 		update_combat_zone()
-		track_mouse(false)
+	//	track_mouse(FALSE)
 		if(is_humanoid(src))
 			var mob/humanoid/h = src
 			if(h.shooting)
@@ -81,12 +81,12 @@ mob
 			var mob/humanoid/h = src
 			if(h.shooting)
 				return
-		blocking = true
+		blocking = TRUE
 		icon_state = "block"
 
 	proc/block_stop()
 		if(!blocking) return
-		blocking = false
+		blocking = FALSE
 		icon_state = ""
 
 client

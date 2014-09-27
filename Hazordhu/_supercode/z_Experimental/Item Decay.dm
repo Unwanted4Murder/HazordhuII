@@ -12,9 +12,13 @@
 decay_timer
 	var life
 	var obj/Item/item
-	proc/go() spawn(life) if(check())
-		item.complete_delete = true
-		del item
+
+	proc/go()
+		set waitfor = FALSE
+		sleep life
+		if(check())
+			item.complete_delete = TRUE
+			del item
 
 	proc/check()
 		if(!item) del src
@@ -28,17 +32,17 @@ decay_timer
 
 obj/Item
 	//	so wild plants and growing crops don't decay
-	Farming/plant/decays = false
+	Farming/plant/decays = FALSE
 
 	var decay_time = HOUR
-	var decays = true
+	var decays = TRUE
 	var tmp/decay_timer/decay_timer
 
 	proc/check_decay()
 		var turf/c = cloc()
 		if(decays && isturf(c) && !(locate(/obj/Built) in c))
 			decay_timer = decay_timer || new (src, decay_time)
-			return true
+			return TRUE
 		del decay_timer
 
 	New()

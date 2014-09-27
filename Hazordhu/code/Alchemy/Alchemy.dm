@@ -262,14 +262,14 @@ obj/Item/Alchemy
 				if(m.can_drink(src))
 					if(m.Thirst)
 						m.emote("starts drinking water from the bottle")
-						m.Locked = true
+						m.Locked = TRUE
 						while(m.Thirst > 0)
 							m.status_overlay("thirst", 1)
 							sleep 1
 							m.Thirst --
 						m.Thirst = 0
 						m.emote("finishes drinking water from the bottle")
-						m.Locked = false
+						m.Locked = FALSE
 						m.lose_item(src)
 						m.get_item(/obj/Item/Alchemy/Bottle)
 					else m.aux_output("You don't need to drink.")
@@ -279,14 +279,14 @@ obj/Item/Alchemy
 			use(mob/m) if(loc == m)
 				if(m.can_drink(src))
 					if(m.Thirst)
-						m.Locked = true
+						m.Locked = TRUE
 						m.emote("starts drinking mylk from the bottle")
 						while(m.Thirst > 0)
 							m.status_overlay("thirst", 1)
 							sleep 1
 							m.Thirst --
 						m.emote("finishes drinking mylk from the bottle")
-						m.Locked = false
+						m.Locked = FALSE
 						m.Thirst = 0
 						m.lose_item(src)
 						m.get_item(/obj/Item/Alchemy/Bottle)
@@ -304,7 +304,7 @@ obj/Item/Alchemy
 			//Plant		Yellow
 			//Wood		Green
 			name = "Potion"
-			Stackable = false
+			Stackable = FALSE
 			proc/activate(mob/m)
 
 			use(mob/m) if(loc == m)
@@ -326,7 +326,7 @@ obj/Item/Alchemy
 
 			Ink
 				icon_state = "Dirt"
-				drinkable = false
+				drinkable = FALSE
 
 			Healing
 				icon_state = "Meat"
@@ -358,10 +358,10 @@ obj/Item/Alchemy
 						if(!m) return
 						m.take_damage(randn(min_strength, max_strength), "poison")
 						if(m && m.Dead)
-							m.Poisoned = false
-							return true
+							m.Poisoned = FALSE
+							return TRUE
 						sleep 1
-					if(m) m.Poisoned = false
+					if(m) m.Poisoned = FALSE
 			Poison_1
 				parent_type = /obj/Item/Alchemy/Bottle/Potion/Poison
 				min_strength = 0.1
@@ -410,10 +410,10 @@ obj/Item/Alchemy
 				var strength
 				var duration = 300
 				activate(mob/m)
+					set waitfor = FALSE
 					m.StrengthBuff += strength
-					spawn(duration)
-						if(m)
-							m.StrengthBuff -= strength
+					sleep duration
+					if(m) m.StrengthBuff -= strength
 
 			Strength_1
 				parent_type = /obj/Item/Alchemy/Bottle/Potion/Strength_Buff
@@ -438,8 +438,10 @@ obj/Item/Alchemy
 			Waterwalk
 				icon_state = "Wood"
 				activate(mob/mortal/m)
+					set waitfor = FALSE
 					m.Waterwalk ++
-					spawn(300) if(m)
+					sleep 300
+					if(m)
 						m.Waterwalk --
 						if(is_water(m.loc))
 							if(locate(/obj/Built) in m.loc) return
@@ -459,7 +461,7 @@ obj/Item/Alchemy
 
 			Explosion
 				icon_state = "Dirt"
-				drinkable = false
+				drinkable = FALSE
 				var strength
 			Explosion_1
 				parent_type = /obj/Item/Alchemy/Bottle/Potion/Explosion

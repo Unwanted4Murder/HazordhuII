@@ -10,17 +10,17 @@ mob
 	var languages_known[]
 
 	proc/language_known(language)
-		if(!language) return true
-		if(language == "Common") return true
-		if(language == native_language()) return true
+		if(!language) return TRUE
+		if(language == "Common") return TRUE
+		if(language == native_language()) return TRUE
 
 	proc/letter_known(letter, language)
 		letter = lowertext(letter)
-		if(!language) return true
-		if(!isletter(letter)) return true
-		if(language_known(language)) return true
-		if(!languages_known) return false
-		if(letter in languages_known[language]) return true
+		if(!language) return TRUE
+		if(!isletter(letter)) return TRUE
+		if(language_known(language)) return TRUE
+		if(!languages_known) return FALSE
+		if(letter in languages_known[language]) return TRUE
 
 	proc/speak(msg)
 		if(Speaking == "Common")

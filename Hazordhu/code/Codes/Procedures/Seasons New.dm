@@ -165,15 +165,16 @@ mob/player
 	PostLogin()
 		..()
 		season_update()
-
+/*
+	#if !THIN_SKIN
 	set_title_screen()
-		move_loop.add(client)
 		..()
-
+	#endif
+*/
 atom
-	var initialized = false
+	var initialized = FALSE
 	var apparent_season
-	var season_updates = true
+	var season_updates = TRUE
 
 	//	called when in range of a client for the first time per season
 	proc/season_update(season = get_season()) apparent_season = season
@@ -207,7 +208,7 @@ obj/tree_part
 			..()
 			if(season == WINTER)
 				invisibility = 100
-			else invisibility = false
+			else invisibility = FALSE
 
 		var tmp/obj/Woodcutting/tree
 		New(obj/Woodcutting/tree)
@@ -235,23 +236,23 @@ obj/tree_part
 
 	rocks
 		icon = 'code/Turfs/details.dmi'
-		icon_state = "water2"
+		icon_state = "water2brown"
 		season_update(season)
 			..()
 			if(season == WINTER && !istype(loc, /turf/Environment/Water/noF))
 				invisibility = 100
 			else
-				invisibility = false
+				invisibility = FALSE
 
 	mossy_rocks
 		icon = 'code/Turfs/details.dmi'
 		icon_state = "moss rocks"
 		season_update(season)
 			..()
-			if(season == WINTER)
+			if(season == WINTER && !istype(loc, /turf/Environment/Grass/jungle))
 				invisibility = 100
 			else
-				invisibility = false
+				invisibility = FALSE
 
 	details
 		icon = 'code/Turfs/details.dmi'
@@ -267,6 +268,8 @@ obj/tree_part
 			if(!turfs.len) del src
 			set_loc(pick(turfs))
 
+			season_update(get_season())
+
 		fern
 			icon_state = "fern"
 
@@ -274,7 +277,8 @@ obj/tree_part
 				if(season == WINTER) set_loc()
 				else if(season == AUTUMN && !istype(loc, /turf/Environment/Grass/jungle))
 					icon_state = "fern fall"
-					..()
+				else
+					icon_state = "fern"
 
 		sticks
 			icon_state = "sticks"
@@ -283,36 +287,36 @@ obj/tree_part
 			icon_state = "branch"
 
 obj/Woodcutting
-	var has_roots = false
-	var has_foliage = false
-	var has_detail = false
+	var has_roots = FALSE
+	var has_foliage = FALSE
+	var has_detail = FALSE
 	var roots = 0
 
 	Tree
-		has_roots = true
-		has_foliage = true
-		has_detail = true
+		has_roots = TRUE
+		has_foliage = TRUE
+		has_detail = TRUE
 
 	Tree2
-		has_roots = true
-		has_foliage = true
-		has_detail = true
+		has_roots = TRUE
+		has_foliage = TRUE
+		has_detail = TRUE
 
 	Dead
-		has_foliage = true
-		Thin_Tree/has_foliage = false
-		Bush/has_foliage = false
+		has_foliage = TRUE
+		Thin_Tree/has_foliage = FALSE
+		Bush/has_foliage = FALSE
 
 	Jungle
-		has_foliage = true
-		has_detail = true
-		Thin_Tree/has_foliage = false
-		Thin_Tree/has_detail = false
-		Bush/has_foliage = false
-		Bush/has_detail = false
-		Tree/has_roots = true
-		Tree2/has_roots = true
-		Tree3/has_roots = true
+		has_foliage = TRUE
+		has_detail = TRUE
+		Thin_Tree/has_foliage = FALSE
+		Thin_Tree/has_detail = FALSE
+		Bush/has_foliage = FALSE
+		Bush/has_detail = FALSE
+		Tree/has_roots = TRUE
+		Tree2/has_roots = TRUE
+		Tree3/has_roots = TRUE
 
 	season_update(season)
 		..()
@@ -334,8 +338,10 @@ obj/Woodcutting
 		pixel_x += rand(-1, 1)
 		pixel_y += rand(-1, 1)
 
+		var season = get_season()
+
 		if(has_foliage)
-			has_foliage = false
+			has_foliage = FALSE
 
 			var tree_type = /obj/Woodcutting/Thin_Tree
 			var bush_type = /obj/Woodcutting/Bush
@@ -353,23 +359,50 @@ obj/Woodcutting
 				bush_max = 5
 
 			for(var/n in 1 to rand(bush_min, bush_max))
-				var obj/Woodcutting/bush = new bush_type (loc)
-				. = (!bush.Move(loc, 0, step_x + rand(-96, 96), step_y + rand(-96, 96)) || (locate(/obj/Built) in bush.loc))
+				var obj/Woodcutting/bush
+				#if PIXEL_MOVEMENT
+				bush = new bush_type (loc)
+				. = (!bush.Move(loc, 0,
+					step_x + rand(-96, 96),
+					step_y + rand(-96, 96)) || (locate(/obj/Built) in bush.loc))
 				if(!.)
 					for(var/turf/t in bush.locs)
 						if(!istype(t, loc.type))
 							. = 1
 							break
 				. && bush.set_loc()
+				#else
+				var turfs[0]
+				for(var/turf/t in orange(3, loc))
+					if(t.type == loc.type && !(locate(/obj/Built) in t) && !(locate(/obj/Woodcutting) in t))
+						turfs += t
+				if(turfs.len)
+					bush = new bush_type (pick(turfs))
+				#endif
+				if(bush) bush.season_update(season)
 
 			for(var/n in 1 to rand(tree_min, tree_max))
-				var obj/Woodcutting/tree = new tree_type (loc)
-				. = (!tree.Move(loc, 0, step_x + rand(-96, 96), step_y + rand(-96, 96)) || (locate(/obj/Built) in tree.loc))
+				var obj/Woodcutting/tree
+				#if PIXEL_MOVEMENT
+				tree = new tree_type (loc)
+				. = (!tree.Move(loc, 0,
+					step_x + rand(-96, 96),
+					step_y + rand(-96, 96)) || (locate(/obj/Built) in tree.loc))
 				if(!.)
 					for(var/turf/t in tree.locs)
 						if(!istype(t, loc.type))
 							. = 1
 							break
+				. && tree.set_loc()
+				#else
+				var turfs[0]
+				for(var/turf/t in orange(3, loc))
+					if(t.type == loc.type && !(locate(/obj/Built) in t) && !(locate(/obj/Woodcutting) in t))
+						turfs += t
+				if(turfs.len)
+					tree new tree_type (pick(turfs))
+				#endif
+				if(tree) tree.season_update(season)
 
 turf/Environment
 	Grass/season_update(season)
@@ -388,10 +421,10 @@ turf/Environment
 			var obj/tree_part/leaves/l = new (src)
 			l.season_update(season)
 
-/*		var/turf/Environment/Water/w = locate() in orange(3, src)
-		if(prob(10) && (locate(/turf/Environment/Cliffs) in orange(5, src) || (w && w.name == "River")))
+		var/turf/Environment/Water/w = locate() in orange(3, src)
+		if(prob(5) && ((w && w.name == "River") || (locate(/turf/Environment/Cliffs) in orange(5, src))))
 			var obj/tree_part/mossy_rocks/m = new(src)
-			m.season_update(season)*/
+			m.season_update(season)
 
 	Riverbank/season_update(season)
 		..()
@@ -466,24 +499,24 @@ turf/Environment
 			if(season == WINTER)
 				if(istype(src, /turf/Environment/Water/noF)) return
 				icon = 'code/Turfs/Ice.dmi'
-				if(icon_state != "Fall") density = false
+				if(icon_state != "Fall") density = FALSE
 
 			else
 				icon = 'code/Turfs/Water.dmi'
 				if(!is_bridged())
-					density = true
+					density = TRUE
 					for(var/mob/mortal/m in src)
 						if(istype(m, /mob/Corpse)) del m
 						else if(!m.GodMode && !m.Waterwalk && !m.boat && !istype(m, /mob/Animal/Peek))
 							m.take_damage(m.Health, "drowning")
 					for(var/mob/Corpse/corpse in src)
 						corpse.set_loc()
-/*				if((istype(src, /turf/Environment/Water/River) || istype(src, /turf/Environment/Water/noF/River)) && prob(15))
+				if((istype(src, /turf/Environment/Water/River) || istype(src, /turf/Environment/Water/noF/River)) && prob(15))
 					new /obj/tree_part/rocks (src)
-				else if(!istype(src, /turf/Environment/Water/River) && !istype(src, /turf/Environment/Water/noF/River) && prob(15) && z == 1)
+				else if(!istype(src, /turf/Environment/Water/River) && !istype(src, /turf/Environment/Water/noF/River) && prob(25) && z == 1)
 					var turfs[] = nearby_turfs(2, /turf/Environment/Grass)
 					if(turfs.len)
-						new /obj/tree_part/reeds (src)*/
+						new /obj/tree_part/reeds (src)
 
 			..()
 
@@ -534,8 +567,8 @@ mob
 	Animal
 		Sty/season_update(season)
 			..()
-			if(season == WINTER) sheared = false
+			if(season == WINTER) sheared = FALSE
 
 		Mur/season_update(season)
-			if(apparent_season == WINTER) milked = false
+			if(apparent_season == WINTER) milked = FALSE
 			..()

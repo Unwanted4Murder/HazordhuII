@@ -1,17 +1,18 @@
 builder/forging
 	main_tool = /obj/Item/Tools/Tongs
 	skill = FORGING
-	allowed_in_tutorial = true
+	allowed_in_tutorial = TRUE
 
 	condition(mob/m)
+		if(!m.loc) return
 		var obj/forge = locate(/obj/Built/Forge) in obounds(m, 16)
 		if(!forge)
 			m.aux_output("You need to be by a forge.")
-			return false
+			return FALSE
 		if(forge.icon_state != "lit")
 			m.aux_output("The forge needs to be lit.")
-			return false
-		return true
+			return FALSE
+		return TRUE
 
 	metal
 		name = "Metal Bar"

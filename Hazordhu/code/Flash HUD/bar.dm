@@ -99,5 +99,5 @@ hud/bar
 	part
 		parent_type = /obj
 		icon = 'code/Flash HUD/HUD icons.dmi'
-		mouse_opacity = false
+		mouse_opacity = FALSE
 		layer = 200

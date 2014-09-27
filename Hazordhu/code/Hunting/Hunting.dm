@@ -185,7 +185,7 @@ obj/Item/Clothing
 
 obj/Built/Tanning_Frame
 	icon = 'Tanning Frame.dmi'
-	Flammable = true
+	Flammable = TRUE
 
 	interact(mob/m) Pin(m)
 
@@ -263,7 +263,7 @@ obj/Item/Leather/Tanning
 				usr.aux_output("You brush tannin on [name] to make leather.")
 				m.lose_item(tannin)
 				new /obj/Item/Bowl (m)
-				Done = true
+				Done = TRUE
 				return
 
 			var obj/Item/Bowl/Water/water = locate() in m
@@ -280,7 +280,7 @@ obj/Item/Leather/Tanning
 		Get(mob/player/m)
 			if(locate(/obj/Built/Tanning_Frame)in loc)
 				if(Done)
-					for(var/obj/Built/Tanning_Frame/frame in loc) frame.Tanning = false
+					for(var/obj/Built/Tanning_Frame/frame in loc) frame.Tanning = FALSE
 					m.lose_item(src)
 					new /obj/Item/Parchment (m)
 
@@ -289,7 +289,7 @@ obj/Item/Leather/Tanning
 
 				else if(m.has_knife())
 					m.aux_output("You scrape off the fur from the hide. It must now dry.")
-					Scraped = true
+					Scraped = TRUE
 					sleep 300
 					ohearers(src) << "The parchment has finished drying."
-					Done = true
+					Done = TRUE

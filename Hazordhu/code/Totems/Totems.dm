@@ -1,7 +1,7 @@
 obj/Built/Totem
 	icon = 'code/totems/totem.dmi'
-	attackable = false
-	var active = false
+	attackable = FALSE
+	var active = FALSE
 	var range = 4
 	var tmp/showing[0]
 
@@ -14,7 +14,7 @@ obj/Built/Totem
 		var mob/player/p = usr
 		if(params["right"])
 			show_coverage(p)
-		else if(is_admin(p.ckey))
+		else if(is_admin(p))
 			if(p.has_key("ctrl")) set_range(p)
 			else toggle(p)
 		..()
@@ -45,9 +45,9 @@ obj/Built/Totem
 	proc/toggle(mob/player/toggler) active ? deactivate(toggler) : activate(toggler)
 
 	proc/activate(mob/player/p)
-		active = true
+		active = TRUE
 		icon_state = "on"
 
 	proc/deactivate(mob/player/p)
-		active = false
+		active = FALSE
 		icon_state = ""

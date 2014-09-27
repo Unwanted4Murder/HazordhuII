@@ -2,8 +2,8 @@ obj/Built
 	firepit
 		icon = 'code/Cooking/Firepit.dmi'
 		base_health = 25
-		can_cook = true
-		takes_fuel = true
+		can_cook = TRUE
+		takes_fuel = TRUE
 		fuel_time(o)
 			if(istype(o, /obj/Item/Coal))
 				return
@@ -17,7 +17,7 @@ obj/Built
 	Stocks
 		icon = 'Stocks.dmi'
 		base_health = 50
-		Flammable = true
+		Flammable = TRUE
 		layer = MOB_LAYER + 10
 
 		SET_TBOUNDS("7,3 to 26,7")
@@ -48,8 +48,8 @@ obj/Built
 		base_health = 200
 
 		SET_TBOUNDS("1,7 to 32,18")
-		can_cook = true
-		takes_fuel = true
+		can_cook = TRUE
+		takes_fuel = TRUE
 		lit_state = "Cook lit"
 		unlit_state = "Cook"
 		var container
@@ -84,8 +84,8 @@ obj/Built
 		SET_TBOUNDS("3,7 to 30,22")
 		icon = 'code/woodworking/bedframe.dmi'
 		base_health = 50
-		density = false
-		Flammable = true
+		density = FALSE
+		Flammable = TRUE
 
 		interact_right(mob/m)
 			if(bed_is_made())
@@ -120,35 +120,34 @@ obj/Built
 		parent_type = /obj/Built/Floors
 		icon = 'code/Woodworking/Floor.dmi'
 		base_health = 30
-		Flammable = true
+		Flammable = TRUE
 
 	Table
 		icon = 'code/Woodworking/Table.dmi'
 		base_health = 50
-		Flammable = true
-		density = true
+		Flammable = TRUE
+		density = TRUE
 		pixel_x = -8
 		pixel_y = -8
-		bound_height = 24
-		bound_y = 4
+		SET_BOUNDS(0, 4, 32, 24)
 		layer = 10.5
 
 	Wall
 		icon = 'code/Woodworking/Wall.dmi'
-		Flammable = true
-		density = true
-		opacity = true
+		Flammable = TRUE
+		density = TRUE
+		opacity = TRUE
 		base_health = 300
 
 	skin_wall
 		icon='code/Woodworking/skin_wall.dmi'
-		density = true
-		opacity = true
+		density = TRUE
+		opacity = TRUE
 		base_health = 200
 
 		Fur_Wall
 			icon_state = "fur"
-			Flammable = true
+			Flammable = TRUE
 
 		Human_Skin_Wall
 			icon_state = "human"
@@ -175,65 +174,65 @@ obj/Built
 
 	Log_Wall
 		icon='code/Woodworking/Log Wall.dmi'
-		Flammable = true
-		density = true
-		opacity = true
+		Flammable = TRUE
+		density = TRUE
+		opacity = TRUE
 		base_health = 250
 
 	Log_Window
 		parent_type = /obj/Built/Windows
 		icon = 'code/Woodworking/Log Window.dmi'
-		Flammable = true
+		Flammable = TRUE
 		base_health = 200
 
 	Window
 		parent_type = /obj/Built/Windows
 		icon = 'code/Woodworking/Window.dmi'
-		Flammable = true
+		Flammable = TRUE
 		base_health = 250
 
 	Stool
 		icon = 'code/Woodworking/Furniture.dmi'
 		SET_TBOUNDS("12,12 to 21,20")
-		Flammable = true
-		density = false
+		Flammable = TRUE
+		density = FALSE
 		icon_state = "2"
 		base_health = 20
 
 	Chair
 		icon = 'code/Woodworking/Furniture.dmi'
 		SET_TBOUNDS("12,12 to 21,20")
-		Flammable = true
-		density = false
+		Flammable = TRUE
+		density = FALSE
 		icon_state = "3"
 		base_health = 30
 
 	Throne
 		parent_type = /obj/Built/Chair
 		icon = 'code/Woodworking/Throne.dmi'
-		Flammable = false
-		density = false
+		Flammable = FALSE
+		density = FALSE
 		base_health = 100
 
 	Sign
 		icon='code/Woodworking/Sign.dmi'
-		Flammable = true
-		density = true
+		Flammable = TRUE
+		density = TRUE
 		base_health = 30
 		SET_TBOUNDS("7,3 to 25,7")
 
 	Fence
 		icon='code/Woodworking/Fence.dmi'
-		density = true
-		Flammable = true
+		density = TRUE
+		Flammable = TRUE
 		base_health = 100
 
 	Pallisade_Wall
 		icon = 'code/Woodworking/Pallisade Wall.dmi'
 		layer = MOB_LAYER + 1
-		density = true
-		Flammable = true
-		opacity = true
+		density = TRUE
+		Flammable = TRUE
+		opacity = TRUE
 		base_health = 300
 		New()
 			..()
@@ -257,9 +256,9 @@ obj/Built
 	Orc_Pallisade_Wall
 		layer = MOB_LAYER+1
 		icon = 'code/Woodworking/Orc Pallisade.dmi'
-		density = true
-		Flammable = false
-		opacity = true
+		density = TRUE
+		Flammable = FALSE
+		opacity = TRUE
 		base_health = 400
 		New()
 			..()
@@ -283,25 +282,25 @@ obj/Built
 	Bridge
 		icon = 'code/Woodworking/Wall.dmi'
 		icon_state = "Bridge"
-		Flammable = true
+		Flammable = TRUE
 		base_health = 300
 
 	Combat_Dummy
 		icon = 'Combat Dummy.dmi'
-		Flammable = true
-		density = true
+		Flammable = TRUE
+		density = TRUE
 		base_health = 1000
 
 	Counter
 		icon = 'code/Woodworking/Counter.dmi'
-		Flammable = true
-		density = true
+		Flammable = TRUE
+		density = TRUE
 		base_health = 75
 
 	Sink
 		parent_type = /obj/Built/Counter
 		icon_state = "Sink"
-		density = true
+		density = TRUE
 		base_health = 200
 
 		New() del src
@@ -323,31 +322,31 @@ obj/Built
 				m.aux_output("You don't need to drink.")
 				return
 			m.emote("drinks from the sink")
-			m.Locked = true
+			m.Locked = TRUE
 			while(m.Thirst > 0)
 				m.status_overlay("thirst", 1)
 				sleep 1
 				m.lose_thirst(1)
 			m.Locked = 0
-			return true
+			return TRUE
 
 	Target
 		icon = 'code/Woodworking/Target.dmi'
-		Flammable = true
-		density = true
+		Flammable = TRUE
+		density = TRUE
 		SET_TBOUNDS("9,2 to 24,8")
 		base_health = 50
 
 	Water_Wheel
 		icon = 'Water Wheel.dmi'
-		Flammable = true
-		density = true
+		Flammable = TRUE
+		density = TRUE
 		base_health = 50
 
 	Grinding_Platform
 		icon = 'Grinding Stone.dmi'
-		density = true
-		Flammable = true
+		density = TRUE
+		Flammable = TRUE
 		SET_TBOUNDS("9,1 to 25,8")
 		base_health = 50
 		interact(mob/m) return add_stone(m)
@@ -360,12 +359,12 @@ obj/Built
 			m.emote("adds a stone to the platform")
 			new /obj/Built/Grinding_Stone (loc)
 			set_loc()
-			return true
+			return TRUE
 
 	Grinding_Stone
 		icon = 'Grinding Stone.dmi'
 		icon_state = "stone"
-		density = true
+		density = TRUE
 		SET_TBOUNDS("9,1 to 25,8")
 		base_health = 75
 
@@ -375,20 +374,20 @@ obj/Item
 		value = 30
 		Water
 			icon_state = "Full"
-			Flammable = false
+			Flammable = FALSE
 
 	Bucket
 		icon = 'code/Woodworking/Bucket.dmi'
-		Flammable = true
+		Flammable = TRUE
 		value = 4
 
 		Water
 			icon_state = "Water"
-			Flammable = false
+			Flammable = FALSE
 
 		Mylk
 			icon_state = "Mylk"
-			Flammable = false
+			Flammable = FALSE
 
 	Tinder_Box
 		icon = 'Tinder Box.dmi'

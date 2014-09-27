@@ -1,5 +1,5 @@
 
-#define LIGHTING 0
+#define LIGHTING 1
 
 var event/lighting/event_lighting = new
 

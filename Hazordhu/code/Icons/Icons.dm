@@ -15,12 +15,12 @@ obj/Item
 		use(mob/m) if(loc == m)
 			if(!smoking)
 				Smoke(m)
-				Huffed = false
+				Huffed = FALSE
 
 		proc
 			Smoke(mob/M)
-				Huffed = false
-				smoking = true
+				Huffed = FALSE
+				smoking = TRUE
 				M << "You begin to smoke your pipe."
 				if(M.MaxStamina >= 20)
 					M.MaxStamina --
@@ -28,14 +28,14 @@ obj/Item
 				for(var/n in 1 to 3)
 					sleep 50
 					new /obj/Smoke (M.loc)
-				smoking = false
+				smoking = FALSE
 
 			Insert_Huff(mob/M)
 				if(!Huffed)
 					var obj/Item/Farming/crop/Huff/H = locate() in M
 					if(H)
 						M.lose_item(H)
-						Huffed = true
+						Huffed = TRUE
 						M.aux_output("You put some huff in your pipe.")
 					else M.aux_output("You need some huff to put in there.")
 				else M.aux_output("There is already huff in this pipe.")

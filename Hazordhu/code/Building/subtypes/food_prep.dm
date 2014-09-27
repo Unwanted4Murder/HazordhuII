@@ -3,11 +3,12 @@ builder/food_prep
 	skill = COOKING
 
 	condition(mob/m)
+		if(!m.loc) return
 		var obj/Built/Counter/counter = locate(/obj/Built/Counter) in obounds(m, 16)
 		if(!counter)
 			m.aux_output("You need to be by a counter.")
-			return false
-		return true
+			return FALSE
+		return TRUE
 
 	dough
 		name = "Dough"

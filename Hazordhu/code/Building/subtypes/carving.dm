@@ -2,7 +2,7 @@ builder/carving
 	main_tool = /obj/Item/Tools/Knife
 	skill = CARVING
 	cursor = "knife"
-	allowed_in_tutorial = true
+	allowed_in_tutorial = TRUE
 
 	boards
 		name = "Boards"
@@ -24,9 +24,9 @@ builder/carving
 
 		req = list( LOG		=	3)
 		built = /obj/Built/firepit
-		allowed_in_tutorial = false
+		allowed_in_tutorial = FALSE
 
-		density = true
+		density = TRUE
 /*
 	tinder_box
 		name = "Tinder Box"

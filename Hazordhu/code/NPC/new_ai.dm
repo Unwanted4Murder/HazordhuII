@@ -2,7 +2,7 @@
 obj/Built/Doors
 	Cross(mob/NPC/npc)
 		if(istype(npc) && npc.opens_doors)
-			return true
+			return TRUE
 		return ..()
 
 	Crossed(mob/NPC/npc)
@@ -22,7 +22,7 @@ mob
 
 	NPC
 		var
-			new_ai = true
+			new_ai = TRUE
 
 			tmp
 				image/aggro_marker
@@ -31,7 +31,7 @@ mob
 				turf/move_target
 				next_move
 
-				attacked = false
+				attacked = FALSE
 				next_tick
 
 				next_search
@@ -46,16 +46,16 @@ mob
 			attack_delay = 30
 
 			//	If an open window comes between the NPC and the target it'll fire an arrow. (non-zero values are how far it can fire)
-			ranged_attack = false
+			ranged_attack = FALSE
 
 			//	How long between AI cycles.
 			ai_delay = 0.1
 
 			//	If the NPC will open doors when encountered.
-			opens_doors = true
+			opens_doors = TRUE
 
 			//	Will follow blood trails.
-			follow_blood = false
+			follow_blood = FALSE
 
 			//	Its commander if it is reanimated by a player
 			leader
@@ -68,6 +68,10 @@ mob
 		Write()
 			if(aggro_marker)
 				overlays -= aggro_marker
+			..()
+
+		die()
+			overlays -= aggro_marker()
 			..()
 
 		proc/aggro_marker()
@@ -125,14 +129,14 @@ mob
 
 		proc/is_valid_target(mob/m)
 			m = m || target
-			if(!is_humanoid(m)) return false
-			if(m.GodMode || m.Dead) return false
-			if(m.Race == Race) return false
-			if(m.client && m.key == leader)	return false
-			if(leader && istype(m, /mob/NPC) && m:leader == leader)	return false
-			if(get_dist(src, m) >= 10) return false
-			if(m.type in friendly_types) return false
-			return true
+			if(!is_humanoid(m)) return FALSE
+			if(m.GodMode || m.Dead) return FALSE
+			if(m.Race == Race) return FALSE
+			if(m.client && m.key == leader)	return FALSE
+			if(leader && istype(m, /mob/NPC) && m:leader == leader)	return FALSE
+			if(get_dist(src, m) >= 10) return FALSE
+			if(m.type in friendly_types) return FALSE
+			return TRUE
 
 		proc/search_for_target()
 			if((!target || prob(10)) && world.time >= next_search)
@@ -169,7 +173,7 @@ mob
 					if(turfs.len)
 						move_target = pick(turfs)
 
-		//	Returns true on a successful attack.
+		//	Returns TRUE on a successful attack.
 		proc/attack_target()
 			if(attacked) return
 			if(!ranged_attack)
@@ -177,7 +181,7 @@ mob
 					attacked = 1
 					spawn(attack_delay) attacked = 0
 					attack(target)
-					return true
+					return TRUE
 
 			else
 				var dist = get_dist(src,target)

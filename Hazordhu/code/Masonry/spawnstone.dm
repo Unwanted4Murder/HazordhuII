@@ -22,18 +22,56 @@ obj
 			icon = 'code/Masonry/spawnstone.dmi'
 
 			main
+				name = "Hazium Obelisk"
 				density = 1
 				var id
 
 				//	solves the issue of overshooting (Eks and Kaio)
 				var tmp/active
 
+				save_to(savedatum/s)
+					s.save_id = id
+
+				#if NEW_RUNES
+				load_from(savedatum/s)
+					SetID(s.save_id)
+
+				proc/SetID(ID)
+					// check for an older id
+					if(id)
+						var code[] = params2list(id)
+						if(!istype(code) || code.len != RUNE_CODE_LENGTH)
+							id = null
+
+					id = runes.LinkCode(src, ID || id || runes.GetNewCode())
+
+				#else
+				load_from(savedatum/s)
+					id = s.save_id
+
+				#endif
+
+				#if NEW_RUNES
+				MouseEntered()
+					..()
+					var mob/player/player = usr
+					player.ShowRuneSet(params2list(id))
+
+				MouseExited()
+					..()
+					var mob/player/player = usr
+					player.HideRuneSet()
+				#endif
+
 				New()
 					..()
-					if(!id)
-						id = string(5)
-
+					#if NEW_RUNES
+					SetID()
+					#else
+					if(!id) id = string(5)
 					name = "Hazium Obelisk \[[id]]"
+					#endif
+					tag = "obelisk [id]"
 
 				interact(mob/humanoid/m)
 					var obj/Item/Armour/Accessory/Amulet/amulet = locate() in m.Equipment()

@@ -1,4 +1,4 @@
-#define INIT_FPS 30
+#define INIT_FPS 24
 var fps = INIT_FPS
 
 var/const
@@ -27,13 +27,13 @@ var
 	NewGods[0]
 
 	Admins[] = list(
-		"f0lak",
-		"ayemel",
-		"ceojac",
-		"eksadus",
-		"kai",
-		"kaiochao",
-		"zerstorung"
+		"F0lak",
+		"Ayemel",
+		"Ceojac",
+		"Eksadus",
+		"Kai",
+		"Kaiochao",
+		"Zerstorung"
 	)
 
 	StaffLog = ""
@@ -83,45 +83,7 @@ More detailed information on what is and is not acceptable can be found <a href=
 "}
 
 var const/newgods_save = "Data/new gods.sav"
-proc/load_gods()
-	if(fexists(newgods_save))
-		var savefile/s = new (newgods_save)
-		s["newgods"] >> NewGods
-	if(!NewGods) NewGods = new
-	if(!(world.host in NewGods))
-		NewGods += world.host
 
-proc/save_gods()
-	fdel(newgods_save)
-	if(NewGods.len)
-		var savefile/s = new (newgods_save)
-		s["newgods"] << NewGods
-
-proc/add_god(ckey)
-	ckey = ckey(ckey)
-	if(!(ckey in NewGods))
-		NewGods += ckey
-		save_gods()
-
-		var mob/player/player = get_player_by_ckey(ckey)
-		if(player)
-			player.ApplyAdmin()
-
-proc/remove_god(ckey)
-	ckey = ckey(ckey)
-	if(ckey in NewGods)
-		NewGods -= ckey
-		save_gods()
-
-		var mob/player/player = get_player_by_ckey(ckey)
-		if(player)
-			player.RemoveAdmin()
-
-proc/get_player_by_ckey(ckey)
-	ckey = ckey(ckey)
-	for(var/mob/player/player)
-		if(player.ckey == ckey)
-			return player
 
 world
 	view = 8
@@ -134,20 +96,29 @@ world
 		..()
 		SetConfig("APP/admin", "Kaiochao", "role=root")
 
-		name = "Hazordhu II ([build]): [OfficialServer?"Official ":][DevelopmentServer?"Test ":"Roleplay "]Server"
+		name = "Hazordhu II: Kaio's Server"
 
 		if(!(MAPSAVE & SAVE_FLAG))
 			name += " (NO MAP SAVE)"
 
 		status = name
 
-		load_gods()
+		if(fexists(newgods_save))
+			var savefile/s = new (newgods_save)
+			s["newgods"] >> NewGods
+		if(!NewGods) NewGods = list()
+		if(!NewGods.Find(host))
+			NewGods += host
+
 		load_login_message()
-		Admins |= ckey(host)
 
 	Del()
 		save_login_message()
-		save_gods()
+
+		fdel(newgods_save)
+		if(NewGods.len)
+			var savefile/s = new (newgods_save)
+			s["newgods"] << NewGods
 		..()
 
 atom/movable
@@ -182,15 +153,15 @@ mob
 
 		Ael = "Ael"	//	Sets the Ael name for admins
 
-		can_ooc			=	true
-		ooc_listen		=	true
-		can_admin_help	=	true
-		pvp				=	true
+		can_ooc			=	TRUE
+		ooc_listen		=	TRUE
+		can_admin_help	=	TRUE
+		pvp				=	TRUE
 
-		Made			=	false	//	Defining whether the player has created their character yet
+		Made			=	FALSE	//	Defining whether the player has created their character yet
 
 		//	Admin Variables
-		Mute = false	//	If true, the player cannot speak
+		Mute = FALSE	//	If TRUE, the player cannot speak
 
 		//	Medal variable
 		hasMined[]
@@ -205,10 +176,10 @@ mob
 		moon		//	Sets the players birthmoon
 		aeon		//	Sets the players birthaeon
 
-		baby = false	//	has the person laid an egg this year?
+		baby = FALSE	//	has the person laid an egg this year?
 
 		//	Various Variables
-		tmp/Locked		=	false	//	if true, the player cannot move
+		tmp/Locked		=	FALSE	//	if TRUE, the player cannot move
 
 		Items			=	0	//	Determines how many items the person has.
 		Item_Limit		=	15	//	Determines how many items people can carry.
@@ -217,7 +188,7 @@ mob
 		MeatType				//	Type of meat dropped when skinned.
 		obj/Hair/HairObj
 
-		Cursed = false	//	If true, the player turns undead when they would have normally died.
+		Cursed = FALSE	//	If TRUE, the player turns undead when they would have normally died.
 
 
 		//	Character Variables
@@ -239,10 +210,10 @@ mob
 		Speaking = "Common"	//	Language the player is currently speaking.
 		Languages[] = list("Common")	//	List of known languages to the player.
 
-		Hood_Concealed = false
+		Hood_Concealed = FALSE
 
 		//	Adds delay betwen pointing.
-		tmp/Pointing = false
+		tmp/Pointing = FALSE
 
 		//	Equipment Variables
 //		Swapping = 0	//	Swapping hands
@@ -258,9 +229,9 @@ mob
 		Deaths = 0
 		Kills = 0
 		tmp
-			KO = false
-			Dead = false
-			Resting	=	false
+			KO = FALSE
+			Dead = FALSE
+			Resting	=	FALSE
 
 			StrengthBuff = 0
 			DefenseBuff = 0

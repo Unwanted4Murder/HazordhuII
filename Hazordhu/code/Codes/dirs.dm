@@ -8,6 +8,7 @@ proc/dirdiff(a, b)
 atom/movable
 	proc
 		get_px_step(dir, dist = 8)
+			if(!loc) return
 			return obounds(src,
 				dir & 12 && dir & 8 && -dist,
 				dir &  3 && dir & 2 && -dist,

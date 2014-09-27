@@ -1,8 +1,8 @@
 mob/Corpse
-	density = false
+	density = FALSE
 	layer = MOB_LAYER - 2
-	Flammable = true
-	Dead = true
+	Flammable = TRUE
+	Dead = TRUE
 
 	var ol[0]
 	var deg
@@ -11,27 +11,21 @@ mob/Corpse
 	var is_animal
 
 	New(mob/m)
+		set waitfor = FALSE
 		..()
 		if(istype(m, /mob/Animal))
 			name = "Dead [m]"
-			is_animal = true
+			is_animal = TRUE
 
 		set_loc(m.loc)
 
 		SkinType = m.SkinType
 		MeatType = m.MeatType
 
-		if(is_humanoid(m))
-			var mob/humanoid/h = m
-			h.icon_turn(pick(90, -90))
-			icon = h.flat_icon()
-			icon_state = h.icon_state
-			rotated_angle = h.rotated_angle
-			h.icon_turn(0)
-		else
-			var icon/i = icon(m.icon, m.icon_state)
-			i.Turn(pick(90, -90))
-			icon = i
+		icon = m.icon
+		icon_state = m.icon_state
+		overlays = m.overlays
+		transform = turn(matrix(), pick(90, -90))
 
 		dir = NORTH
 
@@ -54,11 +48,11 @@ mob/Corpse
 			pixel_x -= 32
 			pixel_y -= 32
 
-		spawn(10 * MINUTE)
-			if(findtext(name, "Corpse"))
-				skelefy()
-				sleep HOUR
-			del src
+		sleep 10 * MINUTE
+		if(findtext(name, "Corpse"))
+			skelefy()
+			sleep HOUR
+		loc = null
 
 	interact(mob/humanoid/m)
 		Skin(m)
@@ -66,9 +60,8 @@ mob/Corpse
 	proc
 		skelefy()
 			if(is_animal) return
-			var icon/i = icon('code/Mobs/skeleton.dmi')
-			i.Turn(rotated_angle)
-			icon = i
+			icon = 'code/mobs/skeleton.dmi'
+			icon_state = ""
 			name = "Skeleton"
 			head_state = "skeleton"
 			MeatType = /obj/Item/Bone
@@ -76,7 +69,7 @@ mob/Corpse
 			overlays.Cut()
 
 		Skin(mob/humanoid/skinner)
-			if(skinner.Locked)				return
+			if(skinner.Locked) return
 
 			if(skinner.has_hatchet())
 				skinner.emote("starts beheading the [src]")
@@ -110,7 +103,7 @@ mob/Corpse
 						set_loc()
 				else skelefy()
 
-				return true
+				return TRUE
 
 		get_head(mob/m)  // The icon state for a head that's given.
 			switch(m.type)

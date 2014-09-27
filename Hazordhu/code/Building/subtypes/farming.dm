@@ -6,8 +6,8 @@ builder/farming
 	valid_loc(turf/t)
 		if(locate(/obj/Built/Path/Farm) in t)
 			if(locate(/obj/Item/Farming/plant) in t)
-				return false
-			return true
+				return FALSE
+			return TRUE
 
 	//	plant grows 15 seconds faster per farming level
 	crafted(obj/Item/Farming/plant/plant, mob/player/farmer)

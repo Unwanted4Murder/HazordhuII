@@ -4,20 +4,19 @@
 */
 mob/proc
 	_attack()
-		if(Locked) return false
+		if(Locked) return FALSE
 		if(shooting) return archery_fire()
 
 		_swing()
 		spawn attack()
 
-		Locked = true
-		spawn(5) Locked = false
+		lock_time(5)
 
-		return true
+		return TRUE
 
 	//	does not do damage
 	_swing()
-		if(!loc || GodMode) return false
+		if(!loc || GodMode) return FALSE
 
 		var state = ""
 		var obj/Item/main = equipment["main"]
@@ -28,4 +27,4 @@ mob/proc
 
 		flick(state, src)
 
-		return true
+		return TRUE

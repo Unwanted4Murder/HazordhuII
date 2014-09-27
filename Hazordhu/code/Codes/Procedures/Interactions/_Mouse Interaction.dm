@@ -9,7 +9,7 @@
 */
 
 client
-	show_popup_menus = false
+	show_popup_menus = FALSE
 
 	Click(atom/o, l, c, pa)
 		var p[] = params2list(pa)
@@ -27,7 +27,7 @@ client
 								o.cx() - mob.cx(),
 								o.cy() - mob.cy())))
 
-					for(var/obj/cliff_border/edge in obounds(mob, bounds_dist(mob, o)))
+					if(mob.loc) for(var/obj/cliff_border/edge in obounds(mob, bounds_dist(mob, o)))
 						if(get_dir(mob, edge) == d)
 							return
 
@@ -52,7 +52,7 @@ obj/Item
 	proc/use_alt(mob/humanoid/m)
 	interact_right(mob/player/m)
 		if(m.has_key("ctrl"))
-			m.client.keys["ctrl"] = false
+			m.client.keys["ctrl"] = FALSE
 			use_alt(m)
 		else use(m)
 

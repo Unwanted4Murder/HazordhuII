@@ -4,25 +4,25 @@ obj
 		Ball
 			SET_TBOUNDS("9,9 to 24,24")
 			icon = 'code/Icons/ball.dmi'
-			density = true
+			density = TRUE
 			SET_STEP_SIZE(6)
 
 			Drop()
-				density = false
+				density = FALSE
 				return ..()
 
 			split_as(obj/Item/item)
-				item.density = false
+				item.density = FALSE
 				return ..()
 
 			dropped_by(m)
-				Stackable = false
-				density = true
+				Stackable = FALSE
+				density = TRUE
 				return ..()
 
 			grabbed_by(m)
-				Stackable = true
-				density = false
+				Stackable = TRUE
+				density = FALSE
 				vel = null
 				move_loop.remove(src)
 				return ..()

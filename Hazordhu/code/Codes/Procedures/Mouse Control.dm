@@ -100,16 +100,16 @@ client
 				view_size = vec2(v, v)
 			else view_size = text2dim(view)
 			center = vec2(
-				tile_width  * view_size[1] / 2,
-				tile_height * view_size[2] / 2 + 16)
+				tile_width()  * view_size[1] / 2,
+				tile_height() * view_size[2] / 2)
 
 		mouse.spos = vec2(
-			(tx - 1) * tile_width  + px,
-			(ty - 1) * tile_height + py)
+			(tx - 1) * tile_width()  + px,
+			(ty - 1) * tile_height() + py)
 		mouse.pos = vec2_sub(mouse.spos, center)
 		mouse.angle = vec2_angle(mouse.pos)
-		mouse.tracking = true
+		mouse.tracking = TRUE
 
-	track_mouse(track = true, resolution = 4, layer = 10000)
+	track_mouse(track = TRUE, resolution = 4, layer = 10000)
 		. = ..()
 		if(!track) mouse.tracking = 0

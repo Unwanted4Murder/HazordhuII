@@ -29,9 +29,10 @@ var looper/game_loop = new
 looper
 	var callback, tick_lag
 	New(callback = "tick", tick_lag = 0)
+		set waitfor = FALSE
 		src.callback = callback
 		src.tick_lag = tick_lag
-		spawn for()
+		for()
 			tick()
 			sleep tick_lag || world.tick_lag
 

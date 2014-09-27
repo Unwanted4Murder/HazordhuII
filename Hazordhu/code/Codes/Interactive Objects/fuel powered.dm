@@ -10,9 +10,9 @@ obj/Item
 obj/Built
 	var takes_fuel
 	var fuel_life
-	var fuel_with_tongs = true
+	var fuel_with_tongs = TRUE
 	firepit
-		fuel_with_tongs = false
+		fuel_with_tongs = FALSE
 		fuel_time(o)
 			. = ..()
 			if(.) return . + 100
@@ -58,7 +58,7 @@ obj/Built
 		if(istype(o, /obj/Item/Wood/Log)) return 600
 		if(istype(o, /obj/Item/Wood/Board)) return 400
 		if(istype(o, /obj/Item/Coal)) return 300
-		return false
+		return FALSE
 
 	proc/add_fuel(mob/humanoid/m, obj/Item/fuel)
 		if(!takes_fuel) return
@@ -78,4 +78,4 @@ obj/Built
 		m.lose_item(fuel)
 
 		burning()
-		return true
+		return TRUE

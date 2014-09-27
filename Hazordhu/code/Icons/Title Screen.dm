@@ -1,6 +1,5 @@
 obj/Title_Screen
 	layer = EFFECTS_LAYER
-
 	Hazordhu
 		icon = 'Title.dmi'
 		name = "Hazordhu II"
@@ -23,14 +22,13 @@ obj/Title_Screen
 		name = "Create New Character"
 		opacity = 0
 		screen_loc = "CENTER-2:16,CENTER-1:-10"
-
 		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
 		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
 		Click()
 			if(map_loading) return
 			var mob/player/p = usr
 			if(!p.Made && p.AtTitleScreen && p.client.start_char_create())
-				p.AtTitleScreen = false
+				p.AtTitleScreen = FALSE
 
 	Loadgame2
 		icon = 'TitleLoad.dmi'
@@ -38,19 +36,18 @@ obj/Title_Screen
 		name = "Load Existing Character"
 		invisibility = 5
 		screen_loc = "CENTER-2:16,CENTER-4"
-
 		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
 		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
 		Click()
 			if(map_loading) return
 			var mob/player/p = usr
 			if(!p.Made && p.AtTitleScreen && p.Load())
-				p.AtTitleScreen = false
+				p.AtTitleScreen = FALSE
 
 mob/title
 	invisibility = 101
 	SET_STEP_SIZE(2)
-	density = false
+	density = FALSE
 
 	var clients[0]
 	proc/start_wandering(client/c)

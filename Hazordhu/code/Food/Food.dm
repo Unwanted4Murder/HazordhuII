@@ -20,7 +20,7 @@ obj
 
 					var can_eat_raw
 					if(m.Race == "Orc")
-						can_eat_raw = true
+						can_eat_raw = TRUE
 
 					if(!can_eat_raw && F.cooked <= 5)
 						m.aux_output("You eat the [src], but it's still pretty raw and your stomach rejects it.")
@@ -35,7 +35,7 @@ obj
 			Meat
 				value = 5
 				icon='code/Food/Meat.dmi'
-				Flammable = true
+				Flammable = TRUE
 
 				Fish
 					icon = 'code/Food/Fish.dmi'
@@ -85,7 +85,7 @@ obj
 					icon = 'code/Farming/Farming.dmi'
 					icon_state = "Murshum"
 					Hunger = 20
-					Flammable = true
+					Flammable = TRUE
 					New()
 						..()
 						if(prob(50))
@@ -104,7 +104,7 @@ obj
 							if(nest.egg)
 								usr.aux_output("There is already an egg in that nest.")
 								return
-							nest.egg = (baby || true)
+							nest.egg = (baby || TRUE)
 							nest.icon_state = icon_state
 							usr.lose_item(src)
 					..()
@@ -182,29 +182,29 @@ obj
 		Fur
 			icon = 'code/Food/Meat.dmi'
 			icon_state = "Fur"
-			Flammable = true
+			Flammable = TRUE
 			value = 4
 		Bone
 			icon = 'code/Hunting/bonez.dmi'
-			Flammable = true
+			Flammable = TRUE
 			value = 4
 		Grawl_Fur
 			icon='code/Food/Meat.dmi'
 			icon_state = "Grawl Fur"
-			Flammable = true
+			Flammable = TRUE
 			value = 4
 			name = "Grawl Fur"
 		North_Grawl_Fur
 			icon = 'code/Food/Meat.dmi'
 			icon_state = "NGrawl Fur"
-			Flammable = true
+			Flammable = TRUE
 			value = 4
 			name = "North Grawl Fur"
 
 		Feather
 			value = 2
 			icon = 'code/Food/Feather.dmi'
-			Flammable = true
+			Flammable = TRUE
 			use(mob/player/m)
 				if(m.has_knife())
 					m.used_tool()
@@ -216,12 +216,12 @@ obj
 			value = 7
 			icon = 'code/Food/Meat.dmi'
 			icon_state = "Parchment"
-			Flammable = true
+			Flammable = TRUE
 
 		Book
 			value = 7
 			icon = 'code/Hunting/book.dmi'
-			Flammable = true
+			Flammable = TRUE
 
 		Leather
 			value = 7

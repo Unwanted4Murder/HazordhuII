@@ -8,12 +8,14 @@ var Players[0]
 //	a list containing online admins.
 var AdminsOnline[0]
 
+proc/is_admin(mob/player/p) return istype(p) && (p.key in Admins)
+
 world
 	mob = /mob/player
 
 mob/player
 	var
-		tmp/AtTitleScreen = false
+		tmp/AtTitleScreen = FALSE
 
 		//	the changelog is only shown if there's changes you haven't seen yet
 		last_version_seen
@@ -27,18 +29,20 @@ mob/player
 mob/player
 	Login()
 		..()
+
 		get_client_info(client)
-	//	winset(src, null, "reset=true")
+		winset(src, null, "reset=true")
+		winset(src, DMF_WINDOW, "is-maximized=true")
 
 		client.focus = src
 
 		cid = client.computer_id
 
-		if(key == world.host)
-			Admins |= ckey
-
-		if(IsAdmin())
-			ApplyAdmin()
+		if(Admins.Find(key) || NewGods.Find(key))
+			verbs += typesof(/mob/Admin/verb)
+			AdminsOnline.Add(src)
+			isAdmin = TRUE
+			client.control_freak = FALSE
 
 		set_loc()
 
@@ -53,10 +57,12 @@ mob/player
 		for(var/client/C)
 			if(C == client) continue
 			if(C.mob && C.mob.isAdmin) continue
-			if(C.computer_id == client.computer_id)
-				spawn(-1) s_alert("Only one user can be logged in from your computer at a time.", "Invalid Login", "OK")
-				del src
-				return
+			if(key in Admins) continue
+			else
+				if(C.computer_id == client.computer_id)
+					spawn(-1) s_alert("Only one user can be logged in from your computer at a time.", "Invalid Login", "OK")
+					del src
+					return
 	#endif
 
 		client.screen += newlist(	/obj/Title_Screen/Hazordhu,
@@ -71,29 +77,38 @@ mob/player
 	#endif
 
 		icon = null
-		Locked = true
+		Locked = TRUE
 		Players |= src
 
-		AtTitleScreen = true
+		AtTitleScreen = TRUE
 
+		#if !THIN_SKIN
+		sleep 10
 		set_title_screen()
+		#endif
+
+		move_loop.add(client)
+
 		var title_list[0]
 		for(var/mob/title/m) title_list.Add(m)
 		var mob/title/title = pick(title_list)
 		title.start_wandering(client)
 
-		winset(src, "map", "on-size='update-view-size'")
+		winset(src, null, "command=\".configure graphics-hwmode off\n.configure graphics-hwmode on\"")
 
 		while(AtTitleScreen || client.char_creator) sleep 1
+
+		#if !THIN_SKIN
 		set_game_screen()
+		#endif
 
 		title.stop_wandering(client)
 		for(var/obj/Title_Screen/ts in client.screen)
 			client.screen -= ts
 
-		see_invisible = false
-		Locked = false
-		Made = true
+		see_invisible = FALSE
+		Locked = FALSE
+		Made = TRUE
 
 		if(!DevelopmentServer)
 			if(!(key in TOS_List))
@@ -109,7 +124,7 @@ mob/player
 			Hood_Concealed = conc
 
 		else
-			KO = false
+			KO = FALSE
 			KO()
 
 		if(!GodMode)
@@ -145,7 +160,7 @@ mob/player
 				break
 
 		if(drunk_loop)
-			drunk_loop = false
+			drunk_loop = FALSE
 			drunk_loop()
 
 		if(!charID) charID = string()
@@ -170,18 +185,21 @@ mob/player
 		if(!ghost_logged) world << "<i>[key] has logged in.</i>"
 
 	PostLogin()
+		set waitfor = FALSE
 		..()
-		spawn(1)
-			if(last_version_seen != BUILD)
-				last_version_seen = BUILD
-				view_login_message()
+		sleep 1
 
-			spawn
-				season_update()
-				season_update()
+		winset(src, "map", "on-size=update-view-size")
 
-			spawn typing_check()
+		if(last_version_seen != BUILD)
+			last_version_seen = BUILD
+			view_login_message()
 
+		season_update()
+		season_update()
+#if !THIN_SKIN
+		typing_check()
+#endif
 	Logout()
 		PreLogout()
 

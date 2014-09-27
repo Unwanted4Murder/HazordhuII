@@ -1,5 +1,5 @@
 mob/NPC
-	saveable = true
+	saveable = TRUE
 
 	var
 		mom

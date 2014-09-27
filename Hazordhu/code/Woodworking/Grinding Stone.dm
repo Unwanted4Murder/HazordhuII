@@ -1,6 +1,6 @@
 
 obj/Built/Water_Wheel
-	var powered = false
+	var powered = FALSE
 	proc/is_powered()
 		var turf/Environment/Water/water = loc
 		powered = is_water(water) && !water.is_frozen() && water.is_flowing() && (dir & HORI && water.dir & VERT || dir & VERT && water.dir & HORI)
@@ -27,29 +27,32 @@ obj/Built/Water_Wheel
 		..()
 
 	season_update()
+		set waitfor = FALSE
 		..()
-		spawn if(is_powered())
+		if(is_powered())
 			for(var/obj/Built/Grinding_Stone/g in cardinals(src))
 				g.power_check()
 
 obj/Built/Grinding_Stone
-	var spinning = false
-	var powered = false
+	var spinning = FALSE
+	var powered = FALSE
 
 	New()
 		..()
 		power_check()
 
 	season_update()
+		set waitfor = FALSE
 		..()
-		spawn power_check()
+		sleep
+		power_check()
 
 	proc/power_check(exclude)
-		powered = false
+		powered = FALSE
 		for(var/obj/Built/Water_Wheel/wheel in cardinals(src))
 			if(wheel == exclude) continue
 			if(wheel.is_powered())
-				powered = true
+				powered = TRUE
 				game_loop.add(src)
 		return powered
 
@@ -58,7 +61,7 @@ obj/Built/Grinding_Stone
 	proc/spin()
 		spinning = 300
 		game_loop.add(src)
-		return true
+		return TRUE
 
 	proc/tick()
 		if(powered)
@@ -70,7 +73,7 @@ obj/Built/Grinding_Stone
 
 		else
 			icon_state = "stone"
-			spinning = false
+			spinning = FALSE
 			game_loop.remove(src)
 
 obj/Grinding
@@ -99,21 +102,26 @@ obj/Grinding
 					m.aux_output("You cannot sharpen that weapon any further.")
 					return
 
-				//	play sharpening sound
-				spawn for(var/n in 1 to 5)
-					var sound/s = sound('code/Sounds/sharpening.wav')
-					s.frequency = 1 + rand(-10, 10) / 100
-					for(var/mob/h in hearers(src)) if(h.client)
-						s.volume = 100 - get_dist(src, h) * 10
-						s.status = SOUND_UPDATE
-						h.hear_sound(s)
-					sleep(SECOND)
+				play_sharpening_sound()
 
 				m.emote("begins sharpening [m.gender == MALE ? "his" : "her"] [weapon]")
 				m._do_work(30)
 				m.emote("finishes sharpening [m.gender == MALE ? "his" : "her"] [weapon]")
 
 				weapon.Sharpness ++
+
+		proc/play_sharpening_sound()
+			set waitfor = FALSE
+
+			//	play sharpening sound
+			for(var/n in 1 to 5)
+				var sound/s = sound('code/Sounds/sharpening.wav')
+				s.frequency = 1 + rand(-10, 10) / 100
+				for(var/mob/h in hearers(src)) if(h.client)
+					s.volume = 100 - get_dist(src, h) * 10
+					s.status = SOUND_UPDATE
+					h.hear_sound(s)
+				sleep SECOND
 
 	Flour
 		icon		=	'code/Masonry/Bowl.dmi'

@@ -55,13 +55,15 @@ turf/Environment
 			for(var/n in 1 to rand(10, 35))
 				var path = pick(potential)
 				var obj/Item/Farming/plant/plant = new path (src)
-				plant.wild = true
-				plant.no_save = true
+				plant.wild = TRUE
+				plant.no_save = TRUE
 
 				//	randomize the plant's position within the tile because why not
+				#if PIXEL_MOVEMENT
 				var angle = randn(0, 360)
 				var dist = 0.25 * n * n
 				plant.Move(src, 0, sin(angle) * dist, cos(angle) * dist)
+				#endif
 
 				var turf/Environment/t = plant.loc
 				if(!istype(t) || !t.wild_plant_chance() || (locate(/obj/Built) in t))
@@ -75,11 +77,11 @@ turf/Environment
 obj
 	Item
 		Farming
-			Flammable = true
+			Flammable = TRUE
 			icon = 'Farming.dmi'
 
 			plant
-				Stackable = false
+				Stackable = FALSE
 				layer = TURF_LAYER + 1.1
 
 				/savedatum
@@ -102,15 +104,15 @@ obj
 				var stage = 1
 				var tmp/stages = 3			//	planted, growing, grown
 
-				var tmp/has_seed = true
-				var tmp/has_crop = false
+				var tmp/has_seed = TRUE
+				var tmp/has_crop = FALSE
 
-				var tmp/grow_underground = false
+				var tmp/grow_underground = FALSE
 
-				var wild = false
+				var wild = FALSE
 
 				New()
-					for(var/obj/Item/Farming/plant/plant in obounds()) del plant
+					if(loc) for(var/obj/Item/Farming/plant/plant in obounds()) del plant
 					..()
 					update_appearance()
 					farming_loop.add(src)
@@ -136,12 +138,12 @@ obj
 				Shurgercane
 
 				Yeese
-					has_seed = false
-					grow_underground = true
+					has_seed = FALSE
+					grow_underground = TRUE
 
 				Murshum
-					has_seed = false
-					grow_underground = true
+					has_seed = FALSE
+					grow_underground = TRUE
 
 				Get()
 
@@ -160,7 +162,7 @@ obj
 					stage = clamp(1 + round(age / growth_freq), 1, stages)
 					icon_state = "[stage][name]"
 					if(stage == stages)
-						has_crop = true
+						has_crop = TRUE
 
 				proc/die() del src
 

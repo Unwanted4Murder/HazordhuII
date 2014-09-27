@@ -1,7 +1,7 @@
 builder/hunting
 	main_tool = /obj/Item/Tools/NeedleThread
 	skill = HUNTING
-	allowed_in_tutorial = true
+	allowed_in_tutorial = TRUE
 
 	book
 		name = "Book"
@@ -541,4 +541,4 @@ builder/hunting
 					PHLUF	=	2)
 		built = /obj/Item/Ball
 
-		density = true
+		density = TRUE

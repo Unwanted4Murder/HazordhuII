@@ -9,6 +9,10 @@ client
 
 mob
 	proc/s_alert()
+	proc/s_alert_bg()
+		set waitfor = FALSE
+		return s_alert(arglist(args))
+
 	proc/medalMsg()
 	proc/map_focus()
 
@@ -17,7 +21,8 @@ mob/player
 		winset(src, DMF_MAP, "focus=true")
 
 	medalMsg(medal)
-		spawn if(!world.GetMedal(medal, src))
+		set waitfor = FALSE
+		if(!world.GetMedal(medal, src))
 			src << "<font color = [rgb(0,0,255)]>You've gained the '[medal]' medal!"
 			world.SetMedal(medal,src)
 
@@ -45,9 +50,9 @@ mob/player
 		if(!ooc_listen)
 			winset(src, "ooc_button", "is-disabled=false")
 			world << "[key] has joined the OOC Channel."
-			ooc_listen = true
+			ooc_listen = TRUE
 
 		else
 			winset(src, "ooc_button", "is-disabled=true")
 			world << "[key] has left the OOC Channel."
-			ooc_listen = false
+			ooc_listen = FALSE

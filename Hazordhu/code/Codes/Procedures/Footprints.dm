@@ -5,6 +5,7 @@ turf
 	proc/gets_footprint()
 	Environment
 		Grass/gets_footprint()		return (get_season() == WINTER && !(locate(/obj/Built) in src))
+		Grass/jungle/gets_footprint() return FALSE
 		Riverbank/gets_footprint()	return (get_season() == WINTER && !(locate(/obj/Built) in src))
 		Snowy_Riverbank/gets_footprint()		return !(locate(/obj/Built) in src)
 		Sand/gets_footprint()		return !(locate(/obj/Built) in src)
@@ -32,12 +33,12 @@ mob
 	NPC/Baby/footprint_state = "Baby"
 
 	humanoid/gives_footprint()
-		if(GodMode) return false
-		if(mount) return false
-		if(boat) return false
-		return true
+		if(GodMode) return FALSE
+		if(mount) return FALSE
+		if(boat) return FALSE
+		return TRUE
 
-	title/gives_footprint() return false
+	title/gives_footprint() return FALSE
 
 	Move()
 		. = ..()
@@ -45,7 +46,7 @@ mob
 
 obj
 	Built/Storage/Cart
-		gives_footprint() return true
+		gives_footprint() return TRUE
 		footprint_state = "Cart"
 
 
@@ -62,9 +63,9 @@ obj/footprint
 			set_loc()
 
 	var tmp/printer
-	var stale = false
+	var stale = FALSE
 	Uncrossed(atom/movable/o)
 		if(o == printer)
-			stale = true
+			stale = TRUE
 			SET_BOUNDS(8, 8, 16, 16)
 		..()

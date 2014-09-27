@@ -2,14 +2,14 @@ obj
 	Flag
 		parent_type = /obj/Built
 		icon = 'code/Flags/Flags.dmi'
-		density = true
+		density = TRUE
 
 		SET_TBOUNDS("15,11 to 17,13")
 		pixel_y = 10
 		layer = OBJ_LAYER + 2
-		attackable = true
+		attackable = TRUE
 
-		var capturable = true
+		var capturable = TRUE
 		var access[0]
 
 		New()
@@ -20,22 +20,22 @@ obj
 
 		Human
 			icon_state = "Human"
-			attackable = false
+			attackable = FALSE
 			Settal
 				icon_state = "Settal"
-				can_color = false
+				can_color = FALSE
 
 		Orc
 			icon_state = "Orc"
-			attackable = false
+			attackable = FALSE
 
 		Neutral
 			icon_state = "Neutral"
 			Settal
 				icon_state = "Settal"
-				can_color = false
+				can_color = FALSE
 
 		Bandit_Camp
 			icon_state = "Undead"
-			capturable = false
-			can_color = false
+			capturable = FALSE
+			can_color = FALSE

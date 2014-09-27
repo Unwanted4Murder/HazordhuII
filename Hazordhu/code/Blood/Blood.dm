@@ -3,11 +3,13 @@ obj
 		icon = 'code/Blood/Blood.dmi'
 		icon_state = "1"
 		New()
+			set waitfor = FALSE
 			..()
 			icon_state = "[rand(1, 4)]"
 			pixel_x = rand(-4, 4)
 			pixel_y = rand(-4, 4)
-			spawn(600) set_loc()
+			sleep 600
+			set_loc()
 
 		Zombie
 			New()

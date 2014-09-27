@@ -4,7 +4,7 @@ area
 		build_lock
 
 	no_build
-		build_lock = true
+		build_lock = TRUE
 
 region
 	parent_type = /area

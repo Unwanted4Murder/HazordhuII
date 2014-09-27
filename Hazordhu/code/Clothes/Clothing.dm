@@ -7,8 +7,8 @@ obj
 				Defense
 
 			value = 30
-			Stackable = false
-			Flammable = true
+			Stackable = FALSE
+			Flammable = TRUE
 
 			Pants
 				clothtype="legs"
@@ -152,7 +152,7 @@ obj
 					can_color = 1
 					heat_added = 1
 					icon='code/Clothes/Bandana.dmi'
-					covers_hair = false
+					covers_hair = FALSE
 
 			Accessory
 				clothtype="misc"

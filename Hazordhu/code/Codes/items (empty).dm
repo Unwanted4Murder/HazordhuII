@@ -14,7 +14,7 @@ obj/Item
 	var complete_delete
 	var Stackable = 1
 	var fingerprints[]
-	var can_get = true
+	var can_get = TRUE
 
 	proc
 		store_item(mob/m, amount)

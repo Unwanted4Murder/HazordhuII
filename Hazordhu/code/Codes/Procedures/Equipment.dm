@@ -8,7 +8,7 @@ obj/Item
 		two_handed
 
 		//	this only affects items in the Head or Helmet slot
-		covers_hair = true
+		covers_hair = TRUE
 
 		tmp
 			Overlay
@@ -34,30 +34,30 @@ obj/Item
 	Clothing
 		var can_conceal
 		Hood
-			Hood/can_conceal = true
-			Leather_Hood/can_conceal = true
-			Flargl_Leather_Hood/can_conceal = true
-			Grawl_Hood/can_conceal = true
-			North_Grawl_Hood/can_conceal = true
-			Turban/can_conceal = true
+			Hood/can_conceal = TRUE
+			Leather_Hood/can_conceal = TRUE
+			Flargl_Leather_Hood/can_conceal = TRUE
+			Grawl_Hood/can_conceal = TRUE
+			North_Grawl_Hood/can_conceal = TRUE
+			Turban/can_conceal = TRUE
 
 		Helmet
-			Bandana/can_conceal = true
-			Grawl_Mask/can_conceal = true
-			Leather_Mask/can_conceal = true
-			Mask/can_conceal = true
-			North_Grawl_Mask/can_conceal = true
+			Bandana/can_conceal = TRUE
+			Grawl_Mask/can_conceal = TRUE
+			Leather_Mask/can_conceal = TRUE
+			Mask/can_conceal = TRUE
+			North_Grawl_Mask/can_conceal = TRUE
 
 		equipped_by(mob/m)
 			if(istype(m))
 				if(is_player(m))
 					var mob/player/p = m
 					spawn p.Hood_Concealed = (can_conceal && p.isSubscriber && "Yes" == p.s_alert("Do you want to be concealed by your hood?", "Hood Concealment", "Yes", "No"))
-				else m.Hood_Concealed = true
+				else m.Hood_Concealed = TRUE
 			..()
 
 		unequipped_by(mob/m)
-			if(can_conceal) m.Hood_Concealed = false
+			if(can_conceal) m.Hood_Concealed = FALSE
 			..()
 
 mob/player
@@ -78,9 +78,6 @@ mob
 	Remhair()
 		..()
 */
-	verb/rotate_test(angle as num)
-		icon_turn(angle)
-
 	//	Some layers are complicated when looking north
 	move_tick()
 		var pre_dir = dir
@@ -144,23 +141,23 @@ mob
 		can_equip(obj/Item/i)
 			// Two-handed weapons will try to unequip anything in the off-hand
 			if(i.two_handed && (!equipment["off"] || unequip(equipment["off"])))
-				return true
+				return TRUE
 
 			if(get_equip_type(i) == "off")
 				var obj/Item/main = equipment["main"]
 				if(main && main.two_handed)
 					if(unequip(main))
-						return true
-					else return false
-			return true
+						return TRUE
+					else return FALSE
+			return TRUE
 
 		//	where the item is currently equipped to, if equipped
 		is_equipped(obj/Item/i) if(i)
 			if(ispath(i))
 				i = locate(i) in Equipment()
-				if(!i) return false
+				if(!i) return FALSE
 			for(var/slot in equipment) if(i == equipment[slot]) return slot
-			return false
+			return FALSE
 
 		//	return the item if it's equipped
 		get_equipped(obj/Item/i) if(i)
@@ -173,6 +170,7 @@ mob
 			transform = matrix(angle, MATRIX_ROTATE)
 			rotated_angle = angle
 			reset_flat_icon()
+
 /*
 			if(isnull(angle))
 				angle = rotated_angle
@@ -211,16 +209,17 @@ mob
 
 				else overlays += HairObj
 */
+
 		hair_showing()
-			if(!Hair) return false
+			if(!Hair) return FALSE
 
 			var obj/Item/head = equipment["head"]
-			if(head && head.covers_hair) return false
+			if(head && head.covers_hair) return FALSE
 
 			var obj/Item/helmet = equipment["helmet"]
-			if(helmet && helmet.covers_hair) return false
+			if(helmet && helmet.covers_hair) return FALSE
 
-			return true
+			return TRUE
 
 		icon_reset()
 			overlays.Cut()
@@ -350,7 +349,10 @@ var const
 
 obj/Item
 	var equip_slot
-	Tools/equip_slot = EQUIP_MAIN
+	Tools
+		equip_slot = EQUIP_MAIN
+		Torch/equip_slot = EQUIP_OFF
+
 	Weapons
 		equip_slot = EQUIP_MAIN
 		Buckler/equip_slot = EQUIP_OFF

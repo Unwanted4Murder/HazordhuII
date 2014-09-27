@@ -8,7 +8,8 @@ mob/Animal
 
 mob/mortal
 	proc/Bleed()
-		spawn if(!GodMode && !Bleeding)
+		set waitfor = FALSE
+		if(!GodMode && !Bleeding)
 			for(var/bleeding in 1 to rand(5, 10))
 				if(prob(25)) continue
 

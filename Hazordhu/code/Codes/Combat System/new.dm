@@ -7,7 +7,7 @@ mob
 		if(!msg) return
 
 		if(p)
-			p.emoting = false
+			p.emoting = FALSE
 			p.status_overlay_remove("emote")
 			p.status_overlay("emote", 10)
 
@@ -29,7 +29,7 @@ mob
 			world.log << "([current_time()])(RP)<b>[GodMode? Ael : name]</b>\n[html_encode(msg)]"
 			saylog += "([current_time()])(RP)<b>[GodMode? Ael : name]</b><br>[html_encode(msg)]<br>"
 
-			emoting = false
+			emoting = FALSE
 			status_overlay_remove("emote")
 			status_overlay("emote", 10)
 			var textIcon = textIcon()

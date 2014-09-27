@@ -1,3 +1,4 @@
+#if !THIN_SKIN
 mob/player
 	var tmp/hud/label/info_bar
 
@@ -6,7 +7,7 @@ mob/player
 		info_bar = new (client)
 		info_bar.screen_loc = "WEST,NORTH-1"
 		info_bar.maptext_width = client.view_size[1] * 32
-
+#endif
 atom
 	MouseEntered()
 		usr.update_statusbar(name)

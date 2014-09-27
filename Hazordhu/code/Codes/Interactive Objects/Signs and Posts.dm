@@ -23,8 +23,8 @@ obj/Built
 		proc/Use(mob/humanoid/m)
 			if(!m.mount) return
 			m.emote("ties [m.mount] to the post")
-			m.mount.posted = true
-			m.mount.Locked = true
+			m.mount.posted = TRUE
+			m.mount.Locked = TRUE
 			m.mount.dismount(m)
 
 obj/Built/Signs
@@ -56,7 +56,7 @@ obj/Built/Signs
 		if(desc)
 			m.aux_output("The sign says: <i>[desc]</i>")
 		else m.aux_output("The sign is blank.")
-		return true
+		return TRUE
 
 	interact(mob/m) read(m)
 	interact_right(mob/m) write(m)

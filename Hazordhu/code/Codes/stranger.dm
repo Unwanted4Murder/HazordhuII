@@ -21,10 +21,11 @@ mob/player
 			char_desc_loop.remove(src)
 			winshow(src, CHAR_WINDOW, 0)
 
+		var name = winget(src, CHAR_NAME, "text")
+
 		if(!viewing_char)
 			return
 
-		var name = winget(src, CHAR_NAME, "text")
 		if(name != nameShown(viewing_char))
 			memNames[viewing_char.charID] = name || viewing_char.stranger_name()
 
@@ -42,5 +43,5 @@ mob/player
 		..()
 
 	verb/close_char_window()
-		set hidden = true
+		set hidden = TRUE
 		viewing_char = null

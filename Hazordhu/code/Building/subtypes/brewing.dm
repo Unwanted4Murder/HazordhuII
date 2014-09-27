@@ -6,12 +6,12 @@ builder/brewing
 		if(!m.isSubscriber)
 			m.aux_output("Only subscribers can brew.")
 			return
-		return true
+		return TRUE
 
 	valid_loc(turf/t)
 		for(var/obj/Built/Barrel/b in t)
 			if(b.icon_state == "water")
-				return true
+				return TRUE
 
 	spawn_product(mob/m, turf/t)
 		for(var/obj/Built/Barrel/b in t)

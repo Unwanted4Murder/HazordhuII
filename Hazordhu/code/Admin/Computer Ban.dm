@@ -50,8 +50,8 @@ mob
 
 	proc
 		CheckBanned()
-			if(Admins.Find(key)) return false
-			if(banned_ids.Find("[client.computer_id]")) return true
+			if(Admins.Find(key)) return FALSE
+			if(banned_ids.Find("[client.computer_id]")) return TRUE
 
 		AssociateKey()
 			var cid = client.computer_id

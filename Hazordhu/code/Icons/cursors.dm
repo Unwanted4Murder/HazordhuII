@@ -23,7 +23,6 @@ atom
 
 	MouseEntered()
 		if(cursor)
-			ASSERT(cursor in cursors)
 			mouse_over_pointer = cursors[cursor]
 		..()
 

@@ -54,7 +54,7 @@ obj/Item
 
 
 	Book
-		Stackable = false
+		Stackable = FALSE
 
 		var pages[0]
 		var tmp/current_page = 0
@@ -86,15 +86,15 @@ mob/player
 
 	verb
 		read_prev()
-			set hidden = true
+			set hidden = TRUE
 			if(reading) read_page(reading.current_page - 1)
 
 		read_next()
-			set hidden = true
+			set hidden = TRUE
 			if(reading) read_page(reading.current_page + 1)
 
 		remove_page()
-			set hidden = true
+			set hidden = TRUE
 			if(reading && reading.current_page > 0)
 				var obj/Item/Parchment/p = reading.pages[reading.current_page]
 				p.Move(src)
@@ -102,7 +102,7 @@ mob/player
 				read_page(reading.current_page)
 
 		_close_book()
-			set name = "close book", hidden = true
+			set name = "close book", hidden = TRUE
 			close_book()
 
 	proc

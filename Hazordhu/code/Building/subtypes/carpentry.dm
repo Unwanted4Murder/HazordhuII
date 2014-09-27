@@ -2,7 +2,7 @@ builder/carpentry
 	main_tool = /obj/Item/Tools/Hammer
 	skill = CARPENTRY
 	cursor = "hammer"
-	density = true
+	density = TRUE
 
 	log_wall
 		name = "Log Wall"
@@ -88,7 +88,7 @@ builder/carpentry
 					BOARD	=	3)
 		built = /obj/Built/Floor
 
-		density = false
+		density = FALSE
 
 	fence
 		name = "Fence"
@@ -171,7 +171,7 @@ builder/carpentry
 		built = /obj/Built/Bridge
 		valid_loc(turf/t) return is_water(t)
 
-		density = false
+		density = FALSE
 
 	stocks
 		name = "Stocks"
@@ -231,7 +231,7 @@ builder/carpentry
 	table
 		name = "Table"
 		icon = 'code/Woodworking/Table.dmi'
-		pixel_x = -16
+		pixel_y = -8
 
 		desc = "For all your placing needs<br />\
 				3 Logs<br />\
@@ -260,7 +260,7 @@ builder/carpentry
 					BOARD	=	2)
 		built = /obj/Built/Stool
 
-		density = false
+		density = FALSE
 
 	chair
 		name = "Chair"
@@ -278,7 +278,7 @@ builder/carpentry
 					BOARD	=	3)
 		built = /obj/Built/Chair
 
-		density = false
+		density = FALSE
 
 	throne
 		name = "Throne"
@@ -530,7 +530,7 @@ builder/carpentry
 					NAIL	=	2)
 		built = /obj/Item/Weapons/Wooden_Shield
 
-		density = false
+		density = FALSE
 
 	wooden_kite
 		name = "Wooden Kite"
@@ -546,7 +546,7 @@ builder/carpentry
 					NAIL	=	3)
 		built = /obj/Item/Weapons/Wooden_Kite
 
-		density = false
+		density = FALSE
 
 	combat_dummy
 		name = "Combat Dummy"

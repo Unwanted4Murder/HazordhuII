@@ -4,7 +4,6 @@ atom
 		var craftables[] = craftables()
 		if(craftables)
 			if(!p.crafting_tooltip)
-				p.crafting_tooltip = true
 				spawn
 					if("No" == alert(p, "This is your first time crafting! Would you like some help?", "Crafting", "Yes", "No"))
 						alert(p, "Fine, then.", "Crafting")
@@ -13,10 +12,11 @@ atom
 							Drop the thing onto one of those grids to start making it. \n\
 							Of course, you need to make sure you have the right items first!",
 							"Crafting", "Got it")
+				p.crafting_tooltip = TRUE
 			p.craftables_source = src
 			p.fill_crafting_grid(craftables)
 			p.crafting_button.expand()
-			return true
+			return TRUE
 
 mob/player
 	var tmp/atom/craftables_source
@@ -31,10 +31,12 @@ mob/player
 obj
 	Item/Tools
 		Knife/craftables() return carving
+		Hatchet/craftables() return hatchet_list
 		Hammer/craftables() return carpentry + hammering
 		Shovel/craftables() return shoveling + farming
 		NeedleThread/craftables() return tailoring + hunting
 		Trowel/craftables() return masonry
+		Chisel/craftables() return chiseling
 
 		use(mob/player/p)
 			view_craftables(p)

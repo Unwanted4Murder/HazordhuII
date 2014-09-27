@@ -37,6 +37,12 @@ proc
 		if(292.5 to 337.5)	return NORTHWEST
 		if(337.5 to 360)	return NORTH
 
+	angle2cardinal(angle) switch(clamp_angle(angle))
+		if(315 to 360, 0 to 45) return NORTH
+		if(135 to 225) return SOUTH
+		if(45 to 135) return EAST
+		if(225 to 315) return WEST
+
 	// converts a BYOND-direction to a bearing
 	dir2angle(dir) switch(dir)
 		if(NORTH)		return 0

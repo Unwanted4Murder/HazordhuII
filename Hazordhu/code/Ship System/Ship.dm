@@ -54,18 +54,18 @@ obj/Built
 				passengers[0]
 				Locked
 
-			need_paddles = true
+			need_paddles = TRUE
 			max_passengers = 2
 
 			speed = 4
 
 		layer = OBJ_LAYER
 		SET_STEP_SIZE(2)
-		density = true
+		density = TRUE
 
 		map_loaded()
 			..()
-			density = true
+			density = TRUE
 			if(icon_state == "damage")
 				sink(, "The boat is sinking! Repair it quickly!")
 
@@ -86,12 +86,12 @@ obj/Built
 			return m._fix_boat(src) || m._exit_boat(src) || m._enter_boat(src)
 
 		proc/can_ride(o)
-			if(is_mortal(o)) return true
-			if(istype(o, /obj/Built/Storage/Cart)) return true
-			if(istype(o, /obj/Built/Storage/Chest)) return true
+			if(is_mortal(o)) return TRUE
+			if(istype(o, /obj/Built/Storage/Cart)) return TRUE
+			if(istype(o, /obj/Built/Storage/Chest)) return TRUE
 
 		proc/can_drive(o)
-			if(is_player(o)) return true
+			if(is_player(o)) return TRUE
 
 		proc/moved()
 			update_passengers()
@@ -100,41 +100,59 @@ obj/Built
 			if(passengers.len < 1) return
 			var mob/a = passengers[1]
 			if(a)
-				a.set_loc(loc, step_x, step_y)
+				var dx, dy
 				switch(dir)
 					if(NORTH)
-						a.step_y += 24
+						dy += 24
 					if(SOUTH)
-						a.step_y -= 4
+						dy -= 4
 					if(EAST, NORTHEAST, SOUTHEAST)
-						a.step_x += 13
-						a.step_y += 10
+						dx += 13
+						dy += 10
 					if(WEST, NORTHWEST, SOUTHWEST)
-						a.step_x -= 13
-						a.step_y += 10
+						dx -= 13
+						dy += 10
+				#if PIXEL_MOVEMENT
+				a.set_loc(loc, step_x, step_y)
+				a.step_x += dx
+				a.step_y += dy
+				#else
+				a.loc = loc
+				a.pixel_x = dx
+				a.pixel_y = dy
+				#endif
 				a.update_layer()
 
 			if(passengers.len < 2) return
 			var mob/b = passengers[2]
 			if(b)
-				b.set_loc(loc, step_x, step_y)
+				var dx, dy
 				switch(dir)
 					if(NORTH)
-						b.step_y += 14
+						dy += 14
 					if(SOUTH)
-						b.step_y += 8
+						dy += 8
 					if(EAST, NORTHEAST, SOUTHEAST)
-						b.step_x -= 4
-						b.step_y += 10
+						dx -= 4
+						dy += 10
 					if(WEST, NORTHWEST, SOUTHWEST)
-						b.step_x += 4
-						b.step_y += 10
+						dx += 4
+						dy += 10
+				#if PIXEL_MOVEMENT
+				b.set_loc(loc, step_x, step_y)
+				b.step_x += dx
+				b.step_y += dy
+				#else
+				b.loc = loc
+				b.pixel_x = dx
+				b.pixel_y = dy
+				#endif
 				b.update_layer()
 
 		interact_right(mob/m)
 			return repair(m)
 
-		var damaged = false
+		var damaged = FALSE
 		proc/repair(mob/humanoid/m)
 			if(damaged && !(m in passengers))
 				var hammer = m.has_hammer()
@@ -149,7 +167,7 @@ obj/Built
 					m._do_work(30)
 					m.emote("finishes repairing the boat")
 					boat_sink_loop.remove(src)
-					return true
+					return TRUE
 
 		var tmp/leaking
 		proc/sink(atom/sinker, message)
@@ -162,11 +180,11 @@ obj/Built
 
 		proc/sink_tick_stop()
 			icon_state = ""
-			damaged = false
+			damaged = FALSE
 			leaking = 0
 
 		proc/sink_tick()
-			damaged = true
+			damaged = TRUE
 			icon_state = "damage"
 
 			if(!is_water(cloc()))
@@ -181,33 +199,33 @@ obj/Built
 
 		proc/on_land()
 			var turf/Environment/c = cloc()
-			if(!is_water(c)) return true
-			if(c.is_frozen()) return true
-			if(c.is_bridged()) return true
-			return false
+			if(!is_water(c)) return TRUE
+			if(c.is_frozen()) return TRUE
+			if(c.is_bridged()) return TRUE
+			return FALSE
 
 		proc/get_on(atom/movable/m) if(istype(m))
 			var mob/humanoid/h = is_humanoid(m) && m
 			if(h && h.mount)
 				if(!h.dismount_animal())
-					return false
+					return FALSE
 
 			var mob/Animal/a = is_animal(m) && m
 			if(a && a.rider)
 				if(!a.rider.dismount_animal())
-					return false
+					return FALSE
 
 			if(add_rider(m))
 				if(is_player(m) && damaged)
 					var mob/player/p = m
 					p.aux_output("The [src] is damaged! It will only last 15 seconds on the water.")
-				return true
+				return TRUE
 
 		proc/get_off(atom/movable/m) if(istype(m))
 			if(on_land())
 				if(remove_rider(m))
 					m.set_loc(cloc())
-					return true
+					return TRUE
 
 		proc/put_on(atom/movable/o) if(istype(o))
 			return get_on(o)
@@ -221,7 +239,7 @@ obj/Built
 					if(is_mortal(o))
 						var mob/mortal/m = o
 						m.die("drowning")
-				return true
+				return TRUE
 
 		proc/remove_rider(atom/movable/o) if(istype(o))
 			if(o.boat == src && (o in passengers))
@@ -235,7 +253,7 @@ obj/Built
 				if(is_humanoid(o))
 					var mob/humanoid/h = o
 					h.Gethair()
-				return true
+				return TRUE
 
 		proc/add_rider(atom/movable/o) if(istype(o))
 			if(!o.boat && !(o in passengers))
@@ -247,7 +265,7 @@ obj/Built
 				o.boat = src
 				passengers += o
 				update_passengers()
-				return true
+				return TRUE
 
 		proc/get_driver()
 			for(var/mob/humanoid/m in passengers)

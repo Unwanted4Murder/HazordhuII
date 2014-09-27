@@ -1,5 +1,5 @@
 mob
-	var tmp/force_feed = false
+	var tmp/force_feed = FALSE
 
 	proc/can_force_feed(mob/m) return m != src && ismob(m) && (m.KO || m.handcuffs()) && bounds_dist(src, m) <= 4
 
@@ -9,11 +9,11 @@ obj/Item/proc/force_feed(mob/victim, mob/feeder)
 	feeder << "You force feed [feeder.nameShown(victim)] [src]."
 	victim << "[victim.nameShown(feeder)] force feeds you [src]."
 
-	victim.force_feed = true
+	victim.force_feed = TRUE
 	Move(victim)	//	food needs to be inside the eater when trying to eat
 	use(victim)		//	initiate eating!
 	if(loc) Move(victim)
-	victim.force_feed = false
+	victim.force_feed = FALSE
 
 obj/Item/Food/MouseDrop(mob/m)
 	if(usr.can_force_feed(m)) force_feed(m, usr)

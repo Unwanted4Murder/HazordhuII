@@ -4,9 +4,9 @@ proc/cave_transport(mob/humanoid/mob, turf/cave, dir, new_z) spawn
 	var sx = 0, sy = 0
 	switch(turn(dir, 180))
 		if(NORTH)	sy = -mob.bound_y
-		if(SOUTH)	sy = tile_height - mob.bound_y - mob.bound_height
+		if(SOUTH)	sy = tile_height() - mob.bound_y - mob.bound_height
 		if(EAST)	sx = -mob.bound_x
-		if(WEST)	sx = tile_width  - mob.bound_x - mob.bound_width
+		if(WEST)	sx = tile_width()  - mob.bound_x - mob.bound_width
 	mob.set_loc(get_step(locate(cave.x, cave.y, new_z), dir), sx, sy)
 
 	if(is_humanoid(mob))

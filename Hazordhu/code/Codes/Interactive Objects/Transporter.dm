@@ -1,11 +1,11 @@
-var mod_values[]	=	list(
+var mod_values[] = list(
 		"Doitean"		=	ARROW_FIRE,
 		"Pleascadh"		=	ARROW_EXPLODE,
 		"Doigh"			=	ARROW_INFERNO,
 		"Piriteicniula"	=	ARROW_INFERNO | ARROW_EXPLODE
 )
 
-var magics[]		=	list(
+var magics[] = list(
 		"Nektorifisch",	//	Summon Zombie
 		"Xiorniarora",	//	Next season
 		"Akatuarats"	//	Spawn Tree
@@ -50,17 +50,34 @@ obj
 			density = 0
 			attackable = 0
 			var id
-			var buried = true
+			var buried = TRUE
+
+			#if NEW_RUNES
+			save_to(savedatum/s)
+				s.save_id = id
+
+			load_from(savedatum/s)
+				SetID(s.save_id)
+
+			proc/SetID(ID)
+				if(id == "[x]/[y]/[z]") id = null
+				id = runes.LinkCode(src, ID || id || runes.GetNewCode())
+
+			#endif
 
 			New()
 				..()
+				#if NEW_RUNES
+				SetID()
+				#else
 				id = "[x]/[y]/[z]"
+				#endif
 				tag = "transporter_[id]"
 
 				if(icon_state == "buried")
-					buried = true
+					buried = TRUE
 				else
-					buried = false
+					buried = FALSE
 					icon_state = "off"
 
 			DblClick()
@@ -71,9 +88,24 @@ obj
 						player.used_tool()
 						player.aux_output("You uncover a rune circle.")
 						icon_state = "off"
-						buried = false
+						buried = FALSE
 					else player.aux_output("You need a shovel equipped in your main hand to uncover that.")
+
+				#if !NEW_RUNES
 				else player.aux_output("You read the rune circle and discover the rune code to access it: [id]")
+				#endif
+
+			#if NEW_RUNES
+			MouseEntered()
+				..()
+				var mob/player/player = usr
+				player.ShowRuneSet(params2list(id))
+
+			MouseExited()
+				..()
+				var mob/player/player = usr
+				player.HideRuneSet()
+			#endif
 
 			proc
 				Activate(destination, mob/humanoid/m)
@@ -120,13 +152,36 @@ obj
 			var destination
 			var uses = 5
 
+			#if !NEW_RUNES
 			New()
 				..()
 				if(destination)
 					name = "Rune Stone ([destination])"
+			#endif
 
-			use_alt(mob/player/player) if(loc == player)
-				set_destination(player)
+			#if NEW_RUNES
+			Del()
+				if(istype(loc, /mob/player))
+					var mob/player/player = loc
+					if(player.rune_stone == src)
+						player.HideRuneStone()
+				..()
+
+			dropped_by(mob/player/Player)
+				if(src == Player.rune_stone)
+					Player.HideRuneStone()
+				..()
+			#endif
+
+			#if NEW_RUNES
+			use(mob/player/player)
+				if(loc == player)
+					set_destination(player)
+			#else
+			use_alt(mob/player/player)
+				if(loc == player)
+					set_destination(player)
+			#endif
 
 			proc/drain(mob/player/m)
 				if(!m.SubBens)
@@ -135,7 +190,12 @@ obj
 					if(uses <= 0)
 						crumble()
 
+			#if NEW_RUNES
+			proc/Activate(mob/player/m, RuneCode)
+				destination = RuneCode
+			#else
 			use(mob/m) if(loc == m)
+			#endif
 				if(!destination) return
 
 				if(destination in magics)
@@ -153,22 +213,29 @@ obj
 
 				var obj/Built/spawnstones/main/obelisk = locate() in orange(2, m)
 				if(obelisk)
-					var obj/Built/spawnstones/main/dest
+					var obj/Built/spawnstones/main/dest = locate("obelisk [destination]")
+					/*
 					for(dest)
 						if(dest.id == destination && dest != obelisk)
 							break
-					if(dest)
+					*/
+					if(dest && dest != obelisk)
 						if(obelisk.activate(dest))
 							drain(m)
 							return
 					else m.aux_output("The obelisk does not react to your rune stone. ")
 
-			proc/set_destination(mob/m)
+			proc/set_destination(mob/player/m)
+			#if NEW_RUNES
+				m.ToggleRuneStone(src)
+
+			#else
 				var new_dest = input(m, "Please input a new rune destination.", "Rune Stone") as null|text
 				if(new_dest == null) return
 				destination = new_dest
 				if(new_dest)
 					name = "Rune Stone ([destination])"
+			#endif
 
 			proc/crumble(mob/m)
 				m.aux_output("The rune stone crumbles to dust...")

@@ -4,10 +4,10 @@ mob
 	can_move() return !footcuffs() && ..()
 
 	var binders[0]
-	proc/muzzle()    return locate(/obj/Item/binders/Muzzle) in binders
-	proc/blindfold() return locate(/obj/Item/binders/Blindfold) in binders
-	proc/handcuffs() return locate(/obj/Item/binders/Handcuffs) in binders
-	proc/footcuffs() return locate(/obj/Item/binders/Footcuffs) in binders
+	proc/muzzle()    return binders.len && (locate(/obj/Item/binders/Muzzle) in binders)
+	proc/blindfold() return binders.len && (locate(/obj/Item/binders/Blindfold) in binders)
+	proc/handcuffs() return binders.len && (locate(/obj/Item/binders/Handcuffs) in binders)
+	proc/footcuffs() return binders.len && (locate(/obj/Item/binders/Footcuffs) in binders)
 
 	//	Removing binders
 	MouseDrop(over_object,src_location,over_location,src_control,over_control,params)
@@ -25,7 +25,7 @@ mob
 				src << "You remove \the [binder] from [nameShown(m)]."
 				m << "[m.nameShown(src)] removes \the [binder] from you."
 			else m << "You remove \the [binder] from yourself."
-			return true
+			return TRUE
 
 obj
 	Item/binders
@@ -53,12 +53,12 @@ obj
 				else
 					m << "You attempt to put \a [src] on [m.nameShown(target)]."
 					target << "[target.nameShown(m)] attempts to put \a [src] on you."
-					m.Locked = true
-					target.Locked = true
+					m.Locked = TRUE
+					target.Locked = TRUE
 					m.status_overlay("lock", 100)
 					sleep 100
-					target.Locked = false
-					m.Locked = false
+					target.Locked = FALSE
+					m.Locked = FALSE
 					if((m.KO || prob(50)) && add(target))
 						m << "You put \a [src] on [m.nameShown(target)]."
 						target << "[target.nameShown(m)] put \a [src] on you."
@@ -87,7 +87,7 @@ obj
 			m.overlays += overlayo
 			added(m)
 			m.InventoryGrid()
-			return true
+			return TRUE
 
 		proc/remove(mob/m, mob/remover)
 			if(ismob(remover) && remover.handcuffs() && src != remover.handcuffs())
@@ -100,7 +100,7 @@ obj
 				set_loc(remover)
 				is_player(remover) && remover.InventoryGrid()
 				removed(m, remover)
-				return true
+				return TRUE
 
 		proc/added(mob/m)
 		proc/removed(mob/m, atom/a)
@@ -128,13 +128,13 @@ obj
 		Muzzle
 			name = "\improper Muzzle"
 			icon = 'code/Tailoring/muzzle.dmi'
-			can_color = true
+			can_color = TRUE
 
 		Blindfold
 			name = "\improper Blindfold"
 			icon = 'code/Tailoring/blindfold.dmi'
 			screen_loc = "CENTER"
-			can_color = true
+			can_color = TRUE
 
 			//	When put on, it goes in client.screen
 			//	Can be clicked from the screen to be removed, if not handcuffed

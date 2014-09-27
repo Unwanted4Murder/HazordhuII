@@ -92,7 +92,7 @@ obj/Built
 			if(istype(src, /obj/Built/Floors))
 				var turf/Environment/t = loc
 				if(is_water(t) && t.is_frozen() || istype(t, /turf/Environment/Lava))
-					t.density = true
+					t.density = TRUE
 
 			var unsupported[0]
 			for(var/obj/Mining/cave_walls/cave in orange(can_support, src))
@@ -108,7 +108,7 @@ obj/Built
 
 	Support_Beam
 		icon='code/Woodworking/Support Beam.dmi'
-		density = true
+		density = TRUE
 		can_support = 2
 
 	Pillar/can_support = 3

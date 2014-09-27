@@ -11,7 +11,7 @@ mob/proc
 	_gather(atom/movable/r)
 		if(istype(r, /obj/Resource))
 			var obj/Resource/R = r
-			if(R.resources <= 0) return false
+			if(R.resources <= 0) return FALSE
 
 		if(istype(r, /obj/Woodcutting) && has_hatchet()) return _chop(r)
 		else if(istype(r, /obj/Woodcutting)) return _pickfruit(r)
@@ -28,11 +28,11 @@ mob/proc
 		if(istype(o, /turf/Environment/Water))
 			var turf/Environment/Water/water = o
 			if(water.is_frozen())
-				return false
-			return true
+				return FALSE
+			return TRUE
 
 		if(istype(o, /turf/Environment/Ocean))
-			return false
+			return FALSE
 
 	_fish(turf/Environment/Water/o)
 		used_tool()
@@ -43,4 +43,4 @@ mob/proc
 		else
 			emote("catches a fish")
 			new /obj/Item/Food/Meat/Fish (loc)
-		return true
+		return TRUE

@@ -33,22 +33,22 @@ mob/Admin/verb
 
 world
 	proc
-		save_all(gradual = false)
+		save_all(gradual = TRUE)
 			world << "Saving everything..."
 			SavePlayers()
 			if(MAP_SAVE & SAVE_FLAG)
-				if(gradual) sleep
+				if(gradual) sleep(-1)
 
 				manage_npc("save")
 				savegroups()
 
-				if(gradual) sleep
+				if(gradual) sleep(-1)
 
 				var saved_stuff[0]
 				for(var/region/region)
 					region.save(gradual)
 					saved_stuff += region.saved_stuff
-					if(gradual) sleep
+					if(gradual) sleep(-1)
 
 				var types[0]
 				for(var/atom/o in saved_stuff)
@@ -63,7 +63,7 @@ world
 				text2file(log, "Data/Map/saved stuff.txt")
 			world << "Everything saved."
 
-		load_all()
+		load_all(gradual = TRUE)
 			if(MAP_SAVE & LOAD_FLAG)
 				map_loading = 1
 
@@ -72,13 +72,16 @@ world
 //						m.update_map_load()
 
 				manage_npc("load")
+				if(gradual) sleep(-1)
 				loadgroups()
+				if(gradual) sleep(-1)
 
 				var loaded_stuff[0]
 				for(var/region/region)
 					map_loading ++
-					region.load()
+					region.load(gradual)
 					loaded_stuff += region.loaded_stuff
+					if(gradual) sleep(-1)
 
 				var types[0]
 				for(var/atom/movable/o in loaded_stuff)
@@ -105,11 +108,12 @@ world
 				SaveLoop()
 
 	proc/SaveLoop()
-		spawn for()
+		set waitfor = FALSE
+		for()
 			sleep 1
 			if(world.time >= last_save + save_period * 600)
 				last_save = world.time
-				save_all(true)
+				save_all(TRUE)
 
 	Del()
 		save_all()
@@ -242,7 +246,7 @@ savedatum
 
 			if(save_colour)
 				var/obj/Item/Clothing/clothing = item
-				clothing.color = save_colour
+				clothing.Color = save_colour
 				clothing.apply_color()
 
 			if(save_cooked) item.vars["cooked"] = save_cooked
@@ -252,11 +256,7 @@ savedatum
 					item.vars["id"] = save_id
 
 				else
-					if(istype(item,/obj/Built/spawnstones/main))
-						var obj/Built/spawnstones/main/obelisk = item
-						obelisk.id = save_id
-
-					else if(istype(item,/obj/Item/Metal/Key))
+					if(istype(item,/obj/Item/Metal/Key))
 						var/obj/Item/Metal/Key/key = item
 						key.id = save_id
 
@@ -416,12 +416,6 @@ savedatum
 					if(lock)
 						save_haslock = lock.id
 
-				if(istype(item,/obj/Built/spawnstones/main))
-					var/obj/Built/spawnstones/main/stone = item
-					save_id = stone.id
-
-
-
 			if(istype(item,/obj/Item))
 				var/obj/Item/object = item
 
@@ -441,13 +435,13 @@ savedatum
 
 				if(istype(object, /obj/Item))
 					var/obj/Item/Tailoring/i = object
-					if(i.color)
-						save_colour = i.color
+					if(i.Color)
+						save_colour = i.Color
 
 				if(istype(object,/obj/Item/Clothing))
 					var/obj/Item/Clothing/clothing = object
 					if(clothing.can_color)
-						save_colour = clothing.color
+						save_colour = clothing.Color
 
 				if(istype(object,/obj/Item/Tools))
 					var/obj/Item/Tools/tool = object
@@ -509,7 +503,7 @@ savedatum
 			if(istype(item, /obj/Flag))
 				var obj/Flag/f = item
 				if(f.group_id) save_group = f.group_id
-				if(f.color) save_colour = f.color
+				if(f.Color) save_colour = f.Color
 
 			if(istype(item,/mob/Animal))
 				var mob/Animal/animal = item
@@ -539,7 +533,7 @@ region
 	proc
 		save_path() return "Data/Map/[name].sav"
 
-		save(gradual = false)
+		save(gradual = FALSE)
 			saved_stuff = new
 
 			var path = save_path()
@@ -549,18 +543,16 @@ region
 
 			var savelist[]
 			var save
-			var n = 0
 
 			//	Save all items in the area
 			savelist = new
-			n = 0
 			for(var/obj/Item/item in src)
 				if(item.no_save) continue
 
 				//	Item is decaying
 			//	if(item.check_decay()) continue
 
-				if(gradual && !((++n) % 10)) sleep
+				if(gradual) sleep(-1)
 
 				var/savedatum/newsave = new /savedatum
 				if(newsave.save(item))
@@ -572,15 +564,14 @@ region
 				save = 1
 				savefile["items"] << savelist
 
-			if(gradual) sleep
+			if(gradual) sleep(-1)
 
 			//	Save all buildings in the area
 			savelist = new
-			n = 0
 			for(var/obj/Built/item in src)
 				if(item.no_save) continue
 
-				if(gradual && !((++n) % 10)) sleep
+				if(gradual) sleep(-1)
 
 				var/savedatum/newsave = new /savedatum
 				if(newsave.save(item))
@@ -592,14 +583,13 @@ region
 				save = 1
 				savefile["buildings"] << savelist
 
-			if(gradual) sleep
+			if(gradual) sleep(-1)
 
 			//	Save all flags in the area
 			savelist = new
-			n = 0
 			for(var/obj/Flag/item in src)
 
-				if(gradual && !((++n) % 10)) sleep
+				if(gradual) sleep(-1)
 
 				var/savedatum/newsave = new /savedatum
 				if(newsave.save(item))
@@ -611,16 +601,15 @@ region
 				save = 1
 				savefile["flags"] << savelist
 
-			if(gradual) sleep
+			if(gradual) sleep(-1)
 
 			//	Save all animals in the area
 			savelist = new
-			n = 0
 			for(var/mob/Animal/item in src)
 				var is_saved = !item.rider && (item.tamed || item.bred || (locate(/obj/Item/Tailoring/Harness) in item) || (locate(/obj/Item/Tailoring/Collar) in item))
 				if(!is_saved && istype(item, /mob/Animal/Peek))
 					var mob/Animal/Peek/peek = item
-					if(peek.owner_id) is_saved = true
+					if(peek.owner_id) is_saved = TRUE
 				if(is_saved)
 					var/savedatum/newsave = new /savedatum
 					if(newsave.save(item))
@@ -628,16 +617,18 @@ region
 
 				saved_stuff += item
 
+				if(gradual) sleep(-1)
+
 			if(savelist.len)
 				save = 1
 				savefile["animals"] << savelist
 
-			if(gradual) sleep
+			if(gradual) sleep(-1)
 
 			if(!save) fdel(path)
 		//	else if(saved_stuff.len) world.log << "([time2text(world.timeofday)]) Saved [name]"
 
-		load()
+		load(gradual = FALSE)
 			loaded_stuff = new
 
 			var path = save_path()
@@ -655,6 +646,7 @@ region
 					for(var/savedatum/item in loadlist)
 						item.load()
 						loaded_stuff += item.item
+						if(gradual) sleep (-world.tick_lag)
 
 		//		if(loaded_stuff.len) world.log << "([time2text(world.timeofday)]) Loaded [name]"
 				return 1

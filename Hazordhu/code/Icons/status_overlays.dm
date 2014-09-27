@@ -4,6 +4,8 @@ mob
 
 	proc
 		status_overlay(status as text, delay)
+			set waitfor = FALSE
+
 			if(!status_active)
 				status_active = new
 
@@ -20,17 +22,16 @@ mob
 			//	the icon doesn't exist yet
 			if(!status_overlays[status])
 				var image/i = image('status.dmi', src, status, 99)
-				i.pixel_x = 8
-				i.pixel_y = 8
-				i.transform = matrix(8, 8, MATRIX_TRANSLATE)
+				i.pixel_x = 16
+				i.pixel_y = 16
 				status_overlays[status] = i
 
 			overlays += status_overlays[status]
 			status_active += status
 
 			if(delay)
-				spawn(delay)
-					status_overlay_remove(status)
+				sleep delay
+				status_overlay_remove(status)
 
 		status_overlay_remove(status as text)
 			if(status in status_active)

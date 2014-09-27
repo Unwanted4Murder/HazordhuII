@@ -57,7 +57,7 @@ item
 	parent_type = /obj
 
 	//	does the item stack at all?
-	var stackable = true
+	var stackable = TRUE
 	var amount = 1
 
 	New(new_loc, new_amount = 1)
@@ -84,12 +84,12 @@ item
 
 	//	Adds an entire item stack to this one
 	//	Destroys the other item stack
-	//	Returns true on success
+	//	Returns TRUE on success
 	proc/add_item(item/i)
-		if(!stacks_with(i)) return false
+		if(!stacks_with(i)) return FALSE
 		gain_amount(i.amount)
 		i.set_amount(0)
-		return true
+		return TRUE
 
 	//	n = initial amount in new stack
 	//	new_loc = initial loc of the new stack
@@ -108,7 +108,7 @@ item
 		lose_amount(n)
 
 	proc/set_amount(new_amount)
-		. = true
+		. = TRUE
 		amount = max(new_amount, 0)
 		if(!amount)
 			loc = null

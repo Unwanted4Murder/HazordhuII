@@ -12,7 +12,7 @@ mob
 mob/player
 	var rest_time = MINUTE / 4
 	var sleep_time = MINUTE
-	var tmp/resting = false
+	var tmp/resting = FALSE
 	PostLogin()
 		..()
 		rest_loop.add(src)
@@ -32,15 +32,15 @@ mob/player
 
 			else if(inactivity > sleep_time)
 				var obj/Built/Bed/bed
-				for(bed in bounds())
+				if(loc) for(bed in bounds())
 					if(bed.bed_is_made())
 						break
 				if(bed)
 					bed.Sleep(src)
 				else
-					resting = true
+					resting = TRUE
 		else
-			resting = false
+			resting = FALSE
 			if(Sleeping) Sleeping.WakeUp()
 
 	//	Bed
@@ -66,7 +66,7 @@ obj/Built/Bed
 
 	Sleeping_Bag
 		bed_is_made()
-			return true
+			return TRUE
 
 	proc
 		bed_is_made()

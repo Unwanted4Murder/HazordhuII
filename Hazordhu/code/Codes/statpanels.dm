@@ -7,6 +7,7 @@ mob
 			.[item.type] += item.Stacked
 
 mob/player
+#if !THIN_SKIN
 	Stat() if(key && Made)
 		var Orc = Race == "Orc"
 		var Human = Race == "Human"
@@ -80,7 +81,7 @@ mob/player
 			if(Orc)			stat(orc_food_prep)
 			else if(Human)	stat(human_food_prep)
 		..()
-
+#endif
 /*
 	var tmp
 		preHealth

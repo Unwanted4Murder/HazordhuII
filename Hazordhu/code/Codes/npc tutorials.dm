@@ -62,11 +62,11 @@ mob
 	tutor
 		parent_type = /mob/NPC
 
-		new_ai = false
+		new_ai = FALSE
 
 		var dialogue_type
 		var dialog
-		attackable = false
+		attackable = FALSE
 
 		interact(mob/humanoid/m)
 			m << output(dialog, "npc_dialog.npc_browser")

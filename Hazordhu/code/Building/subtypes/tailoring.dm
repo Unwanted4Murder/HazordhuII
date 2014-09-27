@@ -1,7 +1,7 @@
 builder/tailoring
 	main_tool = /obj/Item/Tools/NeedleThread
 	skill = TAILORING
-	allowed_in_tutorial = true
+	allowed_in_tutorial = TRUE
 
 	pants
 		name = "Pants"

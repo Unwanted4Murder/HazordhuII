@@ -62,13 +62,14 @@ mob/Animal/Ruff
 			overlays = null
 
 	New()
+		set waitfor = FALSE
 		..()
-		spawn
-			if(owner)
-				mood = "defensive"
+		sleep
+		if(owner)
+			mood = "defensive"
 
-			if(icon_state == "sit")
-				SetCommand("sit")
+		if(icon_state == "sit")
+			SetCommand("sit")
 
 	Move()
 		. = ..()
@@ -113,7 +114,10 @@ mob/Animal/Ruff
 		Command = "Stay"
 		icon_state = "sit"
 
-	proc/Command(mob/player/m, msg) if(m != src) spawn(randn(5, 10))
+	proc/Command(mob/player/m, msg)
+		set waitfor = FALSE
+		if(m == src) return
+		sleep randn(5, 10)
 		var tmp/command[0]
 		var words[0]
 		for(var/t in words2list(msg)) words += lowertext(t)
@@ -223,6 +227,7 @@ mob/Animal/Ruff
 	var tmp/attack_stage
 
 	proc/RuffAI()
+		set waitfor = FALSE
 		walk(src, 0)
 		if(boat) return
 		switch(Command)
@@ -247,7 +252,8 @@ mob/Animal/Ruff
 				if(!CommandTarget)
 					SetCommand()
 
-				else spawn
+				else
+					sleep
 					var mob/target = CommandTarget
 
 					switch(attack_stage)

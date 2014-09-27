@@ -89,7 +89,7 @@ client_info
 		del b
 
 	proc/ban(client/banner)
-		is_banned = true
+		is_banned = TRUE
 
 		var client/client
 		for(client)
@@ -98,7 +98,7 @@ client_info
 				continue
 
 	proc/unban()
-		is_banned = false
+		is_banned = FALSE
 
 mob/Admin
 	verb/check_client(tag as text)
@@ -180,7 +180,7 @@ proc/client_tag_link(tag)		return "<a href=?action=check_client;client_tag=[tag]
 
 client/Topic(href, href_list[], client_info/c)
 	. = ..()
-	if(istype(c) && is_admin(ckey) && ("action" in href_list))
+	if(istype(c) && (key in Admins) && ("action" in href_list))
 		switch(href_list["action"])
 			if("ban_client")
 				c.ban(src)

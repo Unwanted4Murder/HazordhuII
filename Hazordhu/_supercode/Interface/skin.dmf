@@ -1297,7 +1297,7 @@ window "chat"
 	elem "chat"
 		type = MAIN
 		pos = 281,0
-		size = 466x280
+		size = 216x280
 		anchor1 = none
 		anchor2 = none
 		font-family = ""
@@ -1335,7 +1335,7 @@ window "chat"
 		on-close = ""
 	elem "button21"
 		type = BUTTON
-		pos = 426,248
+		pos = 176,248
 		size = 32x24
 		anchor1 = 100,100
 		anchor2 = none
@@ -1364,7 +1364,7 @@ window "chat"
 	elem "child_mr"
 		type = CHILD
 		pos = 8,8
-		size = 448x48
+		size = 200x40
 		anchor1 = 0,0
 		anchor2 = 100,0
 		font-family = ""
@@ -1389,8 +1389,8 @@ window "chat"
 		lock = none
 	elem "label10"
 		type = LABEL
-		pos = 16,64
-		size = 434x16
+		pos = 16,56
+		size = 184x16
 		anchor1 = 0,0
 		anchor2 = 100,0
 		font-family = "Tempus Sans ITC"
@@ -1444,7 +1444,7 @@ window "chat"
 	elem "input"
 		type = INPUT
 		pos = 40,248
-		size = 386x24
+		size = 136x24
 		anchor1 = 0,100
 		anchor2 = 100,100
 		font-family = "Tempus Sans ITC"
@@ -1467,8 +1467,8 @@ window "chat"
 		no-command = false
 	elem "output"
 		type = OUTPUT
-		pos = 8,80
-		size = 450x168
+		pos = 8,72
+		size = 200x176
 		anchor1 = 0,0
 		anchor2 = 100,100
 		font-family = "Tempus Sans ITC"
@@ -1493,8 +1493,8 @@ window "chat"
 		image = ""
 	elem "child_bl_off"
 		type = CHILD
-		pos = 8,104
-		size = 104x144
+		pos = 8,103
+		size = 104x145
 		anchor1 = 0,100
 		anchor2 = none
 		font-family = ""
@@ -1828,7 +1828,7 @@ window "crafting"
 window "default"
 	elem "default"
 		type = MAIN
-		pos = 281,0
+		pos = 0,390
 		size = 1024x600
 		anchor1 = none
 		anchor2 = none
@@ -2810,7 +2810,7 @@ window "login_message"
 window "main_menu"
 	elem "main_menu"
 		type = MAIN
-		pos = 281,0
+		pos = 0,390
 		size = 248x466
 		anchor1 = none
 		anchor2 = none
@@ -2847,10 +2847,10 @@ window "main_menu"
 		macro = "macro"
 		menu = "menu"
 		on-close = ""
-	elem "button20"
+	elem "button25"
 		type = BUTTON
-		pos = 128,152
-		size = 96x32
+		pos = 136,152
+		size = 32x32
 		anchor1 = none
 		anchor2 = none
 		font-family = "Tempus Sans ITC"
@@ -2867,18 +2867,44 @@ window "main_menu"
 		right-click = false
 		saved-params = "is-checked"
 		on-size = ""
-		text = "2x Resolution"
+		text = "2x"
 		image = ""
 		command = "set-icon-size 64"
 		is-flat = false
 		stretch = false
-		is-checked = false
-		group = ""
-		button-type = pushbutton
-	elem "button19"
+		is-checked = true
+		group = "map_zoom"
+		button-type = pushbox
+	elem "label4"
+		type = LABEL
+		pos = 16,156
+		size = 72x24
+		anchor1 = none
+		anchor2 = none
+		font-family = "Tempus Sans ITC"
+		font-size = 10
+		font-style = ""
+		text-color = #000000
+		background-color = #8c7839
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = ""
+		on-size = ""
+		text = "Map Zoom"
+		image = ""
+		image-mode = center
+		keep-aspect = false
+		align = center
+		text-wrap = false
+	elem "button20"
 		type = BUTTON
-		pos = 24,152
-		size = 96x32
+		pos = 176,152
+		size = 56x32
 		anchor1 = none
 		anchor2 = none
 		font-family = "Tempus Sans ITC"
@@ -2895,14 +2921,42 @@ window "main_menu"
 		right-click = false
 		saved-params = "is-checked"
 		on-size = ""
-		text = "1x Resolution"
+		text = "Stretch"
+		image = ""
+		command = "set-icon-size 0"
+		is-flat = false
+		stretch = false
+		is-checked = false
+		group = "map_zoom"
+		button-type = pushbox
+	elem "button19"
+		type = BUTTON
+		pos = 96,152
+		size = 32x32
+		anchor1 = none
+		anchor2 = none
+		font-family = "Tempus Sans ITC"
+		font-size = 10
+		font-style = ""
+		text-color = #000000
+		background-color = #baa052
+		is-visible = true
+		is-disabled = false
+		is-transparent = false
+		is-default = false
+		border = none
+		drop-zone = false
+		right-click = false
+		saved-params = "is-checked"
+		on-size = ""
+		text = "1x"
 		image = ""
 		command = "set-icon-size 32"
 		is-flat = false
 		stretch = false
 		is-checked = false
-		group = ""
-		button-type = pushbutton
+		group = "map_zoom"
+		button-type = pushbox
 	elem "button17"
 		type = BUTTON
 		pos = 8,112
@@ -3743,7 +3797,7 @@ window "reading"
 window "screen"
 	elem "screen"
 		type = MAIN
-		pos = 281,0
+		pos = 0,390
 		size = 808x600
 		anchor1 = none
 		anchor2 = none
@@ -3782,8 +3836,8 @@ window "screen"
 		on-close = ""
 	elem "map"
 		type = MAP
-		pos = 0,0
-		size = 808x601
+		pos = 0,1
+		size = 808x600
 		anchor1 = 0,0
 		anchor2 = 100,100
 		font-family = "Tempus Sans ITC"

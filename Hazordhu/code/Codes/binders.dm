@@ -140,7 +140,7 @@ obj
 		Muzzle
 			name = "\improper Muzzle"
 			icon = 'code/Tailoring/muzzle.dmi'
-			can_color = true
+			can_color = TRUE
 
 			add(mob/m)
 				..()
@@ -156,7 +156,7 @@ obj
 			name = "\improper Blindfold"
 			icon = 'code/Tailoring/blindfold.dmi'
 			screen_loc = "CENTER"
-			can_color = true
+			can_color = TRUE
 			Click()
 				if(src in usr.client.screen)
 					if(usr.binders[3] == null)

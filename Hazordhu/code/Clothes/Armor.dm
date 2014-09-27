@@ -58,7 +58,7 @@ obj
 					Defense = 3
 					heat_added = 3
 					Type = "Plate"
-					can_color = true
+					can_color = TRUE
 
 			Helmet
 				armortype="helmet"

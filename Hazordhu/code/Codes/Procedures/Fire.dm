@@ -58,25 +58,10 @@ obj
 			del src
 
 	Smoke
-		icon = 'code/Icons/Smoke.dmi'
-		layer = 51
-		Flammable = FALSE
-		mouse_opacity = FALSE
+		icon='code/Icons/Smoke.dmi'
+		layer = 25
+		Flammable = 0
 
-		New()
-			..()
-			//	Use animate() to make smoke better
-			var lifetime = rand(100, 150)
-			spawn(lifetime) del src
-			icon_state = "1"
-			animate(src,
-				pixel_x = lifetime * randn(-0.5, 0.5),
-				pixel_y = lifetime * randn(-0.5, 1),
-				alpha = 0,
-				transform = matrix()*4,
-				time = lifetime)
-
-/*
 		var lifetime
 		var lived_time
 		var px, py
@@ -97,7 +82,6 @@ obj
 			if(lived_time >= lifetime)
 				loc = null
 				fps30_loop.remove(src)
-*/
 
 atom/movable
 	var
@@ -111,12 +95,12 @@ atom/movable
 		smokes[]
 
 	proc/extinguish()
-		burning = false
+		burning = FALSE
 		fire_loop.remove(src)
 
 	proc/fire_tick_start()
 		if(!burning && WarTime)
-			burning = true
+			burning = TRUE
 			fires = new
 			smokes = new
 			max_fires = rand(4, 8)
@@ -163,7 +147,7 @@ atom/movable
 			new /obj/Item/Coal (loc)
 
 			if(istype(src, /obj/Item))
-				src:complete_delete = true
+				src:complete_delete = TRUE
 				del src
 
 			if(is_mortal(src))
@@ -172,4 +156,4 @@ atom/movable
 
 			else del src
 
-		burning = false
+		burning = FALSE

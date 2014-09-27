@@ -1,33 +1,33 @@
 obj
 	Built
-		density = true
+		density = TRUE
 
 		Forge
 			SET_TBOUNDS("5,1 to 28,10")
 			icon='code/Masonry/Forge.dmi'
 			base_health = 200
-			takes_fuel = true
+			takes_fuel = TRUE
 
 		Oven
 			SET_TBOUNDS("5,3 to 28,10")
 			icon = 'code/Masonry/Oven.dmi'
 			base_health = 200
-			takes_fuel = true
+			takes_fuel = TRUE
 
 		Stone_Wall
 			icon='code/Masonry/Stone Wall.dmi'
-			opacity = true
+			opacity = TRUE
 			base_health = 200
 
 		Fortified_Tower
 			icon = 'code/Masonry/Fortified Tower.dmi'
-			opacity = true
+			opacity = TRUE
 			SET_BOUNDS(0, 0, 96, 64)
 			base_health = 300
 
 		Brick_Wall
 			icon='code/Masonry/Brick Wall.dmi'
-			opacity = true
+			opacity = TRUE
 			base_health = 300
 
 			var Top
@@ -61,7 +61,7 @@ obj
 					player.emote("finishes fortifying the wall")
 					name = "Fortified Brick Wall"
 					overlays += /obj/Built/Brick_Wall/Brick_Wall_Top
-					Top = true
+					Top = TRUE
 					Health += 200
 
 		Stone_Window
@@ -99,18 +99,18 @@ obj
 
 		Altar
 			icon = 'Altar.dmi'
-			density = true
+			density = TRUE
 			SET_TBOUNDS("1,5 to 32,12")
 			base_health = 200
 
 		Stone_Bridge
 			icon = 'code/Masonry/Stone Bridge.dmi'
-			density = true
+			density = TRUE
 			base_health = 700
 
 		Sandstone_Bridge
 			icon = 'code/Masonry/Sandstone Bridge.dmi'
-			density = true
+			density = TRUE
 			base_health = 600
 
 		Plaque
@@ -154,7 +154,7 @@ obj
 
 		Sandstone_Wall
 			icon = 'code/Masonry/Sandstone Wall.dmi'
-			opacity = true
+			opacity = TRUE
 			base_health = 200
 
 			var Top
@@ -188,7 +188,7 @@ obj
 					player.emote("finishes fortifying the wall")
 					name = "Fortified Sandstone Wall"
 					overlays += /obj/Built/Sandstone_Wall/Sandstone_Wall_Top
-					Top = true
+					Top = TRUE
 					Health += 200
 obj
 	Item

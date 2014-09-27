@@ -1,8 +1,8 @@
 
 obj
 	Woodcutting
-		density = true
-		Flammable = true
+		density = TRUE
+		Flammable = TRUE
 
 		var fruit
 		var max_fruit
@@ -13,7 +13,7 @@ obj
 			fruit = max(0, fruit - 1)
 			m.get_item(new /obj/Item/Food/Berry)
 			if(!fruit) icon_state = "Spring"
-			return true
+			return TRUE
 
 		/*interact_right(mob/m)
 			if(fruit != null)
@@ -145,7 +145,7 @@ obj
 
 	Item
 		Wood
-			Flammable = true
+			Flammable = TRUE
 
 			Log
 				value = 1

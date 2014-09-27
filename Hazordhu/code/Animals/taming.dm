@@ -13,10 +13,10 @@
 	F0lak: Harness is used on agressive animals to calm them down so they won't attack.
 */
 
-#define FINISHED false
+#define FINISHED 0
 
 mob/Animal
-	var tamed = false
+	var tamed = FALSE
 
 	/savedatum/var/animal_tamed
 
@@ -36,9 +36,9 @@ mob/Animal
 	proc/can_tame(mob/player/m)
 		if(tamed) return m && m.aux_output("\The [src] is already tamed.")
 #if !FINISHED
-		if(!istype(src, /mob/Animal/Peek)) return false
+		if(!istype(src, /mob/Animal/Peek)) return FALSE
 #endif
-		return true
+		return TRUE
 
 	proc/tamed(mob/player/m)
 		tamed = m.charID

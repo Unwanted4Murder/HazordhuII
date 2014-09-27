@@ -22,7 +22,7 @@ obj/Item
 	proc/Multi_Color(colour_icon, user)
 		var/colour = input(user,"Choose the color of the item.","Color") as color
 		if(!colour) return
-		color = colour
+		Color = colour
 
 		var/icon/i = icon(colour_icon)
 		i.Blend(colour, ICON_ADD)
@@ -117,7 +117,7 @@ obj
 					return g
 
 		var Color
-		var can_color = true
+		var can_color = TRUE
 
 		proc/Multi_Color(colour_icon, user)
 			if(!can_color) return
@@ -130,8 +130,8 @@ obj
 		//	it's overlayed on top of the wooden part
 
 		proc/get_colored_icon(color)
-			if(!color) color = src.color
-			src.color = color
+			if(!color) color = src.Color
+			src.Color = color
 			if(!color) return initial(icon)
 
 			var icon/i = icon(col_icon)

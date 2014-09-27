@@ -48,23 +48,25 @@ brain
 			if(!body.loc) return
 			return 1
 
-		wander() spawn while(1)
-			if(can_wander())
-				wander_to = null
+		wander()
+			set waitfor = FALSE
+			for()
+				if(can_wander())
+					wander_to = null
 
-				var turfs[0]
+					var turfs[0]
 
-				for(var/turf/t in oview(body.loc))
-					turfs += t
+					for(var/turf/t in oview(body.loc))
+						turfs += t
 
-				if(turfs.len)
-					wander_to = pick(turfs)
+					if(turfs.len)
+						wander_to = pick(turfs)
 
-					if(wander_to)
-						walk(body, 0)
-						walk_to(body, wander_to)
+						if(wander_to)
+							walk(body, 0)
+							walk_to(body, wander_to)
 
-			sleep(rand(30, 60))
+				sleep rand(30, 60)
 
 
 	//	speech parsing

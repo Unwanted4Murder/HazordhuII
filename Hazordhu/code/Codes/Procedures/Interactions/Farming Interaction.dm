@@ -4,12 +4,12 @@
 */
 mob/proc
 	is_path(obj/Built/o)
-		if(o.type == /obj/Built/Path) return true
-		return false
+		if(o.type == /obj/Built/Path) return TRUE
+		return FALSE
 
 	has_hoe()
-		if(is_equipped(/obj/Item/Tools/Hoe)) return true
-		return false
+		if(is_equipped(/obj/Item/Tools/Hoe)) return TRUE
+		return FALSE
 
 	_plow_path(obj/Built/Path/path) if(is_path(path) && has_hoe())
 		for(var/turf/Environment/Sand/S in oview(1, path))
@@ -27,7 +27,7 @@ mob/proc
 
 		used_tool()
 
-		return true
+		return TRUE
 
 
 /*
@@ -76,4 +76,4 @@ mob/proc
 				new /obj/Built/Path (farm.loc)
 				del farm
 
-			return true
+			return TRUE

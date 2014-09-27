@@ -1,28 +1,29 @@
 mob
-	var tmp/attacking = false
+	var tmp/attacking = FALSE
 
 	proc/is_attackable(mob/mortal/m)
-		if(!(istype(m) || istype(m, /obj/Built))) return false
+		if(!(istype(m) || istype(m, /obj/Built))) return FALSE
 
-		if(!m.attackable) return false
+		if(!m.attackable) return FALSE
 
 		if(is_player(m))
 			var mob/player/p = m
-			if(p.GodMode) return false
+			if(p.GodMode) return FALSE
 
 		if(istype(m, /obj/Built))
-			if(m == boat) return false
+			if(m == boat) return FALSE
 
 			//	check deeds
 			var obj/Built/b = m
-			if(istype(b)) for(var/turf/t in b.locs) for(var/PropertyDeed/deed in t.deeds) if(!deed.can_destroy(src)) return false
+			if(istype(b)) for(var/turf/t in b.locs) for(var/PropertyDeed/deed in t.deeds) if(!deed.can_destroy(src)) return FALSE
 
 			//	check totems
-			for(var/obj/Built/Totem/t) if(t.active && t.z == m.z && abs(t.x - m.x) <= t.range && abs(t.y - m.y) <= t.range) return false
+			for(var/obj/Built/Totem/t) if(t.active && t.z == m.z && abs(t.x - m.x) <= t.range && abs(t.y - m.y) <= t.range) return FALSE
 
-		return true
+		return TRUE
 
 	proc/attack(target)
+		set waitfor = FALSE
 		var mob/player/player = src
 		if(istype(player))
 			if(!player.pvp)
@@ -57,8 +58,8 @@ mob
 
 		else
 			if(!attacking)
-				attacking = true
-				spawn(5) attacking = false
+				attacking = TRUE
+				spawn(5) attacking = FALSE
 
 				var mob/targ = target
 

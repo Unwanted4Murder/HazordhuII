@@ -24,7 +24,7 @@ obj
 				stoof_cloak
 					name = "Stoof Cloak"
 					icon_state = "stoof cloak"
-					can_color = true
+					can_color = TRUE
 
 mob/Animal/Stoof
 	die()

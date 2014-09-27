@@ -5,6 +5,7 @@ builder/cooking
 
 	condition(mob/m)
 		. = 0
+		if(!m.loc) return
 		var/obj/Built/Range/range = locate(/obj/Built/Range) in obounds(m, 16)
 		if(!range)
 			m.aux_output("You need to be by a range.")

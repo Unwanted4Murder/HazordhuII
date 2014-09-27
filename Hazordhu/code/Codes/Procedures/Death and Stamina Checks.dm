@@ -1,6 +1,6 @@
 mob/player
 	verb/Suicide()
-		set hidden = true
+		set hidden = TRUE
 		for(var/obj/Item/i in src)
 			if(is_equipped(i))
 				unequip(i)
@@ -8,14 +8,18 @@ mob/player
 		InventoryGrid()
 		lose_health(Health, "suicide")
 
+	die()
+		status_clear()
+		..()
+
 mob
 	proc
 		KO(time = 900)
 			if(KO) return
-			KO = true
+			KO = TRUE
 
 			sight |= BLIND
-			Locked = true
+			Locked = TRUE
 			Resting = 2
 
 			if(is_humanoid(src))
@@ -30,11 +34,11 @@ mob
 
 		WakeUp()
 			if(!KO) return
-			KO = false
+			KO = FALSE
 
 			sight &= ~BLIND
-			Locked = false
-			Resting = false
+			Locked = FALSE
+			Resting = FALSE
 
 			if(is_humanoid(src))
 				var mob/humanoid/h = src
@@ -80,6 +84,7 @@ mob
 			//	Create a corpse when not on water
 			var turf/Environment/Water/w = loc
 			if(!is_water(w) || istype(w) && w.is_frozen())
+				status_clear()
 				new /mob/Corpse (src)
 
 			set_loc()
@@ -94,7 +99,7 @@ mob
 		//	Turn into an Undead race.
 		turn_undead()
 			aux_output("Your curse causes you to become undead!")
-			Cursed = false
+			Cursed = FALSE
 			Race = "Undead"
 			Speaking = "Undead"
 			Health = MaxHealth
@@ -124,7 +129,7 @@ mob
 			if(is_harnessed())
 				var obj/Item/Tailoring/Harness/h = locate() in src
 				h.Move(loc, 0, step_x, step_y)
-			posted = false
+			posted = FALSE
 			..()
 
 	NPC
@@ -158,7 +163,7 @@ mob
 		die()
 			..()
 			set_health(0)
-			Dead = true
+			Dead = TRUE
 			pixel_x = 0
 			pixel_y = 0
 			zombie_infection = 0
@@ -195,10 +200,10 @@ mob
 	#if WORK_STAMINA
 		if(Stamina < max(amount, 10))
 			aux_output("You're too tired to [cause]!")
-			return false
+			return FALSE
 		drain_stamina(amount)
 	#endif
-		return true
+		return TRUE
 
 	player
 		//	Lower hunger/thirst is better
@@ -264,8 +269,8 @@ mob
 
 				//	When injured, hunger and thirst rise faster.
 				if(Race != "Undead")
-					gain_hunger(0.1)
-					gain_thirst(0.15)
+					gain_hunger(0.5)
+					gain_thirst(0.7)
 					if(body_heat >= 75)
 						gain_thirst(1)
 
@@ -321,7 +326,7 @@ mob/player
 		set_loc(!starter && (get_obelisk_spawn() || get_flag_spawn()) || get_starter_spawn())
 
 		WakeUp()
-		Dead = false
+		Dead = FALSE
 
 		Health = MaxHealth
 		Stamina = MaxStamina

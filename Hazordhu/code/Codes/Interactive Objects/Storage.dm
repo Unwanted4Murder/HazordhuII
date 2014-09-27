@@ -25,22 +25,30 @@ obj
 		m.storage = src
 		m.StorageGrid()
 		m.status_overlay("bag")
+		#if THIN_SKIN
+		m.storage_grid.show()
+		#else
 	//	winshow(m, "child_br_off")
 		winset(m, "inventory_child", "bottom=storage")
 		m.show_items()
-		return true
+		#endif
+		return TRUE
 
 	proc/hide_storage(mob/player/m)
 		if(!is_storage) return
 		if(!istype(m)) return
 		m.status_overlay_remove("bag")
 		m.storage = null
+		#if THIN_SKIN
+		m.storage_grid.hide()
+		#else
 	//	winshow(m, "child_br_off", 0)
 		winset(m, "inventory_child", "bottom=")
-		return true
+		#endif
+		return TRUE
 
 	proc/can_store(obj/Item/item)
-		return true
+		return TRUE
 
 	//	post-transfer events
 	proc/stored(obj/Item/item)
@@ -71,20 +79,20 @@ obj
 		Clothing
 			Back
 				Quiver
-					is_storage = true
+					is_storage = TRUE
 					can_store(obj/Item/item)
-						if(istype(item, /obj/Item/Projectile/Arrow)) return true
-						if(istype(item, /obj/Item/Projectile/Bolt)) return true
-						return false
+						if(istype(item, /obj/Item/Projectile/Arrow)) return TRUE
+						if(istype(item, /obj/Item/Projectile/Bolt)) return TRUE
+						return FALSE
 
 			Bag
 				icon_state = "item"
-				is_storage = true
+				is_storage = TRUE
 
 				can_store(item)
-					if(istype(item, /obj/Item/Projectile/Arrow)) return false
-					if(istype(item, /obj/Item/Projectile/Bolt)) return false
-					if(istype(item, /obj/Item/Clothing/Bag)) return false
+					if(istype(item, /obj/Item/Projectile/Arrow)) return FALSE
+					if(istype(item, /obj/Item/Projectile/Bolt)) return FALSE
+					if(istype(item, /obj/Item/Clothing/Bag)) return FALSE
 					return ..()
 
 				Pouch
@@ -115,12 +123,12 @@ obj
 	Built
 		Bookshelf
 			icon = 'code/woodworking/Bookshelf.dmi'
-			density = true
-			Flammable = true
+			density = TRUE
+			Flammable = TRUE
 			SET_TBOUNDS("3,2 to 30,8")
 			step_y = 8
 			base_health = 50
-			is_storage = true
+			is_storage = TRUE
 			Item_Limit = 25
 			can_store(obj/Item/Book/book) return istype(book)
 			stored() update()
@@ -136,14 +144,14 @@ obj
 
 
 		Garbage
-			is_storage = true
+			is_storage = TRUE
 			Item_Limit = 25
 
 		Storage
-			density = true
+			density = TRUE
 			base_health = 800
-			Flammable = true
-			is_storage = true
+			Flammable = TRUE
+			is_storage = TRUE
 
 			Cart
 				icon = 'code/Woodworking/Cart.dmi'
@@ -201,7 +209,7 @@ obj
 					if(!lock) return
 					if(lock.find_key(m))
 						toggle_lock()
-						return true
+						return TRUE
 
 				proc/has_lock()
 					if(!haslock) return

@@ -55,7 +55,7 @@ atom
 	#endif
 
 		//	turf located at the center of its bounding box
-		proc/cloc() return (locate(/turf) in bounds(cx(), cy(), 1, 1, z))
+		proc/cloc() return loc && (locate(/turf) in bounds(cx(), cy(), 1, 1, z))
 
 		proc/set_step(sx, sy)
 		#if PIXEL_MOVEMENT
@@ -67,6 +67,7 @@ atom
 
 atom/movable
 	proc/bounds_step(dir, dist = 16)
+		if(!loc) return
 		if(isnull(dir)) dir = src.dir
 
 		var px = px()

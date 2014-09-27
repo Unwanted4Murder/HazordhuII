@@ -61,9 +61,11 @@ mob/player
 			src << output("[skill.level || 0] ([skill.percent * 100 || 0]%)", "skill_level_grid:2,[n]")
 		winset(src, "skill_level_grid", "cells=2x[n]")
 
+	#if !THIN_SKIN
 	Stat()
 		..()
 		display_skills()
+	#endif
 
 skill_level
 	var name = ""

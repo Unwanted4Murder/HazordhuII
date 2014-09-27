@@ -37,14 +37,15 @@ turf/Environment
 ray
 	parent_type = /obj
 	invisibility = 101
-	density = true
-	bounds = "1,1"
+	density = TRUE
+	SET_BOUNDS(0, 0, 1, 1)
 
 	var tmp/crossed[0]
 	Crossing(atom/o) crossed |= o
 	interact/CanCross(atom/o) . = !o.blocks_interaction()
 
 //	Accepts two vectors or 4 numbers
+#if PIXEL_MOVEMENT
 proc/raycast(px, py, z, dx, dy, type)
 	if(is_vec2(px))
 		z = dx
@@ -56,17 +57,23 @@ proc/raycast(px, py, z, dx, dy, type)
 	if(!ispath(type)) type = /ray
 	var ray/ray = new type
 	ray.set_pos(px, py, z)
+	if(!ray.loc) return
 	. |= obounds(ray)
 	ray.move(dx, dy)
 	. |= ray.crossed
 	if(ray.bumped) . += ray.bumped
 	. |= ray.loc
 	ray.set_loc()
+#endif
 
 atom
 	proc/raycast_to(atom/o, type)
+		#if PIXEL_MOVEMENT
 		if(z != o.z) return
 		var a[] = center()
 		var b[] = o.center()
 		. = raycast(a[1], a[2], z, b[1] - a[1], b[2] - a[2], type)
 		return o in .
+		#else
+		return TRUE
+		#endif

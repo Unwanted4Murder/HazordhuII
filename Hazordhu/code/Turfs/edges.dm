@@ -2,7 +2,7 @@
 obj/edge
 	icon = null
 	icon_state = "edge"
-	mouse_opacity = false
+	mouse_opacity = FALSE
 
 	stone_wall/icon_state = "Stone edge"
 	dirt_wall/icon_state = "Dirt edge"
@@ -39,7 +39,7 @@ atom
 		new_edge(dir, t)
 			if(!ispath(edge_type)) edge_type = /obj/edge
 
-			if((edge_dirs & DIR_DIAGONAL) && (dir & (dir - 1)) && (istype(get_step(src, dir & (NORTH | SOUTH)), type) || istype(get_step(src, dir & (EAST  |  WEST)), type))) return false
+			if((edge_dirs & DIR_DIAGONAL) && (dir & (dir - 1)) && (istype(get_step(src, dir & (NORTH | SOUTH)), type) || istype(get_step(src, dir & (EAST  |  WEST)), type))) return FALSE
 
 			var obj/edge/edge = new edge_type (t)
 			edge.dir	=	dir
@@ -86,5 +86,5 @@ atom
 					edges += new_edge(d, t)
 			edge_dirs = 0
 
-		//	no edge will be created towards o if this returns true
+		//	no edge will be created towards o if this returns TRUE
 		joins_with(atom/o) return istype(o, type)

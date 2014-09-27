@@ -22,9 +22,10 @@ mob
 		InventoryGrid()
 
 	proc/can_get(obj/Item/item) return item.can_get
-	proc/can_drop(obj/Item/item) return true
+	proc/can_drop(obj/Item/item) return TRUE
 
 mob/player
+#if !THIN_SKIN
 	InventoryGrid(obj/Item/exclude)
 		var index = 0
 		Items = 0
@@ -47,11 +48,12 @@ mob/player
 		winset(src, "storage_grid", "cells=1,[index]")
 		winset(src, "storage_weight_bar",
 			"value=[storage.Items / storage.Item_Limit * 100]")
+#endif
 
 obj/Built
-	var is_table = false
-	Table/is_table = true
-	Counter/is_table = true
+	var is_table = FALSE
+	Table/is_table = TRUE
+	Counter/is_table = TRUE
 
 obj/Item
 	SET_BOUNDS(8, 8, 16, 16)
@@ -61,7 +63,7 @@ obj/Item
 	var complete_delete
 	var Stackable = 1
 	var fingerprints[]
-	var can_get = true
+	var can_get = TRUE
 	layer = OBJ_LAYER + 1
 
 	interact(mob/m)
@@ -78,7 +80,7 @@ obj/Item
 			if(m.has_key("ctrl"))
 				GetAll(m)
 			else Get(m)
-		return true
+		return TRUE
 
 	Del()
 		if(Stacked == 1 || complete_delete)
@@ -202,7 +204,7 @@ obj/Item
 					return
 
 			if(storage.Item_Limit - storage.Items >= weight)
-				. = true
+				. = TRUE
 				if(Stackable && Stacked > 1)
 					if(do_bulk)
 						var bulk
@@ -241,7 +243,7 @@ obj/Item
 			if(!m.storage) return
 
 			if(m.Item_Limit - m.Items >= weight)
-				. = true
+				. = TRUE
 				//	item stacks
 				if(Stackable && Stacked > 1)
 					//	bulk-moving
@@ -292,7 +294,9 @@ obj/Item
 
 		//	Snap to the center of a surface like a counter or table
 		surface_check(dir = 2)
+			#if PIXEL_MOVEMENT
 			var obj/Built/surface
+			if(!loc) return
 			for(surface in obounds()) if(surface.is_table) break
 			if(!surface) return
 
@@ -307,9 +311,9 @@ obj/Item
 			else
 				offset[1] *= 12
 				offset[2] = offset[2] * 4
-
 			Move(surface.loc, 0, surface.step_x + offset[1], surface.step_y + offset[2])
 			layer = surface.layer + 1
+			#endif
 
 		DropInFront(mob/m)
 			var turf/t = get_step(m, m.dir)
@@ -321,11 +325,11 @@ obj/Item
 
 		GetAll(mob/m)
 			for(var/n in 1 to min(10, Stacked, weight ? (m.Item_Limit - m.Items) / weight : 1.#INF)) Get(m)
-			return true
+			return TRUE
 
 		DropAll(mob/m, ignorebulk)
 			for(var/n in 1 to min(10, Stacked)) Drop(m)
-			return true
+			return TRUE
 
 		//	m is the dropper
 		Drop(mob/m, location = -1)
@@ -353,7 +357,12 @@ obj/Item
 
 			var obj/Item/o = .
 			if(location)
-				if(v) o.Move(location, 0, m.step_x + v[1], m.step_y + v[2] - 12)
+				if(v)
+					#if PIXEL_MOVEMENT
+					o.Move(location, 0, m.step_x + v[1], m.step_y + v[2] - 12)
+					#else
+					o.Move(get_step(location, (v[1] && (v[1] > 0 ? EAST : WEST)) | (v[2] && (v[2] > 0 ? NORTH : SOUTH))))
+					#endif
 				else o.Move(location, 0, m.step_x, m.step_y)
 			else o.loc = null
 			o.dropped_by(m)

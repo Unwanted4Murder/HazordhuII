@@ -28,7 +28,8 @@ world/New()
 	animal_loop()
 
 proc/animal_loop()
-	spawn for()
+	set waitfor = FALSE
+	for()
 		sleep 1
 		for(var/mob/Animal/a in active_animals)
 			if(world.time >= a.ai_next_tick)
@@ -41,25 +42,37 @@ turf/Environment
 		if(istype(a))
 			if(a.is_fish) return is_water && !is_frozen()
 			if(a.is_bird)
-				if(opacity) return false
+				if(opacity) return FALSE
 				for(var/obj/Built/b in src)
-					if(b.opacity) return false
+					if(b.opacity) return FALSE
 		return ..()
 
 obj/Cross(mob/Animal/a)
 	if(istype(a))
 		if(a.is_bird)
 			if(!opacity)
-				return true
+				return TRUE
 	return ..()
 
 mob
 	Animal
-		Move()
-			if(rider || Locked)
-				walk(src, 0)
+		var tmp/next_move
+
+		Move(Loc, Dir, StepX, StepY)
+			if(rider || Locked) walk(src, 0)
 			if(Locked) return
+			#if !PIXEL_MOVEMENT
+			if(world.time < next_move) return
+			var diagonal = Dir & (Dir - 1)
+			var distance_factor = diagonal ? sqrt(2) : 1
+			glide_size = round(distance_factor * move_speed(), 1)
+			var move_delay =  32 * distance_factor * world.tick_lag / (glide_size || 1)
+			next_move = world.time + move_delay
+			#endif
 			return ..()
+
+		move_speed()
+			return charging ? 4 : 2
 
 		Del()
 			ai_deactivate()
@@ -107,15 +120,21 @@ mob
 						icon_state = ""
 						gender = MALE
 
+		die()
+			if(aggro_warning)
+				overlays -= aggro_warning
+				status_clear()
+			..()
+
 		var
 			tmp
 				mob/charging
 
 				mob/following
 
-				ai_active = false
+				ai_active = FALSE
 				ai_next_tick = 0
-				ai_ticking = false
+				ai_ticking = FALSE
 
 				wakers[]
 				prey_near[]
@@ -125,11 +144,13 @@ mob
 
 				next_wander
 
-		Peek/is_bird = true
-		Kaw/is_bird = true
-		Scree/is_bird = true
+				image/aggro_warning
 
-		Ramar/is_fish = true
+		Peek/is_bird = TRUE
+		Kaw/is_bird = TRUE
+		Scree/is_bird = TRUE
+
+		Ramar/is_fish = TRUE
 
 		proc
 			ai_wake(waker)
@@ -138,31 +159,32 @@ mob
 				if(active_animals[src]) return
 
 				active_animals |= src
-				ai_active = true
+				ai_active = TRUE
 
 				if(!wakers) wakers = new
 				wakers |= waker
 
-				return true
+				return TRUE
 
 			ai_deactivate()
-				ai_active = false
+				ai_active = FALSE
 				active_animals -= src
 
-				walk(src, false)
-				return true
+				walk(src, FALSE)
+				return TRUE
 
-			ai_tick() spawn
+			ai_tick()
+				set waitfor = FALSE
 				if(ai_ticking) return
 				if(charging) return
 
-				ai_ticking = true
+				ai_ticking = TRUE
 				if(ai_pre() && ai_step())
 					ai_end()
 				else if(ai_active)
 					ai_deactivate()
 
-				ai_ticking = false
+				ai_ticking = FALSE
 
 				if(ai_active && !(src in active_animals))
 					ai_deactivate()
@@ -174,8 +196,8 @@ mob
 				return check_targets()
 
 			can_wander()
-				if(next_wander > world.time) return false
-				return true
+				if(next_wander > world.time) return FALSE
+				return TRUE
 
 			ai_step()
 				if(Locked) return
@@ -184,7 +206,7 @@ mob
 				if(is_harnessed())
 					can_wander = prob(25)
 				else if(mood == "aggressive" && ai_combat())
-					can_wander = false
+					can_wander = FALSE
 
 				if(can_wander)
 					next_wander = world.time
@@ -212,11 +234,11 @@ mob
 									else stop_flying()
 								walk_to(src, t)
 
-				return true
+				return TRUE
 
 			ai_end()
 				ai_next_tick = world.time + 10
-				return true
+				return TRUE
 
 			//	returns whether or not to stay awake
 			check_targets()
@@ -240,8 +262,8 @@ mob
 							wakers -= m
 					if(!wakers.len)
 						wakers = null
-					else return true
-				return false
+					else return TRUE
+				return FALSE
 
 			is_target(mob/m)
 				if(m.type == /mob/title) return
@@ -279,42 +301,43 @@ mob
 					if(!nearby_targets.len)
 						return
 
-				var image/warning = new
-				warning.icon = 'code/Icons/aggressive.dmi'
-				warning.layer = FLOAT_LAYER
-				warning.pixel_x = -pixel_x
-				warning.pixel_y = -pixel_y
-				if(istype(src, /mob/Animal/Flargl)	|| \
-				  istype(src, /mob/Animal/Olihant)	|| \
-				  istype(src, /mob/Animal/Troll)
-				 )
-					warning.pixel_y += 32
-				if(istype(src, /mob/Animal/Agriner)	|| \
-				  istype(src, /mob/Animal/Ramar)		|| \
-				  istype(src, /mob/Animal/Shomp)
-				 )
-					warning.pixel_y += 16
+				if(!aggro_warning)
+					aggro_warning = new
+					aggro_warning.icon = 'code/Icons/aggressive.dmi'
+					aggro_warning.layer = FLOAT_LAYER
+					aggro_warning.pixel_x = -pixel_x
+					aggro_warning.pixel_y = -pixel_y
+					if(istype(src, /mob/Animal/Flargl)	|| \
+					  istype(src, /mob/Animal/Olihant)	|| \
+					  istype(src, /mob/Animal/Troll)
+					 )
+						aggro_warning.pixel_y += 32
+					if(istype(src, /mob/Animal/Agriner)	|| \
+					  istype(src, /mob/Animal/Ramar)		|| \
+					  istype(src, /mob/Animal/Shomp)
+					 )
+						aggro_warning.pixel_y += 16
 
 				emote(pick(warn_list))
 				play_aggressive()
 
-				Locked = true
-				overlays += warning
+				Locked = TRUE
+				overlays += aggro_warning
 
 				var warn_duration = 20
 				if(target)
 					dir = get_dir(src, target)
-					sleep(warn_duration)
+					sleep warn_duration
 
 				else
 					var time = warn_duration / nearby_targets.len
 					for(var/mob/m in nearby_targets)
 						dir = get_dir(src, m)
-						sleep(time)
+						sleep time
 
-				overlays -= warning
-				Locked = false
-				return true
+				overlays -= aggro_warning
+				Locked = FALSE
+				return TRUE
 
 			ai_charge(target)
 				if(Locked || is_harnessed()) return
@@ -327,7 +350,7 @@ mob
 				charging = target
 
 				if(bounds_dist(src, charging) < 2)
-					return true
+					return TRUE
 
 				var textIcon = textIcon()
 				var warning = pick(charge_list)
@@ -345,13 +368,14 @@ mob
 					step_to(src, charging, 0, charge_speed)
 
 					if(bounds_dist(src, charging) <= charge_speed)
-						return true
+						return TRUE
 
 					sleep(world.tick_lag)
 					if(is_bird) stop_flying()
 				charging = null
 
 			ai_attack(mob/mortal/target)
+				set waitfor = FALSE
 				if(Locked || is_harnessed()) return
 				if(!target) target = charging
 				if(!target) return
@@ -362,7 +386,7 @@ mob
 				for(var/mob/M in ohearers(src))
 					M << "*[textIcon] <b>[src]</b> [warning] [M.nameShown(target)].*"
 
-				spawn(-1) target.knockback(src, 8)
+				target.knockback(src, 8)
 
 				var result = combat_result(src, target)
 				switch(result)
@@ -374,7 +398,7 @@ mob
 						target.view_sound(sound('code/Sounds/sword slash.wav'))
 					else if(isnum(result))
 						target.take_damage(result, "a creature in the wilderness")
-				return true
+				return TRUE
 
 			play_passive()
 				if(passive_sounds && passive_sounds.len)
@@ -392,7 +416,7 @@ mob
 				return 0
 				for(var/mob/m as mob in ohearers(world.view + 2, src))
 					if(m.key || m.type == /mob/title)
-						return true
+						return TRUE
 
 		Flargl
 			ai_charge(mob/target)
@@ -404,7 +428,7 @@ mob
 				if(!(target in ohearers(src))) return
 				charging = target
 				if(bounds_dist(src, charging) < 2)
-					return true
+					return TRUE
 
 				var textIcon = textIcon()
 				for(var/mob/M in ohearers(src))
@@ -454,7 +478,7 @@ mob
 
 				charging = target
 
-				if(bounds_dist(src, charging) < 2) return true
+				if(bounds_dist(src, charging) < 2) return TRUE
 
 				var textIcon = textIcon()
 				var warning = pick(charge_list)
@@ -462,7 +486,7 @@ mob
 
 				walk(src, 0)
 
-				hit_target = false
+				hit_target = FALSE
 				dir = get_dir(src, charging)
 				var charge_end = world.time + 30
 				var charge_speed = 6
@@ -470,7 +494,7 @@ mob
 				while(world.time < charge_end)
 					move(vel)
 
-					if(hit_target) return true
+					if(hit_target) return TRUE
 					if(bumped)
 						if(is_attackable(bumped))
 							var mob/m = bumped
@@ -481,10 +505,10 @@ mob
 					sleep world.tick_lag
 				charging = null
 
-			var tmp/hit_target = false
+			var tmp/hit_target = FALSE
 			Bump(mob/m)
 				if(m == charging)
-					hit_target = true
+					hit_target = TRUE
 				else ..()
 
 mob

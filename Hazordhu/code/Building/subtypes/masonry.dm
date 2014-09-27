@@ -3,7 +3,7 @@ builder/masonry
 	skill = MASONRY
 	cursor = "trowel"
 
-	density = true
+	density = TRUE
 
 	brick
 		name = "Brick"
@@ -13,7 +13,7 @@ builder/masonry
 		req = list(STONE = 1)
 		main_tool = /obj/Item/Tools/Chisel
 		built = /obj/Item/Stone/Brick
-		density = false
+		density = FALSE
 
 	sandstone_brick
 		name = "Sandstone Brick"
@@ -21,7 +21,7 @@ builder/masonry
 		icon_state = "sandstone"
 		main_tool = /obj/Item/Tools/Chisel
 		built = /obj/Item/Stone/Sandstone_Brick
-		density = false
+		density = FALSE
 		req = list(SANDSTONE = 1)
 		desc = "Used in desert-themed masonry.<br>\
 				1 Sandstone"
@@ -31,16 +31,17 @@ builder/masonry
 		name = "Tar"
 		icon = 'code/Masonry/Tar.dmi'
 		condition(mob/m)
+			if(!m.loc) return
 			var turf/Environment/Water/w = locate() in obounds(m, 16)
 			if(istype(w) && !w.is_frozen())
-				return true
+				return TRUE
 
 			if(get_season() == WINTER)
-				return false
+				return FALSE
 
 			var obj/Built/Fountain/f = locate() in obounds(m, 16)
-			if(!f) return false
-			return true
+			if(!f) return FALSE
+			return TRUE
 
 		desc = "Used in almost all other Masonry. \
 				Requires non-frozen water or a fountain nearby. <br />\
@@ -53,7 +54,7 @@ builder/masonry
 		built = /obj/Item/Stone/Tar
 		build_amount = 3
 
-		density = false
+		density = FALSE
 
 	bowl
 		main_tool = null
@@ -67,7 +68,7 @@ builder/masonry
 		req = list(	CLAY	=	1)
 		built = /obj/Item/Bowl
 
-		density = false
+		density = FALSE
 
 	plate
 		main_tool = null
@@ -81,7 +82,7 @@ builder/masonry
 		req = list(	CLAY	=	1)
 		built = /obj/Item/Plate
 
-		density = false
+		density = FALSE
 
 	path
 		main_tool = /obj/Item/Tools/Shovel
@@ -92,7 +93,7 @@ builder/masonry
 		req = list(DIRT = 1)
 		built = /obj/Built/Path
 
-		density = false
+		density = FALSE
 
 	sand_path
 		main_tool = /obj/Item/Tools/Shovel
@@ -103,7 +104,7 @@ builder/masonry
 		req = list(SAND = 1)
 		built = /obj/Built/Path/Sand
 
-		density = false
+		density = FALSE
 
 	cobble_path
 		main_tool = /obj/Item/Tools/Trowel
@@ -119,7 +120,7 @@ builder/masonry
 		req = list(	BRICK	=	2)
 		built = /obj/Built/Path/Cobblestone
 
-		density = false
+		density = FALSE
 
 	sscobble_path
 		main_tool = /obj/Item/Tools/Trowel
@@ -135,7 +136,7 @@ builder/masonry
 		req = list(	SSBRICK	=	2)
 		built = /obj/Built/Path/Sand/Cobblestone
 
-		density = false
+		density = FALSE
 
 	forge
 		name = "Forge"
@@ -253,15 +254,15 @@ builder/masonry
 					TAR		=	3)
 		built = /obj/Built/Stone_Floor
 
-		density = false
+		density = FALSE
 
 	brick_bridge
 		name = "Brick Bridge"
 		icon = 'code/Masonry/Stone Bridge.dmi'
 		group_only = 1
 		valid_loc(turf/t)
-			if(is_water(t)) return true
-			if(istype(t, /turf/Environment/Lava)) return true
+			if(is_water(t)) return TRUE
+			if(istype(t, /turf/Environment/Lava)) return TRUE
 
 		desc = "A sturdy and fireproof bridge<br />\
 				6 Bricks<br />\
@@ -274,7 +275,7 @@ builder/masonry
 					TAR		=	4)
 		built = /obj/Built/Stone_Bridge
 
-		density = false
+		density = FALSE
 
 
 	ssbrick_wall
@@ -341,15 +342,15 @@ builder/masonry
 					TAR		=	3)
 		built = /obj/Built/Sandstone_Floor
 
-		density = false
+		density = FALSE
 
 	ssbrick_bridge
 		name = "Sandstone Bridge"
 		icon = 'code/Masonry/Sandstone Bridge.dmi'
 		group_only = 1
 		valid_loc(turf/t)
-			if(is_water(t)) return true
-			if(istype(t, /turf/Environment/Lava)) return true
+			if(is_water(t)) return TRUE
+			if(istype(t, /turf/Environment/Lava)) return TRUE
 
 		desc = "A sturdy and fireproof bridge<br />\
 				6 Sandstone Bricks<br />\

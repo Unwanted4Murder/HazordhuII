@@ -5,38 +5,38 @@ mob
 
 	Animal
 		//	bird properties
-		var tmp/flying = false
+		var tmp/flying = FALSE
 		proc/start_flying()
 			if(flying) return
 			icon_state = "fly"
-			flying = true
+			flying = TRUE
 			pixel_y = 8
-			density = false
+			density = FALSE
 			show_shadow()
 
 		proc/stop_flying()
 			if(!flying) return
 			icon_state = ""
-			flying = false
+			flying = FALSE
 			pixel_y = 0
-			density = true
+			density = TRUE
 			hide_shadow()
 
 		var tmp/image/shadow
-		var tmp/has_shadow = false
+		var tmp/has_shadow = FALSE
 		proc/show_shadow()
 			if(has_shadow) return
 			if(!shadow)
 				shadow = new
 				shadow.icon = 'peek shadow.dmi'
 				shadow.layer = TURF_LAYER
-			has_shadow = true
+			has_shadow = TRUE
 			overlays += shadow
 
 		proc/hide_shadow()
 			if(shadow && has_shadow)
 				overlays -= shadow
-				has_shadow = false
+				has_shadow = FALSE
 
 		Peek
 			var
@@ -87,11 +87,11 @@ mob
 				if(ai_active)
 					if(flying)
 						pixel_y = 8
-						density = false
+						density = FALSE
 						show_shadow()
 					else
 						pixel_y = 0
-						density = true
+						density = TRUE
 						hide_shadow()
 
 			tamed(mob/player/m)

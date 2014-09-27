@@ -1,20 +1,20 @@
 obj/Built
 	Windows
-		density = true
-		opacity = true
+		density = TRUE
+		opacity = TRUE
 		var open_state = "open"
 		var closed_state = ""
 		interact()
 			if(opacity)
 				icon_state = open_state
-				opacity = false
+				opacity = FALSE
 			else
 				icon_state = closed_state
-				opacity = true
+				opacity = TRUE
 			changed_opacity()
 
 	Floors
-		density = false
+		density = FALSE
 		layer = TURF_LAYER + 1
 		New()
 			..()
@@ -23,12 +23,12 @@ obj/Built
 			for(var/obj/footprint/f in loc) f.set_loc()
 
 	Doors
-		density = true
-		opacity = true
+		density = TRUE
+		opacity = TRUE
 
 		SET_BOUNDS(0, 0, 32, 32)
 
-		var Locked = false
+		var Locked = FALSE
 		var open_state = "open"
 		var closed_state = "closed"
 		var locked_state = "locked"
@@ -36,17 +36,17 @@ obj/Built
 		proc/open()
 			if(Locked) return
 			icon_state = open_state
-			density = false
-			opacity = false
+			density = FALSE
+			opacity = FALSE
 			changed_opacity()
-			return true
+			return TRUE
 
 		proc/close()
 			icon_state = closed_state
-			density = true
+			density = TRUE
 			opacity = initial(opacity)
 			changed_opacity()
-			return true
+			return TRUE
 
 		proc/toggle() is_open() ? close() : open()
 
@@ -57,11 +57,11 @@ obj/Built
 		proc/lock()
 			close()
 			icon_state = locked_state
-			Locked = true
+			Locked = TRUE
 
 		proc/unlock()
 			icon_state = closed_state
-			Locked = false
+			Locked = FALSE
 
 		proc/toggle_lock()
 			if(Locked)
@@ -82,16 +82,16 @@ obj/Built
 			if(!lock) return
 			if(lock.find_key(m))
 				toggle_lock()
-				return true
+				return TRUE
 
 		Door
 			icon = 'code/Woodworking/Door.dmi'
-			Flammable = true
+			Flammable = TRUE
 			base_health = 200
 
 		Log_Door
 			icon = 'code/Woodworking/Log Door.dmi'
-			Flammable = true
+			Flammable = TRUE
 			base_health = 150
 
 		Stone_Door
@@ -105,16 +105,16 @@ obj/Built
 
 		Barred_Gate
 			icon = 'code/Smithing/Barred Gate.dmi'
-			opacity = false
+			opacity = FALSE
 			base_health = 400
 
 		Gate
 			icon = 'code/Woodworking/Gate.dmi'
-			opacity = false
-			Flammable = true
+			opacity = FALSE
+			Flammable = TRUE
 			base_health = 100
 
-			var dir_checked = false
+			var dir_checked = FALSE
 			/savedatum/var
 				gate_dir_checked
 
@@ -136,19 +136,19 @@ obj/Built
 
 			proc/can_join_with(atom/movable/o)
 				var d = get_dir(src, o)
-				if(d & d - 1) return false
-				if(o == src) return false
-				if(o.type == type) return true
-				if(o.type == /obj/Built/Fence) return true
-				if(o.type == /obj/Built/fence_part) return true
-				if(!o.density) return false
+				if(d & d - 1) return FALSE
+				if(o == src) return FALSE
+				if(o.type == type) return TRUE
+				if(o.type == /obj/Built/Fence) return TRUE
+				if(o.type == /obj/Built/fence_part) return TRUE
+				if(!o.density) return FALSE
 				if(istype(o, /turf/Environment))
-					if(istype(o, /turf/Environment/Cave)) return true
-					if(istype(o, /turf/Environment/Cliffs)) return true
+					if(istype(o, /turf/Environment/Cave)) return TRUE
+					if(istype(o, /turf/Environment/Cliffs)) return TRUE
 				if(istype(o)) return !(o.bound_width < 32 || o.bound_height < 32)
 
 			proc/check_dir()
-				dir_checked = true
+				dir_checked = TRUE
 				var atom/join_with
 				var near[] = orange(1, loc)
 
@@ -181,7 +181,7 @@ obj/Built
 
 		Pallisade_Door
 			icon = 'code/Woodworking/Pallisade Door.dmi'
-			Flammable = true
+			Flammable = TRUE
 			base_health = 200
 			overlays = list(/obj/Built/Doors/Pallisade_Door/Pallisade_Door_Top)
 			Pallisade_Door_Top
@@ -191,7 +191,7 @@ obj/Built
 
 		skin_door
 			name = "Skin Door"
-			Flammable = true
+			Flammable = TRUE
 			base_health = 200
 			fur
 				name = "Fur Door"
@@ -204,7 +204,7 @@ obj/Built
 				icon = 'code/Woodworking/skin_doors/ngrawl_fur.dmi'
 			flargl
 				icon = 'code/Woodworking/skin_doors/flargl_skin.dmi'
-				Flammable = false
+				Flammable = FALSE
 			troll
 				icon = 'code/Woodworking/skin_doors/troll_skin.dmi'
 			human
@@ -218,7 +218,7 @@ obj
 		Mould
 			icon = 'code/Smithing/Key.dmi'
 			icon_state = "mold"
-			Stackable = false
+			Stackable = FALSE
 			var id
 			New(x, string)
 				..()
@@ -229,7 +229,7 @@ obj
 		Metal
 			Keychain
 				icon = 'code/Smithing/Keychain.dmi'
-				Stackable = false
+				Stackable = FALSE
 
 				//	Detach a key
 				use(mob/player) if(loc == player)
@@ -244,7 +244,7 @@ obj
 
 			Key
 				icon = 'code/Smithing/Key.dmi'
-				Stackable = false
+				Stackable = FALSE
 
 				var id
 				New(x, string)
@@ -267,7 +267,7 @@ obj
 			Lock
 				icon = 'code/Smithing/Lock.dmi'
 				var id
-				Stackable = false
+				Stackable = FALSE
 
 				New(x, string)
 					..()

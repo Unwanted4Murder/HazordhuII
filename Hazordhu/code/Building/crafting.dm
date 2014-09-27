@@ -25,11 +25,11 @@ builder
 		build_amount = 1
 		obj/Item/Tools/main_tool
 
-		group_only = false
+		group_only = FALSE
 		allowed_races = HUMAN | ORC	//	1 = human, 2 = orc, 3 = both
 
 		//	Can it be made in the tutorial area?
-		allowed_in_tutorial = false
+		allowed_in_tutorial = FALSE
 
 	proc
 		build_amount() return build_amount
@@ -41,20 +41,20 @@ builder
 
 		valid_loc(turf/Environment/t, mob/player/player)
 			if(t)
-				if(isturf(t)) for(var/PropertyDeed/deed in t.deeds) if(!deed.can_build(player)) return false
-				if(ismob(t) && !ispath(built, /obj/Item)) return false
-				if(iswater(t) && !t.is_bridged()) return false
+				if(isturf(t)) for(var/PropertyDeed/deed in t.deeds) if(!deed.can_build(player)) return FALSE
+				if(ismob(t) && !ispath(built, /obj/Item)) return FALSE
+				if(iswater(t) && !t.is_bridged()) return FALSE
 				if(density)
-					if(t.density) return false
+					if(t.density) return FALSE
 					for(var/atom/movable/o in t)
 						if(istype(o, /obj/cliff_border)) continue
-						if(o.density && !istype(o, /obj/Built)) return false
-				for(var/obj/Resource/r in t) if(r.density) return false
-				return true
+						if(o.density && !istype(o, /obj/Built)) return FALSE
+				for(var/obj/Resource/r in t) if(r.density) return FALSE
+				return TRUE
 
-		condition(mob/m) return true
+		condition(mob/m) return TRUE
 
-		/*	Returns true if m has required materials.
+		/*	Returns TRUE if m has required materials.
 			req: Paths of required materials, associated to amount
 			has: Paths of necessary materials m has, associated to amount
 		*/
@@ -68,8 +68,8 @@ builder
 			for(var/item in req)
 				if(_has[item] < req[item])
 					mat_fail(m)
-					return false
-			return true
+					return FALSE
+			return TRUE
 
 		mat_fail(mob/m)
 			m.aux_output("You do not have enough materials to make \a [name].")
@@ -77,7 +77,7 @@ builder
 		tool_check(mob/player/player)
 			if(main_tool && !player.is_equipped(main_tool) && !player.equip(locate(main_tool) in player))
 				player.aux_output("You need a [tool2text(main_tool)] to make \a [src].")
-			else return true
+			else return TRUE
 
 	//	Called when the player successfully crafted this.
 	proc/success(mob/player/player, products[])
@@ -98,7 +98,7 @@ builder
 
 	MouseDrag(BuildGrid/build_cell/cell)
 		var mob/player/p = usr
-		p.dragging_builder = true
+		p.dragging_builder = TRUE
 		if(istype(cell))
 			p.BuildGrid.select(cell)
 		else p.BuildGrid.deselect()
@@ -106,17 +106,17 @@ builder
 	MouseDown()
 		var mob/player/p = usr
 		if(can_craft(p))
-			p.dragging_builder = true
+			p.dragging_builder = TRUE
 			p.BuildGrid.show(src)
 
 	MouseUp()
 		var mob/player/p = usr
-		p.dragging_builder = false
+		p.dragging_builder = FALSE
 		p.BuildGrid.hide()
 
 	MouseDrop(BuildGrid/build_cell/cell)
 		var mob/player/p = usr
-		p.dragging_builder = false
+		p.dragging_builder = FALSE
 
 		if(istype(cell))
 			var build_loc = cell.loc
@@ -153,7 +153,7 @@ builder
 
 		if(!mat_check(player)) return
 
-		return true
+		return TRUE
 
 	proc/craft(mob/player/player, turf/buildloc)
 		if(!can_craft(player)) return

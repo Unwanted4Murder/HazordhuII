@@ -49,7 +49,7 @@ obj
 			//	How far can the wall support by itself?
 			var supported
 
-			proc/depleted() if(invisibility) return true
+			proc/depleted() if(invisibility) return TRUE
 
 			//	When a cave wall is mined, it becomes invisible
 			proc/deplete()
@@ -57,8 +57,8 @@ obj
 
 				resources = 0
 				icon = null
-				opacity = false
-				density = false
+				opacity = FALSE
+				density = FALSE
 				invisibility = 100
 
 				clear_edges()
@@ -75,15 +75,15 @@ obj
 
 				resources = initial(resources)
 				icon = initial(icon)
-				opacity = true
-				density = true
-				invisibility = false
+				opacity = TRUE
+				density = TRUE
+				invisibility = FALSE
 
 				for(var/obj/Mining/cave_walls/cave in range(1, src))
 					cave.remake_edges()
 
 				for(var/obj/Item/o in loc)
-					o.complete_delete = true
+					o.complete_delete = TRUE
 					del o
 
 				for(var/mob/mortal/m in loc)
@@ -100,7 +100,7 @@ obj
 
 			//	Is the cave wall supported by anything
 			proc/is_supported(obj/exclude, cave_in)
-				if(!depleted()) return true
+				if(!depleted()) return TRUE
 
 				var range[] = orange(src)
 				if(exclude) range -= exclude
@@ -108,30 +108,32 @@ obj
 				//	Check for supporting buildings nearby
 				for(var/obj/Built/b in range)
 					if(b.can_support && b.can_support >= get_dist(src, b))
-						return true
+						return TRUE
 
 				//	Check for supporting cave walls nearby
 				if(!cave_in) for(var/obj/Mining/cave_walls/cave in range)
 					if(!cave.invisibility && cave.supported >= get_dist(src, cave))
-						return true
+						return TRUE
 
-				return false
+				return FALSE
 
-			var caving = false
+			var caving = FALSE
 			//	When a cave wall caves in
 			proc/cave_in()
+				set waitfor = FALSE
 				if(!invisibility) return
-				caving = true
-				spawn(-1)
-					for(var/mob/player/p in orange(10, src)) p.client.shake(45)
-					sleep rand(20, 30)
+				caving = TRUE
 
-					restore()
+				for(var/mob/player/p in orange(10, src)) p.client.shake(45)
+				sleep rand(20, 30)
 
-					for(var/obj/Mining/cave_walls/cave in orange(supported + 1, src))
-						if(cave.caving || prob(90) || cave.is_supported(cave_in = true)) continue
-						cave.cave_in()
-					caving = false
+				restore()
+
+				for(var/obj/Mining/cave_walls/cave in orange(supported + 1, src))
+					if(cave.caving || prob(90) || cave.is_supported(cave_in = TRUE)) continue
+					cave.cave_in()
+					sleep(-1)
+				caving = FALSE
 
 			dirt
 				icon = 'code/Turfs/Cave Walls.dmi'

@@ -1,11 +1,5 @@
 #define SUB_PASSPORT "14c8723ec0a0f2cb"
 
-#define true 1
-#define false 0
-
-#define tile_width 32
-#define tile_height 32
-
 //	Map Save macros
 #define LOAD_FLAG	1
 #define SAVE_FLAG	2
@@ -51,7 +45,7 @@
 #define is_cardinal(d) !is_diagonal(d)
 proc/ceil(n) return -round(-n)
 
-#define PIXEL_MOVEMENT true
+#define PIXEL_MOVEMENT 1
 #if PIXEL_MOVEMENT
 /*
 	To convert from "x1,y1 to x2,y2" to numbers:
@@ -85,3 +79,5 @@ atom/movable/animate_movement = SLIDE_STEPS
 	#define SET_TBOUNDS(t)
 	#define SET_STEP_SIZE(n)
 #endif
+
+client/proc/set_keys()

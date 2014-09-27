@@ -74,9 +74,11 @@ world
 		..()
 
 mob/player
+	#if !THIN_SKIN
 	set_game_screen()
 		..()
 		song_list()
+	#endif
 
 	var
 		tmp/sound/current_song

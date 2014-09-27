@@ -25,7 +25,7 @@ turf/Environment/cliff_edge
 
 obj/cliff_border
 	icon = 'code/Turfs/Clifft_top.dmi'
-	density = true
+	density = TRUE
 	layer = TURF_LAYER + 0.9
 	north
 		icon_state = "1"
@@ -100,7 +100,7 @@ turf
 		Lava
 			icon = 'code/Turfs/Lava.dmi'
 			icon_state = "Summer"
-			density = true
+			density = TRUE
 
 		Ice
 			icon = 'code/Turfs/Ice.dmi'
@@ -113,7 +113,7 @@ turf
 		Water
 			icon = 'code/Turfs/Water.dmi'
 			icon_state = "Summer"
-			density = true
+			density = TRUE
 
 			River
 				icon_state = "river map"
@@ -130,7 +130,7 @@ turf
 								if(WEST)  path = /obj/cliff_border/east
 								else continue
 							var obj/cliff_border/b = new path (t)
-							b.density = false
+							b.density = FALSE
 					..()
 
 			noF
@@ -151,7 +151,7 @@ turf
 									if(WEST)  path = /obj/cliff_border/east
 									else continue
 								var obj/cliff_border/b = new path (t)
-								b.density = false
+								b.density = FALSE
 						..()
 
 			ice_edge
@@ -160,13 +160,13 @@ turf
 
 		Ocean
 			icon = 'code/Turfs/ocean.dmi'
-			density = true
+			density = TRUE
 
 		water_rock
 			icon = 'water_rock.dmi'
 			icon_state = "1"
 			name = "Sharp Rocks"
-			density = true
+			density = TRUE
 			New()
 				..()
 				icon_state = "[rand(1, 6)]"
@@ -176,12 +176,12 @@ turf
 		Rot_Water
 			icon = 'code/Turfs/Rot Water.dmi'
 			icon_state = "Summer"
-			density = true
+			density = TRUE
 
 		Cliffs
 			icon = 'code/Turfs/lessa_cliff2.dmi'
 			icon_state = "Summer"
-			density = true
+			density = TRUE
 			name = "Cliffs"
 
 			edge_dirs = DIR_CARDINAL
@@ -189,13 +189,13 @@ turf
 			no_snow
 			snow
 				icon_state = "winter"
-				frozen = true
+				frozen = TRUE
 
 			//	Leads to the underground
 			Caves
 				name = "Cave"
 				icon_state = "out"
-				density = false
+				density = FALSE
 				Small
 					icon = 'Caves Small.dmi'
 					No/Enter()
@@ -207,8 +207,8 @@ turf
 			icon = 'code/Turfs/Cave Walls.dmi'
 			icon_state = "No Mine"
 			edge_dirs = DIR_CARDINAL
-			density = true
-			opacity = true
+			density = TRUE
+			opacity = TRUE
 
 			Enter(mob/title/t) return !istype(t) && ..()
 
@@ -216,14 +216,14 @@ turf
 			Caves
 				name = "Cave"
 				icon_state = "in"
-				density = false
+				density = FALSE
 				Small
 					icon = 'Caves Small.dmi'
 					No/Enter()
 
 		Rock
 			icon = 'Stalagmite.dmi'
-			density = true
+			density = TRUE
 			icon_state = "1"
 			New()
 				..()

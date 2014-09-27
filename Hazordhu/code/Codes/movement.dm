@@ -1,9 +1,4 @@
-
 var looper/move_loop = new ("move tick")
-
-mob/player/PostLogin()
-	..()
-	client.set_macros()
 
 client
 	set_macros()
@@ -12,7 +7,8 @@ client
 		move_loop.add(mob)
 		return ..()
 
-	proc/set_keys()
+	set_keys()
+		. = ..()
 		keys.Add("w", "s", "d", "a", "north", "south", "east", "west")
 		keys.Add("e", "x", "g", "tab", "alt", "ctrl", "shift", "r")
 		keys.Add("escape", "return", "space")
@@ -22,7 +18,7 @@ client
 		if(istype(keys))
 			for(var/k in args)
 				if(keys[k])
-					return true
+					return TRUE
 
 	//	Disable normal movement
 	Move()
@@ -64,12 +60,10 @@ mob
 				lose_stamina(0.05)
 		..()
 
-#if !PIXEL_MOVEMENT
 	var tmp/_next_move
-#endif
 
 	proc/move_tick()
-		moved = false
+		moved = FALSE
 
 #if PIXEL_MOVEMENT
 		var move_speed = move_speed() * 30 / global.fps
@@ -78,12 +72,15 @@ mob
 #else
 		if(world.time < _next_move) return
 		var move_input[] = move_input()
-		glide_size = ((move_input[1] && move_input[2]) ? 48 : 32) / move_speed * world.tick_lag
 		if(!vec2_iszero(move_input))
-			_next_move = world.time + move_speed()
+			var diagonal = move_input[1] && move_input[2]
+			var distance_factor = diagonal ? sqrt(2) : 1
+			glide_size = round(distance_factor * move_speed(), 1)
+			var move_delay =  32 * distance_factor * world.tick_lag / (glide_size || 1)
+			_next_move = world.time + move_delay
 #endif
 
-		var d = offset2dir(move_input)
+		var d = move_input && offset2dir(move_input)
 
 		if(dragging_body)
 			if(!(dragging_body.KO || dragging_body.Dead) || bounds_dist(src, dragging_body) > 8)
@@ -98,11 +95,11 @@ mob
 
 		if(dragging_built)
 			move_input = vec2_scale(move_input, 0.5)
-			step_size *= 0.5
+			SET_STEP_SIZE(step_size * 0.5)
 			var old_dir = dragging_built.dir
 			dragging_built.step_size = step_size
 
-			//	do some kind of movemment
+			//	do some kind of movement
 			//	if the object fails to move, so does the dragger
 			//	if the dragger fails to move, so does the object
 
@@ -155,7 +152,7 @@ mob
 					mover.dir = d
 
 			if(.)
-				moved = true
+				moved = TRUE
 
 				if(mover != src)
 					dir = mover.dir
@@ -202,17 +199,18 @@ mob
 	proc/can_move() return !Locked
 
 	proc/move_input()
-	player/move_input() return can_move() && vec2(has_key("east" , "d") - has_key("west" , "a"), has_key("north", "w") - has_key("south", "s"))
+	player/move_input()
+		return can_move() && vec2(has_key("east" , "d") - has_key("west" , "a"), has_key("north", "w") - has_key("south", "s"))
 
 	//	Holding shift generally makes you go faster.
 	proc/is_running()
 		var mob/humanoid/h = src
 		if(istype(h))
-			if(h.mount || h.boat) return false
-			if(h.pulling_cart) return false
-			if(h.dragging_body) return false
+			if(h.mount || h.boat) return FALSE
+			if(h.pulling_cart) return FALSE
+			if(h.dragging_body) return FALSE
 
-		if(has_key("shift")) if(Stamina > 5) return true
+		if(has_key("shift")) if(Stamina > 5) return TRUE
 
 	proc/move_speed()
 
@@ -222,9 +220,9 @@ mob
 	var run_speed = 4
 	var god_speed = 32
 #else
-	var walk_speed = 4
-	var run_speed = 2
-	var god_sped = 0
+	var walk_speed = 2
+	var run_speed = 4
+	var god_speed = 32
 #endif
 	move_speed()
 		if(mount)

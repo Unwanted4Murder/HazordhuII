@@ -20,17 +20,20 @@ proc/loadTOS()
 
 mob/player
 	verb/terms()
-		set hidden = true
-		winshow(src, "tos", false)
+		set hidden = TRUE
+		winshow(src, "tos", FALSE)
 		TOS_List.Add(key)
 
 	proc/LoginCheck()
-		var days = client.CheckPassport(SUB_PASSPORT)
+		var days = DevelopmentServer || client.CheckPassport(SUB_PASSPORT)
 		if(days)
-			if(days == -1)
-				aux_output("You're a lifetime subscriber!")
-			else aux_output("You're a subscriber for [days] more day\s!")
-			isSubscriber = true
+			if(DevelopmentServer)
+				aux_output("You have subscriber status inside this development server.")
+			else
+				if(days == -1)
+					aux_output("You're a lifetime subscriber!")
+				else aux_output("You're a subscriber for [days] more day\s!")
+			isSubscriber = TRUE
 			if(!SubBens)
 				MaxHealth	+=	10
 				Health		+=	10
@@ -40,7 +43,7 @@ mob/player
 
 				Strength	+=	5
 				Item_Limit	=	20
-				SubBens		=	true
+				SubBens		=	TRUE
 
 		else if(SubBens)
 			MaxHealth	-=	10
@@ -49,11 +52,11 @@ mob/player
 			MaxStamina	-=	10
 			Strength	-=	5
 			Item_Limit	=	15
-			SubBens		=	false
+			SubBens		=	FALSE
 
 		if(client.IsByondMember())
 			aux_output("You are a BYOND member!")
-			isBYONDMember	=	true
+			isBYONDMember	=	TRUE
 			if(!MemBens)
 				MaxHealth	+=	10
 				Health		+=	10
@@ -63,7 +66,7 @@ mob/player
 
 				Strength	+=	5
 				Item_Limit	=	20
-				MemBens		=	true
+				MemBens		=	TRUE
 
 		else if(MemBens)
 			MaxHealth	-=	10

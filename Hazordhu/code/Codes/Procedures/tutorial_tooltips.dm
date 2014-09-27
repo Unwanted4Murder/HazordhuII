@@ -17,7 +17,7 @@ mob/player
 		n ++
 		if(n < BUX.len)
 			winset(src, "bux_next", "is-visible=true; command='bux [n]'")
-		else winshow(src, "bux_next", false)
+		else winshow(src, "bux_next", FALSE)
 
 
 var tooltips[] = list(

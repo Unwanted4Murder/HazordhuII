@@ -5,73 +5,73 @@ mob/player
 		hunger/hunger_bar
 		thirst/thirst_bar
 
-	var tmp/statbars[]
-
 	Stat()
 		..()
-		update_statbars()
+		if(Made)
+			if(!health_bar)
+				health_bar = new (src)
+				energy_bar = new (src)
+				hunger_bar = new (src)
+				thirst_bar = new (src)
 
-	proc/make_statbars()
-		health_bar = new (src)
-		energy_bar = new (src)
-		hunger_bar = new (src)
-		thirst_bar = new (src)
-		statbars = list(
-			health_bar, energy_bar,
-			hunger_bar, thirst_bar)
+			var bars[] = list(
+				health = health_bar,
+				energy = energy_bar,
+				hunger = hunger_bar,
+				thirst = thirst_bar)
 
-	proc/update_statbars() if(Made)
-		if(!statbars) make_statbars()
+			var percents[] = list(
+				health = Health / MaxHealth,
+				energy = Stamina / MaxStamina,
+				hunger = 1 - Hunger / 100,
+				thirst = 1 - Thirst / 100)
 
-		var bars[] = list(
-			health = health_bar,
-			energy = energy_bar,
-			hunger = hunger_bar,
-			thirst = thirst_bar)
+			var force_show = has_key("x")
 
-		var percents[] = list(
-			health = Health / MaxHealth,
-			energy = Stamina / MaxStamina,
-			hunger = 1 - Hunger / 100,
-			thirst = 1 - Thirst / 100)
+			for(var/stat in bars)
+				var hud/bar/stat/bar = bars[stat]
 
-		var force_show = has_key("x")
+				if(force_show || percents[stat] < 0.7)
+					bar.FadeIn()
+				else bar.FadeOut()
 
-		for(var/stat in bars)
-			var hud/bar/stat/bar = bars[stat]
+				bar.set_value(percents[stat])
 
-			//	if the stat is below 70%, force it visible
-			if(force_show || percents[stat] < 0.7)
-				bar.FadeIn()
-			else bar.FadeOut()
+#if !THIN_SKIN
+	proc/show_statbars() for(var/hud/bar/stat/bar in list(health_bar, energy_bar, hunger_bar, thirst_bar)) bar.FadeIn()
+	proc/hide_statbars() for(var/hud/bar/stat/bar in list(health_bar, energy_bar, hunger_bar, thirst_bar)) bar.FadeOut()
 
-			bar.set_value(percents[stat])
+	key_down(k)
+		if(k == "x")
+			show_statbars()
+		else ..()
 
-	proc/show_statbars()
-		for(var/hud/bar/stat/bar in statbars)
-			bar.FadeIn()
-
-	proc/hide_statbars()
-		for(var/hud/bar/stat/bar in statbars)
-			bar.FadeOut()
-
-	key_down(k)	k == "x" ? update_statbars() : ..()
-	key_up(k)	k == "x" ? update_statbars() : ..()
-
+	key_up(k)
+		if(k == "x")
+			hide_statbars()
+		else ..()
+#endif
 hud/bar
 	stat
-		var faded = false
-		proc/FadeIn() if(faded)
-			faded = false
+		build_parts()
+			..()
 			for(var/hud/bar/part/part in parts)
-				part.alpha = 32
-				animate(part, alpha = 224, time = 2)
+				part.alpha = 100
 
-		proc/FadeOut() if(!faded)
-			faded = true
+		var fade = FALSE
+
+		proc/FadeIn()
+			if(!fade) return
+			fade = FALSE
 			for(var/hud/bar/part/part in parts)
-				part.alpha = 224
-				animate(part, alpha = 32, time = 2)
+				animate(part, alpha = 200, time = 1)
+
+		proc/FadeOut()
+			if(fade) return
+			fade = TRUE
+			for(var/hud/bar/part/part in parts)
+				animate(part, alpha = 100, time = 1)
+
 
 	health
 		parent_type = /hud/bar/stat

@@ -78,17 +78,17 @@ hud/box
 		maptext_anchor.maptext_height = maptext_height
 		maptext_anchor.maptext = maptext
 
-	var visible = false
+	var visible = FALSE
 	proc/is_visible() return visible
 
 	proc/toggle() visible ? hide() : show()
 
 	proc/show() if(visible)
-		visible = true
+		visible = TRUE
 		client.screen |= parts
 
 	proc/hide() if(visible)
-		visible = false
+		visible = FALSE
 		client.screen -= parts
 
 	part

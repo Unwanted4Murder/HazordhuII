@@ -18,6 +18,6 @@ turf
 		for(var/n in 1 to 3)
 			var obj/Item/item = new item_path
 			item.move_to(digger.loc, digger.step_x, digger.step_y)
-		return true
+		return TRUE
 
 	proc/forage(mob/humanoid/forager)

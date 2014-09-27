@@ -26,42 +26,43 @@ var looper/lighting_loop/Lighting = new
 looper/lighting_loop
 	var ambient_light
 	proc/time2light()
-		return (1 + cos(world.time * 6)) / 2
+		//return (1 + cos(world.time * 6)) / 2
 
 		var hour = text2num(time2text(world.timeofday, "hh"))
 		return (1 - cos(hour * 15)) / 2
 
 	tick()
 		..()
-		var new_ambient = time2light()
-		if(round(lerp(0, 230, ambient_light)) != round(lerp(0, 230, new_ambient)))
-			ambient_light = new_ambient
+		if(world.time > 1)
+			var new_ambient = time2light()
+			if(round(lerp(0, 230, ambient_light)) != round(lerp(0, 230, new_ambient)))
+				ambient_light = new_ambient
 
-		client_views()
+			client_views()
 
-		for(var/light_source/s) s.tick()
-		for(var/turf/t in client_views)
-			var shading/s = t.shading || new (t)
-			s.tick()
+			for(var/light_source/s) s.tick()
+			for(var/turf/t in client_views)
+				var shading/s = t.shading || new (t)
+				s.tick()
 
 //	to be attached to atoms
 light_source
 	parent_type = /mob
 	invisibility = 100
 	icon = 'debug light source.dmi'
-	density = false
-	season_updates = false
+	density = FALSE
+	season_updates = FALSE
 
 	var tmp
 		atom/anchor
 		atom/movable/mover
-		stale = true
+		stale = TRUE
 		effect[0]
 		radius = 3
 		intensity = 1
 		visible
 
-	New(atom/o, radius = radius, intensity = intensity, visible = true)
+	New(atom/o, radius = radius, intensity = intensity, visible = TRUE)
 		if(!o) return
 		o.light = src
 		anchor = o
@@ -91,7 +92,7 @@ light_source
 		if(old_effect && old_effect.len) for(var/shading/s in old_effect) s.sources -= src
 		if(new_effect && new_effect.len) for(var/shading/s in new_effect) s.sources[src] = effect(s)
 		effect = new_effect
-		stale = false
+		stale = FALSE
 		mover && set_loc(mover.loc, mover.step_x, mover.step_y)
 
 	proc/get_affected()
@@ -106,32 +107,33 @@ light_source
 	proc/set_intensity(n)
 		if(intensity == n) return
 		intensity = n
-		stale = true
+		stale = TRUE
 
 	proc/set_radius(n)
 		if(radius == n) return
 		radius = n
-		stale = true
+		stale = TRUE
 
 	proc/toggle() set_visibility(!visible)
-	proc/turn_on() set_visibility(true)
-	proc/turn_off() set_visibility(false)
+	proc/turn_on() set_visibility(TRUE)
+	proc/turn_off() set_visibility(FALSE)
 	proc/set_visibility(n)
 		if(visible == n) return
 		visible = n
-		stale = true
+		stale = TRUE
 
 turf/var/tmp/shading/shading
 
 shading
 	parent_type = /obj
-	icon = 'code/events/lighting.dmi'
-	season_updates = false
+	icon = 'code/events/new lighting.dmi'
+	season_updates = FALSE
 	layer = 50
 	mouse_opacity = 0
 
 	var tmp
-		max_brightness = 230
+		min_brightness = 30
+		max_brightness = 255
 		sources[0]
 		active
 		cx
@@ -142,6 +144,9 @@ shading
 		cx = cx()
 		cy = cy()
 		t.shading = src
+		for(var/shading/s in loc)
+			if(s != src)
+				del s
 
 	var ambient
 	var brightness
@@ -154,8 +159,12 @@ shading
 			sources[s] = clamp(sources[s], 0, 1)
 			if(sources[s]) total += sources[s]
 			else sources -= s
-		brightness = total && clamp(round(total * max_brightness), 0, max_brightness)
-		icon_state = "[brightness]"
+
+		brightness = clamp(round(total * max_brightness), min_brightness, max_brightness)
+
+		var new_alpha = 255 - brightness
+		if(alpha != new_alpha)
+			animate(src, alpha = new_alpha, time = 2)
 
 atom
 	changed_opacity() emit_light()
@@ -163,7 +172,7 @@ atom
 	proc/emit_light(range = world.view) for(var/light_source/light)
 		var full_radius = range + light.radius
 		if(abs(light.x - x) < full_radius && abs(light.y - y) < full_radius)
-			light.stale = true
+			light.stale = TRUE
 
 	set_light(radius, intensity, visible)
 		if(light)

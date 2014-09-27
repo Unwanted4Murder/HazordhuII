@@ -10,23 +10,23 @@
 
 mob
 	title
-		attackable = false
-		Cross() return true
+		attackable = FALSE
+		Cross() return TRUE
 
 	Cross(obj/Item/Projectile/p)
 		if(istype(p))
-			if(Dead) return true
-			if(!density) return true
-			if(!p.density) return true
-			if(src == p.Owner) return true
-			return false
+			if(Dead) return TRUE
+			if(!density) return TRUE
+			if(!p.density) return TRUE
+			if(src == p.Owner) return TRUE
+			return FALSE
 		return ..()
 
 	Animal
 		Cross(obj/Item/Projectile/p)
 			if(istype(p) && p.Owner)
 				if(src == p.Owner.mount)
-					return true
+					return TRUE
 			return ..()
 
 
@@ -41,10 +41,10 @@ mob
 			var obj/Item/Projectile/P = new shooter.projectile_type (loc, -1)
 			P.set_loc(loc, step_x, step_y)
 
-			shooter.inuse = true
+			shooter.inuse = TRUE
 			spawn(10)
 				if(shooter)
-					shooter.inuse = false
+					shooter.inuse = FALSE
 
 			P.Owner = src
 
@@ -62,7 +62,7 @@ mob
 				P.Race = Race
 
 			if(!client)
-				P.can_get = false
+				P.can_get = FALSE
 				spawn(MINUTE)
 					del P
 
@@ -233,8 +233,8 @@ obj
 
 		proc/move_tick_stop()
 			if(Mod & ARROW_EXPLODE) for(var/turf/t in view(src, 1)) new /obj/Fire (t)
-			density = false
-			Mod = false
+			density = FALSE
+			Mod = FALSE
 			icon = down_icon
 
 		proc/move_tick()
@@ -261,7 +261,7 @@ obj
 				move_loop.remove(src)
 
 				var mob/humanoid/h = O
-				var blocked = false
+				var blocked = FALSE
 				if(istype(h))
 					if(h.blocking)
 						var chance
@@ -276,7 +276,7 @@ obj
 							if(abs(angle_difference(mob_angle, arrow_angle + 180)) < 30)
 								h.emote("blocks an arrow")
 								h.used_shield()
-								blocked = true
+								blocked = TRUE
 
 				var mob/mortal/m = O
 				if(istype(m) && !blocked)

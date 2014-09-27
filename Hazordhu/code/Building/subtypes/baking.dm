@@ -3,14 +3,15 @@ builder/baking
 	skill = COOKING
 
 	condition(mob/m)
+		if(!m.loc) return
 		var obj/Built/Oven/oven = locate(/obj/Built/Oven) in obounds(m, 16)
 		if(!oven)
 			m.aux_output("You need to be by an oven.")
-			return false
+			return FALSE
 		if(oven.icon_state != "lit")
 			m.aux_output("The oven needs to be lit.")
-			return false
-		return true
+			return FALSE
+		return TRUE
 
 	bread
 		name = "Bread"

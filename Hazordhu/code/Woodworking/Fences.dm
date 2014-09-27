@@ -20,14 +20,14 @@ obj
 			..()
 
 		fence_part
-			no_save = true
+			no_save = TRUE
 
-			Flammable = false
+			Flammable = FALSE
 			name = "Fence"
 
 			icon = 'code/Woodworking/fence.dmi'
 			icon_state = "child"
-			density = true
+			density = TRUE
 
 			north { SET_TBOUNDS("15,8 to 18,32"); dir = 1 }
 			south { SET_TBOUNDS("15,1 to 18,11"); dir = 2 }
@@ -42,26 +42,26 @@ obj
 
 		Fence
 			name = "Fence Post"
-			density = true
+			density = TRUE
 			SET_TBOUNDS("15,8 to 18,11")
 
 			var children[]
 
 			proc
 				can_join_with(atom/movable/o)
-					if(o == src) return false
-					if(o.type == type) return true
-					if(o.type == /obj/Built/fence_part) return false
+					if(o == src) return FALSE
+					if(o.type == type) return TRUE
+					if(o.type == /obj/Built/fence_part) return FALSE
 					if(istype(o, /obj/Built/Doors))
 						if(istype(o, /obj/Built/Doors/Gate))
 							var d = get_dir(src, o)
-							if(o.dir & HORI && d & VERT) return false
-							if(o.dir & VERT && d & HORI) return false
-						return true
-					if(!o.density) return false
+							if(o.dir & HORI && d & VERT) return FALSE
+							if(o.dir & VERT && d & HORI) return FALSE
+						return TRUE
+					if(!o.density) return FALSE
 					if(istype(o, /turf/Environment))
-						if(istype(o, /turf/Environment/Cave)) return true
-						if(istype(o, /turf/Environment/Cliffs)) return true
+						if(istype(o, /turf/Environment/Cave)) return TRUE
+						if(istype(o, /turf/Environment/Cliffs)) return TRUE
 					if(istype(o)) return !(o.bound_width < 32 || o.bound_height < 32)
 
 				fencejoin()

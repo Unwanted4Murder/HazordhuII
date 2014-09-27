@@ -4,12 +4,12 @@ mob
 	var tmp/obj/Built/dragging_built
 
 obj/Built
-	var tmp/can_drag = false	//	can players drag this around?
-	var secured = false			//	has this been secured, made unable to be dragged around?
+	var tmp/can_drag = FALSE	//	can players drag this around?
+	var secured = FALSE			//	has this been secured, made unable to be dragged around?
 	var tmp/min_draggers = 1	//	if this can be dragged, it needs this many people to do so
 	var tmp/draggers[]			//	a list of people dragging this
 
-	var can_rotate = false		//	can players rotate this?
+	var can_rotate = FALSE		//	can players rotate this?
 
 //	procs and functionality
 #if FURN_GRAB
@@ -47,7 +47,7 @@ mob
 			o.draggers = list(src)
 		else o.draggers += src
 		dragging_built = o
-		return true
+		return TRUE
 
 	proc/ungrab_built()
 		if(!dragging_built) return
@@ -56,7 +56,7 @@ mob
 			dragging_built.draggers = null
 		else dragging_built.draggers -= src
 		dragging_built = null
-		return true
+		return TRUE
 
 obj/Built
 	Cross(mob/m)
@@ -69,25 +69,25 @@ obj/Built
 
 	proc/be_secured(mob/securer)
 		if(secured) return
-		secured = true
-		return true
+		secured = TRUE
+		return TRUE
 
-	Chair/can_drag = true
-	Stool/can_drag = true
-	Target/can_drag = true
-	Nest/can_drag = true
+	Chair/can_drag = TRUE
+	Stool/can_drag = TRUE
+	Target/can_drag = TRUE
+	Nest/can_drag = TRUE
 /*
-	Anvil/can_drag = true
-	Forge/can_drag = true
-	Barrel/can_drag = true
-	Bed/can_drag = true
-	Bookshelf/can_drag = true
+	Anvil/can_drag = TRUE
+	Forge/can_drag = TRUE
+	Barrel/can_drag = TRUE
+	Bed/can_drag = TRUE
+	Bookshelf/can_drag = TRUE
 	Cauldron/can_drag() return !filled && ..()
-	Garbage/can_drag = true
-	Grinding_Platform/can_drag = true
-	Grinding_Stone/can_drag = true
-	Oven/can_drag = true
-	firepit/can_drag = true
+	Garbage/can_drag = TRUE
+	Grinding_Platform/can_drag = TRUE
+	Grinding_Stone/can_drag = TRUE
+	Oven/can_drag = TRUE
+	firepit/can_drag = TRUE
 */
 #endif
 
@@ -102,7 +102,7 @@ obj/Built
 
 obj/Built
 	Chair
-		can_rotate = true
+		can_rotate = TRUE
 		interact_right(mob/m) m.rotate_built(src)
 		set_dir()
 			..()
@@ -114,7 +114,7 @@ obj/Built
 			..()
 
 	Counter
-		can_rotate = true
+		can_rotate = TRUE
 		interact_right(mob/m) if(dirdiff(dir, get_dir(src, m)) == 90) m.rotate_built(src)
 
 		SET_TBOUNDS("1,9 to 32,18")
@@ -128,17 +128,18 @@ obj/Built
 			..()
 			set_dir(dir)
 
-	Sink/can_rotate = false
+	Sink/can_rotate = FALSE
 
 	Target
-		can_rotate = true
+		can_rotate = TRUE
 		interact_right(mob/m) m.rotate_built(src)
 
 	Bed
-		can_rotate = true
+		can_rotate = TRUE
 		interact(mob/m) m.rotate_built(src)
 		set_dir()
 			..()
+			if(!loc) return
 			for(var/obj/Item/Tailoring/t in obounds())
 				if(istype(t, /obj/Item/Tailoring/Mattress) || istype(t, /obj/Item/Tailoring/Blanket) || istype(t, /obj/Item/Tailoring/Pillow))
 					t.dir = dir

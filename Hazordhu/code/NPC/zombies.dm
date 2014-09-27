@@ -12,7 +12,7 @@ mob
 
 	proc/ZombieInfected()
 		if(infection_damage) return
-		infection_damage = true
+		infection_damage = TRUE
 
 		while(zombie_infection > 0)
 			new /obj/Blood/Zombie (loc)
@@ -22,7 +22,7 @@ mob
 			sleep 30
 
 		zombie_infection = 0
-		infection_damage = false
+		infection_damage = FALSE
 
 	NPC
 		Zombie
@@ -40,7 +40,7 @@ mob
 			attack_delay = 10
 			ranged_attack = 0
 			follow_blood = 1
-			opens_doors = false
+			opens_doors = FALSE
 
 			Archer
 				ranged_attack = 5

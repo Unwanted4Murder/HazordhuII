@@ -13,9 +13,9 @@ obj/Item
 		return cook_icon
 
 	//	Food is cooked well if cooked > 5
-	var can_be_cooked = false
+	var can_be_cooked = FALSE
 	var cooked = 0
-	Food/Meat/can_be_cooked = true
+	Food/Meat/can_be_cooked = TRUE
 
 	Read()
 		..()
@@ -29,10 +29,10 @@ obj/Item
 			icon = cook_icon()
 			icon_state = "[round(cooked)]"
 
-	var goes_on_range = false
+	var goes_on_range = FALSE
 	var range_state = "range"
-	Tools/Pan/goes_on_range = true
-	Metal/Pot/goes_on_range = true
+	Tools/Pan/goes_on_range = TRUE
+	Metal/Pot/goes_on_range = TRUE
 
 	MouseDrop(obj/Built/cooker)
 		if(loc == usr && istype(cooker) && bounds_dist(usr, cooker) <= 16)
@@ -101,7 +101,7 @@ obj/Built
 	proc/cook_tick()
 		if(cooking)
 			overlays -= cooking
-			cooking.Stackable = false
+			cooking.Stackable = FALSE
 			cooking.cooked += 0.1
 			if(cooking.cooked >= 10)
 				ohearers(src) << "[cooking.name] burned into nothing."
@@ -115,7 +115,7 @@ obj/Built
 		if(!can_cook) return
 		if(cooking)
 			if(!m.has_pan()) return
-			cooking.Stackable = false
+			cooking.Stackable = FALSE
 			cooking.Move(m)
 			overlays.Cut()
 			cooking.layer = initial(cooking.layer)
@@ -123,7 +123,7 @@ obj/Built
 			m.aux_output("You remove [cooking.name] from the [src].")
 			cooking = null
 			m.used_tool()
-			return true
+			return TRUE
 
 	proc/add_food(mob/humanoid/m, obj/Item/Food/Meat/food)
 		if(!can_cook) return
@@ -137,7 +137,7 @@ obj/Built
 		if(food.Stacked > 1)
 			food.Stack_Check(1)
 			food = new food.type
-			food.Stackable = false
+			food.Stackable = FALSE
 		food.Move(src)
 		food.icon = food.cook_icon()
 		food.layer = FLOAT_LAYER
@@ -146,4 +146,4 @@ obj/Built
 
 		m.aux_output("You add [cooking.name] to the [src].")
 		m.used_tool()
-		return true
+		return TRUE

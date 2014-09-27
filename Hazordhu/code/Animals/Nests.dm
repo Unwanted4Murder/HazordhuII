@@ -13,7 +13,7 @@ obj
 			base_health = 100
 			icon = 'code/Animals/Nests.dmi'
 			icon_state = "race"
-			Flammable = true
+			Flammable = TRUE
 			var egg
 			var hatch_time
 
@@ -36,7 +36,7 @@ obj
 				egg = 0
 				new egg_type (thief)
 				icon_state = ""
-				return true
+				return TRUE
 
 		Del()
 			if(locate(/obj/Built) in loc)
@@ -97,6 +97,7 @@ obj
 		Ramar
 			icon_state="ramar"
 			baby = /mob/Animal/Ramar
+			standing = FALSE
 			get_egg() return
 
 		Grawl

@@ -31,14 +31,14 @@ obj
 	Built
 		Anvil
 			icon = 'code/Smithing/Anvil.dmi'
-			density = true
+			density = TRUE
 			SET_TBOUNDS("2,2 to 31,9")
 			base_health = 500
 
 		Cauldron
 			SET_TBOUNDS("6,2 to 27,8")
 			icon = 'code/Smithing/Cauldron.dmi'
-			density = true
+			density = TRUE
 			base_health = 500
 			var filled
 			var elements[0]
@@ -74,5 +74,5 @@ obj
 
 		Barred_Wall
 			icon = 'code/Smithing/Barred Wall.dmi'
-			density = true
+			density = TRUE
 			base_health = 400

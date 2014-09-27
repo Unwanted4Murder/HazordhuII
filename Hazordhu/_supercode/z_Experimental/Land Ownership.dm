@@ -48,12 +48,12 @@ PropertyDeed
 		region |= t
 		if(!t.deeds) t.deeds = list(src)
 		else t.deeds |= src
-		return true
+		return TRUE
 
 	proc/remove_tile(turf/t)
 		region -= t
 		t.deeds -= src
-		return true
+		return TRUE
 
 	proc/add_tiles(tiles[]) for(var/turf/t in tiles) add_tile(t)
 	proc/remove_tiles(tiles[]) for(var/turf/t in tiles) remove_tile(t)
@@ -78,25 +78,25 @@ PropertyDeed
 	//	Contains charIDs associated to a list of permissions
 	var permissions[0]
 
-	//	Returns true if m has the permission after giving it
+	//	Returns TRUE if m has the permission after giving it
 	proc/add_permission(mob/player/m, permission)
 		if(!permissions[m.charID])
 			permissions[m.charID] = list(permission)
-			return true
-		else if(permission in permissions[m.charID]) return true
+			return TRUE
+		else if(permission in permissions[m.charID]) return TRUE
 		permissions[m.charID] |= permission
-		return true
+		return TRUE
 
-	//	Returns true if m does not have the permission after taking it
+	//	Returns TRUE if m does not have the permission after taking it
 	proc/remove_permission(mob/player/m, permission)
-		if(!permissions[m.charID]) return true
-		if(!(permission in permissions[m.charID])) return true
+		if(!permissions[m.charID]) return TRUE
+		if(!(permission in permissions[m.charID])) return TRUE
 		permissions[m.charID] -= permission
-		return true
+		return TRUE
 
-	//	Returns true if m has the permission
+	//	Returns TRUE if m has the permission
 	proc/has_permission(mob/player/m, permission)
-		if(!permissions[m.charID]) return false
+		if(!permissions[m.charID]) return FALSE
 		return permission in permissions[m.charID]
 
 	//	Permission addition
@@ -118,8 +118,8 @@ PropertyDeed
 turf
 	var deeds[]
 
-//	returns true if src can attack args[1]
+//	returns TRUE if src can attack args[1]
 // mob/is_attackable(obj/Built/b)
 
-//	This returns true if p can build on t
+//	This returns TRUE if p can build on t
 // builder/valid_loc(turf/t, mob/player/p)

@@ -13,7 +13,7 @@ obj/Arrow
 	icon = 'code/Icons/PointArrow.dmi'
 	layer = 99
 	pixel_y = 32
-	mouse_opacity = false
+	mouse_opacity = FALSE
 
 //	Returns the turf of an object.
 //	For example,  the turf of an item inside a player is the player's loc.
@@ -37,8 +37,8 @@ client/Click(atom/object, l, c, pa)
 mob/player
 	proc/point_at(atom/object)
 		if(Pointing || object.loc == src) return
-		if(istype(object, /obj/mouse_tracker)) return
-		Pointing = true
+	//	if(istype(object, /obj/mouse_tracker)) return
+		Pointing = TRUE
 
 		var mob/player/p = src
 		if(istype(p) && p.Mute) return
@@ -51,7 +51,7 @@ mob/player
 
 		spawn(50)
 			a.set_loc()
-			Pointing = false
+			Pointing = FALSE
 
 		if(isturf(object))
 			emote("points over yonder")
@@ -84,7 +84,7 @@ mob/player
 	Topic(href,href_list[])
 		..()
 		if(href_list["action"] == "adminhelp")
-			if(is_admin(usr.ckey))
+			if(Admins.Find(usr.key))
 				var reply = input("What do you want to reply to [src.key]?") as null|text
 				if(!reply) return
 
@@ -101,25 +101,25 @@ mob/Bump(atom/a)
 		if(locate(/obj/Item/binders/Footcuffs) in m.binders)
 			step_away(m, src, 2, step_size)
 	..()
-
+#if !THIN_SKIN
 var looper/typing_loop = new ("typing tick", 5)
-
+#endif
 mob/player
 	var tmp
 		typing
 		emoting
-
+#if !THIN_SKIN
 	proc/typing_check()
 		typing_loop.add(src)
 
 	proc/typing_tick()
-		typing = false
-		emoting = false
+		typing = FALSE
+		emoting = FALSE
 
 		if(client && !Dead && !KO)
 			//	todo: decide whether or not to use emote popup
 			if(0 && winget(src, "emote", "is-visible") == "true")
-				emoting = true
+				emoting = TRUE
 				status_overlay("emote")
 
 			else
@@ -145,13 +145,13 @@ mob/player
 					if(typing)
 						act()
 						if(command == "emote")
-							emoting = true
+							emoting = TRUE
 							status_overlay("emote")
 						else status_overlay("typing")
 
 		if(!typing)  status_overlay_remove("typing")
 		if(!emoting) status_overlay_remove("emote")
-
+#endif
 	proc/show_url(url)
 		src << browse({"
 			<meta http-equiv="Refresh" content="0; url=[url]">
@@ -234,6 +234,51 @@ var control_info = {"[movement_info][interface_info][interaction_info][inventory
 
 mob
 	player
+#if THIN_SKIN
+		key_down(k)
+			switch(k)
+				if("v") change_channel()
+				if("return") winset(src, null, "command=-[channel]")
+				else ..()
+
+		verb/_say() if(!typing)
+			typing = TRUE
+			status_overlay("typing")
+			say(input(src, "Say something!", "Say"))
+			status_overlay_remove("typing")
+			typing = FALSE
+
+		verb/_emote() if(!emoting)
+			emoting = TRUE
+			status_overlay("emote")
+			emote(input(src, "Do something!", "Emote"))
+			status_overlay_remove("emote")
+			emoting = FALSE
+
+		verb/_whisper() if(!typing)
+			typing = TRUE
+			status_overlay("typing")
+			whisper(input(src, "Whisper something!", "Whisper"))
+			status_overlay_remove("typing")
+			typing = FALSE
+
+		verb/_ooc() winset(src, null, "command=ooc")
+
+		var channel = "OOC"
+
+		PostLogin()
+			..()
+			set_channel(channel)
+
+		proc/set_channel(c)
+			channel = c
+			channel_button.update(c)
+		//	winset(src, DMF_INPUT, "command=\"![c] \\\"\"")
+
+		verb/change_channel()
+			var global/channels[] = list("Say", "Emote", "Whisper", "OOC")
+			set_channel(channels[channels.Find(channel) % channels.len + 1])
+#endif
 		verb/AdminHelp(msg as text)
 			set desc = "What do you need assistance with?"
 
@@ -260,7 +305,7 @@ mob
 				src << "<b>You're muted."
 				return
 
-			if(!ooc_on && !IsAdmin())
+			if(!ooc_on && !(key in Admins))
 				src << "<b>OOC is disabled.</b>"
 				return
 
@@ -344,7 +389,7 @@ mob
 			msg = replaceall(msg, t, " | ")
 
 		if(client)
-			var log = "([current_time()])([muzzle() && "Muffled "]Say)[src]: [html_encode(msg)]"
+			var log = "([current_time()])([muzzle() ? "Muffled " : ""]Say)[src]: [html_encode(msg)]"
 			world.log << html_decode(log)
 			saylog += "[log]<br/>"
 
@@ -354,7 +399,7 @@ mob
 		status_overlay("chat", 10)
 		act()
 
-		if(!GodMode) Hood_Concealed = false
+		if(!GodMode) Hood_Concealed = FALSE
 
 		for(var/mob/M in (hearers(src) | viewers(src)))
 			if(GodMode)
@@ -432,7 +477,7 @@ mob
 			status_overlay("chat", 10)
 			act()
 
-			if(!GodMode) Hood_Concealed = false
+			if(!GodMode) Hood_Concealed = FALSE
 
 			for(var/mob/M in (hearers(src) | viewers(src)))
 				if(M.GodMode || get_dist(src, M) <= 15)
@@ -486,9 +531,6 @@ mob
 			i.Blend(
 				icon(overlay.Icon(), overlay.IconState()),
 				ICON_OVERLAY)
-
-		if(rotated_angle)
-			i.Turn(rotated_angle)
 
 		flat_icon = i
 		return i

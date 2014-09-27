@@ -55,7 +55,7 @@ mob/player
 	var/charCreator/charCreator
 	proc
 		charCreation()
-			creatingChar = true
+			creatingChar = TRUE
 			charCreator = new
 
 			winset(src, "nameInput", "text=[key]")
@@ -186,7 +186,7 @@ mob/player/verb/finishCharCreate()
 	del charCreator
 	creatingChar = 0
 
-	winshow(src, "char_creation", false)
+	winshow(src, "char_creation", FALSE)
 
 //	call(src, "bux")(0)
 
@@ -232,7 +232,7 @@ obj/hairType
 		winset(p, "hairSelected", "text=\"Selected: [name]\"")
 
 mob/player/verb/hairColor()
-	set hidden = true
+	set hidden = TRUE
 	if(creatingChar && charCreator)
 		charCreator.hairColor = input("What color is your hair?", "Hair Color")as color
 		winset(src, "hairColorButton", "background-color=[charCreator.hairColor]")

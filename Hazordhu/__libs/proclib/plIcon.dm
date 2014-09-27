@@ -3,9 +3,9 @@
 	Kaiochao's ProcLib - Icons
 
 	List o' Variables
-		tile_size[]		list(tile_width, tile_height)
-		tile_width		Tile width grabbed from world.icon_size
-		tile_height		Tile height grabbed from world.icon_size
+		tile_size[]		list(tile_width(), tile_height())
+		tile_width()		Tile width grabbed from world.icon_size
+		tile_height()		Tile height grabbed from world.icon_size
 
 	List o' Functions
 		blank_icon		=>	A blank icon with a given width and height
@@ -13,7 +13,7 @@
 		angle2state		=>	An icon state to be used with a rotated icon, given an angle and angle delta (default 1)
 		rotate_icon		=>	Takes an icon (file, state) and returns an icon with icon_states from 0 to 360 (bearings).
 							You can also provide the angle delta, which changes the number of icon_states in the result.
-							You can also choose to use a kind of smoothing to rotated icons; set 'aa' to true in the arguments.
+							You can also choose to use a kind of smoothing to rotated icons; set 'aa' to TRUE in the arguments.
 
 */
 

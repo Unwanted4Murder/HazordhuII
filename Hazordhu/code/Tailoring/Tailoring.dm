@@ -1,7 +1,8 @@
 obj/Item/Tailoring
-	Flammable = true
+	Flammable = TRUE
 
 	proc/bed_check()
+		if(!loc) return
 		var obj/Built/Bed/bed = locate() in obounds()
 		if(bed)
 			icon_state = "on_bed"
@@ -22,7 +23,10 @@ obj/Item/Tailoring
 			bed_check()
 		dropped_by() bed_check()
 		grabbed_by() icon_state = ""
-		map_loaded() spawn bed_check()
+		map_loaded()
+			set waitfor = FALSE
+			sleep
+			bed_check()
 
 	Pillow
 		icon = 'code/Tailoring/Pillow.dmi'
@@ -31,17 +35,23 @@ obj/Item/Tailoring
 			bed_check()
 		dropped_by() bed_check()
 		grabbed_by() icon_state = ""
-		map_loaded() spawn bed_check()
+		map_loaded()
+			set waitfor = FALSE
+			sleep
+			bed_check()
 
 	Blanket
 		icon = 'blanket.dmi'
-		can_color = true
+		can_color = TRUE
 		New()
 			..()
 			bed_check()
 		dropped_by() bed_check()
 		grabbed_by() icon_state = ""
-		map_loaded() spawn bed_check()
+		map_loaded()
+			set waitfor = FALSE
+			sleep
+			bed_check()
 
 	Cushion
 		icon = 'code/Tailoring/Cushion.dmi'
@@ -50,7 +60,7 @@ obj/Item/Tailoring
 	Flag
 		icon = 'code/Flags/Flags.dmi'
 		icon_state = "Neutral"
-		Stackable = false
+		Stackable = FALSE
 
 		use(mob/m)
 			var flag_name
@@ -76,7 +86,20 @@ obj/Item/Tailoring
 	Banner
 	Carpet
 		icon='code/Tailoring/Carpet.dmi'
-		can_color = true
-		Stackable = false
-		layer = TURF_LAYER + 1
+		can_color = TRUE
+		Stackable = FALSE
+		layer = TURF_LAYER + 2
+
+		#if PIXEL_MOVEMENT
+		dropped_by()
+			var ax = cx()
+			var ay = cy()
+			var bx = round(ax - 16, 32) + 16
+			var by = round(ay - 16, 32) + 16
+			pixel_x = ax - bx
+			pixel_y = ay - by
+			set_center(bx, by, z)
+			animate(src, pixel_x = 0, pixel_y = 0, time = 2)
+		#endif
+
 	Coat_of_Arms

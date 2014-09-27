@@ -1,5 +1,5 @@
 BuildGrid
-	var tmp/visible = false
+	var tmp/visible = FALSE
 	var tmp/mob/player/anchor
 	var tmp/cells[0]
 
@@ -11,15 +11,15 @@ BuildGrid
 
 	proc/show(builder/b) if(!visible)
 		builder = b
-		visible = true
+		visible = TRUE
 		game_loop.add(src)
-		return true
+		return TRUE
 
 	proc/hide() if(visible)
-		visible = false
+		visible = FALSE
 		for(var/BuildGrid/build_cell/c in cells) c.hide()
 		select()
-		return true
+		return TRUE
 
 	proc/select(BuildGrid/build_cell/cell)
 		current_cell && deselect(current_cell)
@@ -50,12 +50,12 @@ BuildGrid
 	build_cell
 		parent_type = /obj
 		icon = null
-		override = true
+		override = TRUE
 
 		var BuildGrid/parent
 		var mob/player/owner
 		var image/i
-		var visible = false
+		var visible = FALSE
 
 		var dx
 		var dy
@@ -70,22 +70,22 @@ BuildGrid
 
 		proc/hide() if(visible)
 			set_loc()
-			visible = false
+			visible = FALSE
 			owner.client.images -= i
 			if(parent.current_cell == src)
 				parent.select()
 
 		proc/show() if(!visible)
-			visible = true
+			visible = TRUE
 			owner.client.images |= i
 
 		var is_selected
 		proc/selected()
-			is_selected = true
+			is_selected = TRUE
 			i.icon_state = "selected"
 
 		proc/deselected()
-			is_selected = false
+			is_selected = FALSE
 			i.icon_state = ""
 
 		New(BuildGrid/g, x, y)

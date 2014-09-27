@@ -6,17 +6,17 @@ hud/button
 
 	New(client/c) if(istype(c)) c.screen += src
 
-	var expands = false
-	var expanded = false
+	var expands = FALSE
+	var expanded = FALSE
 	proc/toggle() expanded ? collapse() : expand()
 	proc/expand() if(!expanded)
-		expanded = true
+		expanded = TRUE
 		expanded()
-		return true
+		return TRUE
 	proc/collapse() if(expanded)
-		expanded = false
+		expanded = FALSE
 		collapsed()
-		return true
+		return TRUE
 	proc/expanded()
 	proc/collapsed()
 

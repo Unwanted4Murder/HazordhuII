@@ -19,8 +19,9 @@
 hud
 	label
 		parent_type = /hud/button
-		screen_loc = "NORTHWEST"
+		screen_loc = "WEST,SOUTH+1"
 		icon = 'code/icons/blank.dmi'
+		alpha = 224
 		text_size = 3
 		var shadows[]
 		set_text(t)
@@ -28,10 +29,6 @@ hud
 			..()
 			if(!shadows)
 				shadows = newlist(
-				//	/obj { pixel_x = -1; pixel_y = -1; layer = 200; icon = 'code/icons/blank.dmi' },
-				//	/obj { pixel_x = -1; pixel_y =  1; layer = 200; icon = 'code/icons/blank.dmi' },
-				//	/obj { pixel_x =  1; pixel_y = -1; layer = 200; icon = 'code/icons/blank.dmi' },
-				//	/obj { pixel_x =  1; pixel_y =  1; layer = 200; icon = 'code/icons/blank.dmi' },
 					/obj { pixel_x =  0; pixel_y = -1; layer = 200; icon = 'code/icons/blank.dmi' },
 					/obj { pixel_x =  0; pixel_y =  1; layer = 200; icon = 'code/icons/blank.dmi' },
 					/obj { pixel_x =  1; pixel_y =  0; layer = 200; icon = 'code/icons/blank.dmi' },
@@ -41,8 +38,8 @@ hud
 			for(var/obj/shadow in shadows)
 				shadow.maptext_width = maptext_width
 				shadow.maptext_height = maptext_height
-				shadow.maptext = "<font color=[rgb(0, 0, 0)]>[maptext]"
-			maptext = "<font color=[rgb(166, 159, 111)]>[maptext]"
+				shadow.maptext = "<font color=[rgb(0, 0, 0)]><text align=center valign=middle>[maptext]"
+			maptext = "<font color=[rgb(166, 159, 111)]><text align=center valign=middle>[maptext]"
 			underlays += shadows
 
 	button
@@ -51,19 +48,23 @@ hud
 		icon_state = "cell"
 		layer = 200
 
-		New(client/c) if(istype(c)) c.screen += src
+		var client/client
+		New(client/c)
+			if(istype(c))
+				c.screen += src
+				client = c
 
-		var expands = false
-		var expanded = false
+		var expands = FALSE
+		var expanded = FALSE
 		proc/toggle() expanded ? collapse() : expand()
 		proc/expand() if(!expanded)
-			expanded = true
+			expanded = TRUE
 			expanded()
-			return true
+			return TRUE
 		proc/collapse() if(expanded)
-			expanded = false
+			expanded = FALSE
 			collapsed()
-			return true
+			return TRUE
 		proc/expanded()
 		proc/collapsed()
 
@@ -78,18 +79,18 @@ hud
 
 		inventory
 			icon = 'code/flash hud/hud icons wide.dmi'
-			screen_loc = "SOUTH,WEST+1"
+			screen_loc = "SOUTH+1,WEST+2:16"
 			maptext_width = 48
 			text_size = 2
 			proc/update(t) set_text(t)
-			expands = true
+			expands = TRUE
 			collapsed()
-				var mob/player/p = usr
+				var mob/player/p = usr || client && client.mob
 				p.inventory_grid.hide()
 				p.equipment_grid.hide()
 				icon_state = "cell"
 			expanded()
-				var mob/player/p = usr
+				var mob/player/p = usr || client && client.mob
 				p.inventory_grid.show()
 				p.equipment_grid.show()
 				p.menu_button.expand()
@@ -99,33 +100,38 @@ hud
 			icon = 'code/flash hud/hud icons wide.dmi'
 			maptext = "<font size=1 align=center valign=middle>Craft"
 			maptext_width = 48
-			screen_loc = "SOUTH,WEST+2:16"
-			expands = true
+			screen_loc = "SOUTH+1,WEST+4:16"
+			expands = TRUE
 			collapsed()
-				var mob/player/p = usr
-				p.crafting_grid.hide()
+				var mob/player/p = usr || client && client.mob
+				if(p) p.crafting_grid.hide()
 				icon_state = ""
+
 			expand()
-				var mob/player/p = usr
-				if(p.craftables_source)
+				var mob/player/p = usr || client && client.mob
+				if(p) // && p.craftables_source)
+					if(!p.craftables_source)
+						p.fill_crafting_grid(no_tool_list)
 					return ..()
+
 			expanded()
-				var mob/player/p = usr
-				p.crafting_grid.show()
-				p.menu_button.expand()
+				var mob/player/p = usr || client && client.mob
+				if(p)
+					p.crafting_grid.show()
+					p.menu_button.expand()
 				icon_state = "down"
 
 		menu
 			maptext = "<font size=1 align=center valign=middle>Menu"
-			screen_loc = "SOUTHWEST"
-			expands = true
+			screen_loc = "WEST+1,SOUTH+1"
+			expands = TRUE
 			var parts[]
 			New(client/c, parts)
 				..()
 				src.parts = parts
 
 			expanded()
-				var mob/player/p = usr
+				var mob/player/p = usr || client && client.mob
 				p.client.screen |= parts
 				if(p.inventory_button.expanded)
 					p.inventory_grid.show()
@@ -133,8 +139,9 @@ hud
 				if(p.crafting_button.expanded)
 					p.crafting_grid.show()
 				icon_state = "down"
+
 			collapsed()
-				var mob/player/p = usr
+				var mob/player/p = usr || client && client.mob
 				p.client.screen -= parts
 				p.inventory_grid.hide()
 				p.equipment_grid.hide()
@@ -144,9 +151,9 @@ hud
 		channel
 			icon = 'code/flash hud/hud icons wide.dmi'
 			maptext_width = 48
-			screen_loc = "EAST-1:16,SOUTH"
+			screen_loc = "EAST-2:16,SOUTH+1"
 			Click()
-				var mob/player/p = usr
+				var mob/player/p = usr || client && client.mob
 				p.change_channel()
 				update(p.channel)
 
@@ -178,18 +185,18 @@ mob/player
 
 	proc/item_tick()
 		if(_inventory_stale)
-			_inventory_stale = false
+			_inventory_stale = FALSE
 			update_inventory_grid()
 		if(_equipment_stale)
-			_equipment_stale = false
+			_equipment_stale = FALSE
 			update_equipment_grid()
 		if(_storage_stale)
-			_storage_stale = false
+			_storage_stale = FALSE
 			update_storage_grid()
 
 	PostLogin()
 		info_bar = new (client)
-		info_bar.maptext_width = client.view_size[1] * 32
+		info_bar.maptext_width = (client.view_size[1] * 2 + 1) * 32
 
 		inventory_grid = new (client)
 		equipment_grid = new (client)
@@ -210,10 +217,11 @@ mob/player
 
 	//	The inventory grid can have cells that can swap to other cells
 	InventoryGrid()
-		_inventory_stale = true
+		_inventory_stale = TRUE
 
 		Items = 0
 		for(var/obj/Item/i in src)
+			if(is_equipped(i)) continue
 			if(i.weight)
 				Items += i.weight * i.Stacked
 
@@ -243,19 +251,27 @@ mob/player
 				empty_cells -= c
 				c.fill(item)
 
-		inventory_button.update("Items<br>[round(Items/Item_Limit*100,1)]% Full")
+		inventory_button.update("Items<br>[round(Items / Item_Limit * 100, 1)]% Full")
 
 		EquipmentGrid()
 
 	//	The equipment grid has specialized cells for specific equipment types
 	EquipmentGrid()
-		_equipment_stale = true
+		_equipment_stale = TRUE
 
 	proc/update_equipment_grid()
 		for(var/hud/grid/cell/c in equipment_grid.cells)
 			c.fill(equipment[c.id])
+
 	StorageGrid()
-		_storage_stale = true
+		_storage_stale = TRUE
+
+		if(storage)
+			storage.Items = 0
+			for(var/obj/Item/i in storage)
+				if(i.weight)
+					storage.Items += i.weight * i.Stacked
+			storage_grid.capacity.set_text("[storage]<br>[round(storage.Items / storage.Item_Limit * 100, 1)]% Full")
 
 	proc/update_storage_grid()
 		var visible_items[0]
@@ -299,6 +315,7 @@ mob/player
 			var i = index + n
 			var builder/b = i <= craftables.len && craftables[i]
 			c.fill(b)
+	//		world << "[c]<<[b]"
 
 	proc/clear_crafting_grid()
 		for(var/hud/grid/cell/c in crafting_grid.cells)

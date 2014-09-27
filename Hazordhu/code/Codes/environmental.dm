@@ -75,26 +75,26 @@ mob/player
 					if(body_heat >= 90)
 						take_heat_damage()
 					else
-						overheating = false
+						overheating = FALSE
 						if(body_heat <= 15)
 							take_cold_damage()
-						else freezing = false
+						else freezing = FALSE
 
 	var tmp/next_heat_damage
 
 	var tmp/overheating
 	proc/take_heat_damage()
 		if(GodMode || Dead || in_tutorial() || world.time < next_heat_damage) return
-		next_heat_damage = world.time + 30
-		overheating = true
+		next_heat_damage = world.time + 10
+		overheating = TRUE
 		aux_output("You take heat damage!")
 		take_damage(rand(1, 5), "overheating")
 
 	var tmp/freezing
 	proc/take_cold_damage()
 		if(GodMode || Dead || in_tutorial() || world.time < next_heat_damage) return
-		next_heat_damage = world.time + 30
-		freezing = true
+		next_heat_damage = world.time + 10
+		freezing = TRUE
 		aux_output("You take cold damage!")
 		take_damage(rand(5, 10), "freezing")
 

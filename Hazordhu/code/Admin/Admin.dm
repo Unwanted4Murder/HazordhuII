@@ -38,13 +38,11 @@ client
 		. = ..()
 		if("action" in hlist)
 			if(hlist["action"] == "admin_tele")
-				if(!is_admin(ckey)) return
+				if(!Admins.Find(key)) return
 				var dx = text2num(hlist["dx"])
 				var dy = text2num(hlist["dy"])
 				var dz = text2num(hlist["dz"])
 				mob.set_loc(locate(dx, dy, dz))
-
-proc/is_admin(ckey) return (ckey in (Admins | NewGods))
 
 mob
 	var GodMode
@@ -55,55 +53,20 @@ mob
 				click_create
 				click_teleport
 
+				tracking_cpu = FALSE
+
 			OOC_Color
 			ghost_logged = 0
 
-		proc/IsAdmin()
-			return is_admin(ckey)
+		proc/TrackCPULoop()
+			set waitfor = FALSE
+			while(tracking_cpu)
+				sleep 1
+				winset(src, "default", "title=\"[world.name] (CPU: [world.cpu]%)\"")
+			winset(src, "default", "title=\"[world.name]\"")
 
-		proc/ApplyAdmin()
-			verbs += typesof(/mob/Admin/verb)
-			AdminsOnline += src
-			isAdmin = true
-			client.control_freak = false
-			if(ckey in NewGods)
-				src << "<i>You're now an admin</i>"
-
-		proc/RemoveAdmin()
-			if(GodMode)
-				var mob/Admin/a = src
-				a.GhostForm()
-			verbs -= typesof(/mob/Admin/verb)
-			AdminsOnline -= src
-			isAdmin = false
-			client.control_freak = true
-			src << "<i>You're no longer an admin</i>"
-/*
-		proc/apply_ghost_icon()
-			icon_reset()
-			overlays = new
-			var icon/i = flat_icon()
-			i.Blend(rgb(0, 0, 0, 150), ICON_ADD)
-			icon = i
-			reset_flat_icon()
-
-		equip()
-			. = ..()
-			if(. && GodMode)
-				apply_ghost_icon()
-
-		unequip()
-			. = ..()
-			if(. && GodMode)
-				apply_ghost_icon()
-
-		update_equipment_layers()
-			..()
-			if(GodMode)
-				apply_ghost_icon()
-*/
 		key_down(k)
-			if(k == "q") if(IsAdmin()) call(src, "admin panel")()
+			if(k == "q") if(key in Admins) call(src, "admin panel")()
 			else ..()
 
 		var tmp/devmode = 0
@@ -122,19 +85,15 @@ mob
 		parent_type = /mob/player
 
 		verb
-			add_admin(ckey as text)
-				if(is_admin(ckey))
-					src << "[ckey] is an admin."
-				else
-					add_god(ckey)
+			give_hair_recolor()
+				var mob/player/M = choosePlayer("Who gets a hair recolor?", "Hair Recolor")
+				M.HairColor = input(M, "Choose your new hair color!", "Hair Recolor", M.HairColor) as color
+				M.HeritageIcon()
 
-			remove_admin(ckey in NewGods)
-				if(ckey in Admins)
-					src << "ha ha"
-				else if(!(ckey in NewGods))
-					src << "[ckey] isn't an admin."
-				else
-					remove_god(ckey)
+			track_cpu()
+				tracking_cpu = !tracking_cpu
+				if(tracking_cpu)
+					TrackCPULoop()
 
 		#if !PIXEL_MOVEMENT
 			Test_Tile_Movement()
@@ -171,45 +130,47 @@ mob
 						Admin Help:\t[M.can_admin_help ? "Enabled" : "Disabled"]",
 						"Player Permissions") as null|anything in list("OOC", "Combat", "Admin Help"))
 					if("OOC")
-						if(M.IsAdmin())
+						if(M.key in Admins)
 							usr << "You can't do that to an Admin."
 							return
 
 						if(!M.can_ooc)
-							M.can_ooc = true
+							M.can_ooc = TRUE
 							world << "[key] has OOC unmuted [M.key]."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has OOC unmuted [M.key]<br>")
 
 						else
-							M.can_ooc = false
+							M.can_ooc = FALSE
 							world << "[key] has OOC muted [M.key]."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has OOC muted [M.key]<br>")
 					if("Combat")
-						if(M.IsAdmin())
+						if(M.key in Admins)
 							usr << "You can't do that to an Admin."
 							return
 						if(!M.pvp)
-							M.pvp = true
+							M.pvp = TRUE
 							AdminsOnline << "[key] has enabled combat for [M] ([M.key])."
 							M << "[key] has enabled your combat."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has disabled combat for [M.key]<br>")
 						else
-							M.pvp = false
+							M.pvp = FALSE
 							AdminsOnline << "[key] has disabled combat for [M] ([M.key])."
 							M << "[key] has disabled your combat."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has disabled combat for [M.key]<br>")
 					if("Admin Help")
-						if(M.IsAdmin())
+						if(M.key in Admins)
 							usr << "You can't do that to an Admin."
 							return
 						if(!M.can_admin_help)
-							M.can_admin_help = true
+							M.can_admin_help = TRUE
 							AdminsOnline << "[key] has enabled Admin Help for [M] ([M.key])."
 							M << "[key] enabled your Admin Help access."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has enabled admin help for [M.key]<br>")
 						else
-							M.can_admin_help = false
-							AdminsOnline << "[key] has disabled Admin Help for [M] ([M.key])."
+							M.can_admin_help = FALSE
+							for(var/mob/m)
+								if(m.key in Admins)
+									m << "[key] has disabled Admin Help for [M] ([M.key])."
 							M << "[key] has disabled your Admin Help access."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has disabled admin help for [M.key]<br>")
 
@@ -260,13 +221,8 @@ mob
 				world << "Repopulating"
 				world.Repop()
 				world << "Repopulation Complete"
-
 			build_ver()
 				usr << build
-
-			byond_ver()
-				src << DM_VERSION
-
 			shutdown_server()
 				world << "<b>[usr.key] is shutting down the server.</b>"
 				world.log << "[usr.key] shut down the server."
@@ -283,18 +239,18 @@ mob
 			Ghostlogout()
 				//if(key in Admins) return
 				Players -= src
-				ghost_logged = true
+				ghost_logged = TRUE
 				for(var/mob/player/m)
-					if(m.IsAdmin())
+					if(m.key in Admins)
 						m << "[key] has logged out. (Ghost)"
 					m << "<i>[key] has logged out.</i>"
 
 			Ghostlogin()
 				//if(key in Admins) return
 				Players |= src
-				ghost_logged = false
+				ghost_logged = FALSE
 				for(var/mob/player/m)
-					if(m.IsAdmin())
+					if(m.key in Admins)
 						m << "[key] has logged in. (Ghost)"
 					m << "<i>[key] has logged in.</i>"
 
@@ -325,11 +281,11 @@ mob
 				if(!devmode)
 					winset(src, "defaut", "statusbar=true")
 					winset(src, "map", "right-click=false")
-					devmode = true
+					devmode = TRUE
 				else
 					winset(src, "default", "statusbar=false")
 					winset(src, "map", "right-click=true")
-					devmode = false
+					devmode = FALSE
 				client.show_popup_menus = devmode
 
 			Reload_Settings()
@@ -377,8 +333,8 @@ mob
 					animate(src, alpha = 64, time = 3)
 				else
 					src << "Ghost form deactivated."
-					invisibility	=	false
-					see_invisible	=	false
+					invisibility	=	FALSE
+					see_invisible	=	FALSE
 					animate(src, alpha = 255, time = 3)
 
 			Toggle_Visibility()
@@ -481,7 +437,7 @@ mob
 				var mob/player/M = choosePlayer("Who will you mute/unmute?", "Mute")
 				if(!M) return
 
-				if(M.IsAdmin())
+				if(M.key in Admins)
 					usr << "You can't mute an admin."
 					return
 
@@ -498,7 +454,7 @@ mob
 			Boot()
 				var mob/player/M = choosePlayer("Who will you kick out of the world?", "Boot")
 				if(!M) return
-				if(M.IsAdmin())
+				if(M.key in Admins)
 					usr << "You can't boot an admin."
 					return
 				world << "[key] has booted [M.key]."
@@ -536,7 +492,7 @@ mob
 				var default="File"
 				var typeof = M.vars[variable]
 				if(ismob(M))
-					if(is_admin(M.ckey) && M != src)
+					if((M.key in Admins) && M != src)
 						usr<<"You can't edit an admin."
 						return
 
@@ -558,42 +514,28 @@ mob
 					default = "Cancel"
 
 				top
-				var class = input("What kind of variable?","Variable Type",default) as null|anything in list("Text","Num","Type","Person","Icon","File","Restore to default","List","Null")
+				var class = input("What kind of variable?","Variable Type",default) as null|anything in list("Text","Num","Color","Type","Person","Icon","File","Restore to default","List","Null")
 				var new_value
 				switch(class)
 					if(null) return
-					if("Restore to default")
-						new_value = initial(M.vars[variable])
-
-					if("Text")
-						new_value = input("Enter new text:", "Text", M.vars[variable]) as null|text
-
-					if("Num")
-						new_value = input("Enter new number:", "Num", M.vars[variable]) as null|num
-
-					if("Type")
-						new_value = input("Pick a type:", "Type", M.vars[variable]) as null|mob|obj
-
-					if("Person")
-						new_value = choosePlayer("Pick a player:", "Person", M.vars[variable])
-
-					if("File")
-						new_value = input("Pick file:", "File", M.vars[variable]) as null|file
-
-					if("Icon")
-						new_value = input("Pick icon:", "Icon", M.vars[variable]) as null|icon
-
-					if("List")
-						input("This is what's in [variable]") as null|anything in M.vars[variable]
-
-					if("Null")
-						if(alert("Are you sure you want to clear this variable?", "Null", "Yes", "No") == "Yes")
-							M.vars[variable] = null
+					if("Restore to default") new_value = initial(M.vars[variable])
+					if("Text") new_value = input("Enter new text:", "Text", M.vars[variable]) as null|text
+					if("Num") new_value = input("Enter new number:", "Num", M.vars[variable]) as null|num
+					if("Color") new_value = input("Enter new color:", "Color", M.vars[variable]) as null|color
+					if("Type") new_value = input("Pick a type:", "Type", M.vars[variable]) as null|mob|obj
+					if("Person") new_value = choosePlayer("Pick a player:", "Person", M.vars[variable])
+					if("File") new_value = input("Pick file:", "File", M.vars[variable]) as null|file
+					if("Icon") new_value = input("Pick icon:", "Icon", M.vars[variable]) as null|icon
+					if("List") input("This is what's in [variable]") as null|anything in M.vars[variable]
+					if("Null") if(alert("Are you sure you want to clear this variable?", "Null", "Yes", "No") == "Yes") M.vars[variable] = null
 
 				if(class != "Null")
 					if(isnull(new_value))
 						goto top
 					M.vars[variable] = new_value
+
+				if(istype(M, /mob/player))
+					M.HeritageIcon()
 
 				LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[src] used Edit on [M]. [class]: [variable] Value: [M.vars[variable]]<br>")
 

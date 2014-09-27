@@ -10,7 +10,7 @@ proc/newtypes()
 		for(var/Y in X)
 			. += new Y
 
-proc/newtypesof(parent, exclude = true)
+proc/newtypesof(parent, exclude = TRUE)
 	. = list()
 	var paths[] = typesof(parent)
 	if(exclude) paths -= parent
@@ -40,18 +40,64 @@ proc/shoveling_list()
 		/builder/masonry/sand_path
 	)
 
+proc/chiseling_list()
+	return newlist(
+		/builder/masonry/brick,
+		/builder/masonry/sandstone_brick
+	)
+
+proc/no_tool_list()
+	. = list()
+	for(var/path in typesof(/builder))
+		if(length(typesof(path)) == 1)
+			var builder/b = path
+			if(!initial(b.main_tool))
+				. += new path
+
+proc/hatchet_list()
+	return newlist(
+		/builder/carving/boards
+	)
+
+proc/carving_list()
+	#if THIN_SKIN
+	. = list()
+	for(var/path in typesof(/builder))
+		if(length(typesof(path)) == 1)
+			var builder/b = path
+			if(initial(b.main_tool) == /obj/Item/Tools/Knife)
+				. += new path
+	#else
+	return newtypesof(/builder/carving)
+	#endif
+
+proc/masonry_list()
+	#if THIN_SKIN
+	. = list()
+	for(var/path in typesof(/builder))
+		if(length(typesof(path)) == 1)
+			var builder/b = path
+			if(initial(b.main_tool) == /obj/Item/Tools/Trowel)
+				. += new path
+	#else
+	return newtypesof(/builder/masonry)
+	#endif
+
 var
+	hatchet_list[] = hatchet_list()
+	no_tool_list[] = no_tool_list()
 	alchemy[]	= alchemy_list()
 	breakdown[]	= newtypesof(/obj/Alchemy/Breakdown)
 	carpentry[]	= newtypesof(/builder/carpentry)
-	carving[]	= newtypesof(/builder/carving)
+	carving[]	= carving_list()
 	farming[]	= newtypesof(/builder/farming)
 	forging[]	= newtypesof(/builder/forging)
 	hunting[]	= newtypesof(/builder/hunting)
-	masonry[]	= newtypesof(/builder/masonry)
+	masonry[]	= masonry_list()
 	smithing[]	= smithing_list()
 	hammering[] = hammering_list()
 	shoveling[] = shoveling_list()
+	chiseling[] = chiseling_list()
 	tailoring[]	= newtypesof(/builder/tailoring)
 	brewing[]	= newtypesof(/builder/brewing)
 	baking[]	= newtypesof(/builder/baking)

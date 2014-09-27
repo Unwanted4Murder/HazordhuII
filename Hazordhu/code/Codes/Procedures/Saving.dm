@@ -29,11 +29,11 @@ mob
 				F["overlays"]	<<	null
 				F["underlays"]	<<	null
 
-				return true
+				return TRUE
 
 		proc/Load()
 		#if !PLAYERSAVE
-			return true
+			return TRUE
 		#endif
 			var path = save_path()
 			if(fexists(path))
@@ -59,6 +59,6 @@ mob
 				var mob/humanoid/h = src
 				if(istype(h)) for(var/obj/Item/binders/b in h.binders) b.add(src)
 
-				return true
+				return TRUE
 
 proc/SavePlayers() for(var/mob/player/M in Players) M.Save()

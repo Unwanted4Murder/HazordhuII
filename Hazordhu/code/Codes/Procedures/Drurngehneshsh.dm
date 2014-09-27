@@ -33,8 +33,9 @@ mob/player
 		drunk_loop
 
 	proc/drunk_loop()
+		set waitfor = FALSE
 		if(drunk_loop) return
-		drunk_loop = true
+		drunk_loop = TRUE
 		var been_drunk
 		while(drunk_loop)
 			if(drunk >= DRUNK_DEATH && !GodMode)
@@ -67,7 +68,7 @@ mob/player
 				drunk = max(0, drunk-1)
 				if(!drunk) break
 			sleep(10)
-		drunk_loop = false
+		drunk_loop = FALSE
 
 	proc/strength_buff(n, time)
 		StrengthBuff += n
@@ -79,7 +80,7 @@ obj/Item/Alchemy/Bottle
 		m.Health = min(m.MaxHealth, m.Health + 5)
 		if(m.drunk >= DRUNK_STATUS)
 			m.status_overlay("drunk")
-		if(!m.drunk_loop) spawn m.drunk_loop()
+		if(!m.drunk_loop) m.drunk_loop()
 
 	Beer/drank(mob/player/m) if(istype(m))
 		m.drunk = min(100, m.drunk + 5)

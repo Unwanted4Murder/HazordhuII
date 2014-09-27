@@ -56,7 +56,7 @@ combat	// the combat datum.
 
 mob/humanoid
 	proc/is_blocking(mob/attacker)
-		if(istype(attacker, /mob/Animal/Flargl)) return false
+		if(istype(attacker, /mob/Animal/Flargl)) return FALSE
 		return blocking && abs(angle_difference(is_player(src) ? client.mouse.angle : dir2angle(dir), angle_to(src, attacker))) < 45
 
 proc

@@ -10,6 +10,12 @@ mob/player/key_down(k)
 	Main interaction, the caller of everything else ---------------------------------------------
 */
 mob
+	proc/lock_time(Time)
+		set waitfor = FALSE
+		Locked = TRUE
+		sleep Time
+		Locked = FALSE
+
 	proc/can_interact()
 		return !Locked
 
@@ -25,10 +31,10 @@ mob
 		else
 			var position[] = front(16) - list(mount, boat)
 			for(o in position) if(!raycast_to(o, /ray/interact)) position -= o
-			if(!position.len) return false
+			if(!position.len) return FALSE
 
 			var action = has_key("alt") ? "interact right" : "interact"
-			for(o in position) if(hascall(o, action) && call(o, action)(src)) return true
+			for(o in position) if(hascall(o, action) && call(o, action)(src)) return TRUE
 
 			//	plowing fields
 			for(o in position) if(_plow_path(o)) return 1
@@ -38,7 +44,7 @@ mob
 
 	//	Shows the work overlay and calculates the bonus time
 	proc/_do_work(duration)
-		Locked = true
+		Locked = TRUE
 
 		var mob/player/p = src
 		if(istype(p))
@@ -47,7 +53,7 @@ mob
 
 		status_overlay("work", duration)
 		sleep(duration)
-		Locked = false
+		Locked = FALSE
 
 /*
 	Cookin' --------------------------------------------------------------------------
@@ -74,8 +80,8 @@ mob/proc
 */
 mob/proc
 	has_tongs()
-		if(is_equipped(/obj/Item/Tools/Tongs)) return true
-		return false
+		if(is_equipped(/obj/Item/Tools/Tongs)) return TRUE
+		return FALSE
 
 	is_forge(obj/Built/Forge/o)
 		return istype(o)

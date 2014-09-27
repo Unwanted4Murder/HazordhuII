@@ -5,7 +5,7 @@ var
 
 mob/Animal
 	var
-		tmp/can_lay = true
+		tmp/can_lay = TRUE
 
 		//	defaults to basic herbivore
 		diet = GRASS | FARM
@@ -71,7 +71,7 @@ mob/Animal
 
 	Sty
 		icon = 'sty.dmi'
-		can_harness = false
+		can_harness = FALSE
 		mood = "defensive"
 		diet = GRASS | FARM
 		MeatType = /obj/Item/Food/Meat/Sma
@@ -88,18 +88,18 @@ mob/Animal
 			if(Locked || m.Locked || !m.has_scissors()) return
 			if(sheared) return m.aux_output("That [src] has been sheared this year.")
 			m.used_tool()
-			sheared = true
-			Locked = true
+			sheared = TRUE
+			Locked = TRUE
 			m.emote("starts shearing the sty")
 			m._do_work(30)
 			m.emote("finishes shearing the sty")
-			Locked = false
+			Locked = FALSE
 			new /obj/Item/Farming/crop/Phluf (loc)
-			return true
+			return TRUE
 
 	Peek
 		icon = 'Peek.dmi'
-		can_harness = false
+		can_harness = FALSE
 		mood = "passive"
 		diet = GRASS | FARM
 		Health = 35
@@ -111,7 +111,7 @@ mob/Animal
 
 	Ret
 		icon = 'Ret.dmi'
-		can_harness = false
+		can_harness = FALSE
 		diet = MEAT | SPORE
 		mood = "aggressive"
 		Strength = 10
@@ -127,7 +127,7 @@ mob/Animal
 
 	Rar
 		icon = 'Rar.dmi'
-		can_harness = false
+		can_harness = FALSE
 		mood = "aggressive"
 		diet = MEAT
 		Health = 250
@@ -137,7 +137,7 @@ mob/Animal
 
 	Ruff
 		icon = 'Ruff.dmi'
-		can_harness = false
+		can_harness = FALSE
 		diet = MEAT
 		mood = "aggressive"
 		Health = 100
@@ -150,7 +150,7 @@ mob/Animal
 
 	Flurm
 		icon = 'flurm.dmi'
-		can_harness = false
+		can_harness = FALSE
 		diet = MEAT
 		mood = "aggressive"
 		Strength = 40
@@ -164,7 +164,7 @@ mob/Animal
 
 	Olihant
 		icon = 'olihant.dmi'
-		can_harness = true
+		can_harness = TRUE
 		mood = "aggressive"
 		diet = FARM | PLANT | FISH
 		Strength = 100
@@ -191,7 +191,7 @@ mob/Animal
 		diet = MEAT
 		mood = "aggressive"
 		Strength = 50
-		can_harness = true
+		can_harness = TRUE
 		charge_list = list("pounces at","runs at","charges at")
 		warn_list = list("roars","growls")
 		attack_list = list("attacks", "claws at", "bites", "pounces on")
@@ -207,12 +207,12 @@ mob/Animal
 		icon_state = "1"
 		diet = MEAT | CORPSE
 		mood = "aggressive"
-		can_harness = false
+		can_harness = FALSE
 		charge_list = list("runs at","rushes forward at")
 
 	Troll
 		icon='code/Mobs/Troll.dmi'
-		can_harness = false
+		can_harness = FALSE
 		diet = MEAT
 		mood = "aggressive"
 		Health = 1000
@@ -224,7 +224,7 @@ mob/Animal
 		pixel_x = -24
 		icon='code/Animals/flargl.dmi'
 		SkinType=/obj/Item/Skin/Flargl_Skin
-		can_harness = false
+		can_harness = FALSE
 		diet = MEAT
 		mood = "aggressive"
 		Health = 5000
@@ -240,7 +240,7 @@ mob/Animal
 	Agriner
 		pixel_x = -24
 		icon = 'code/Animals/Agriner.dmi'
-		can_harness = false
+		can_harness = FALSE
 		diet = GRASS | FARM | PLANT
 		mood = "aggressive"
 		Health = 500
@@ -255,7 +255,7 @@ mob/Animal
 		pixel_x = -16
 		pixel_y = -16
 		icon = 'code/Animals/Shomp.dmi'
-		can_harness = false
+		can_harness = FALSE
 		diet = MEAT | CORPSE
 		mood = "aggressive"
 		Health = 200
@@ -268,10 +268,10 @@ mob/Animal
 	Ramar
 		pixel_x = -16
 		pixel_y = -16
-		density = false
+		density = FALSE
 		layer = TURF_LAYER
 		icon='code/Animals/Ramar.dmi'
-		can_harness = false
+		can_harness = FALSE
 		diet = MEAT | CORPSE
 		mood = "aggressive"
 		Health = 170

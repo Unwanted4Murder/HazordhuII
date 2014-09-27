@@ -87,9 +87,9 @@ atom
 	Click(location,control,params)
 		var right = hasRightClick(params)
 		if(right)
-			if(hasShiftKey(params, true)) shiftKey(usr, true)
-			else if(hasCtrlKey(params, true)) ctrlKey(usr, true)
-			else if(hasAltKey(params, true)) altKey(usr, true)
+			if(hasShiftKey(params, TRUE)) shiftKey(usr, TRUE)
+			else if(hasCtrlKey(params, TRUE)) ctrlKey(usr, TRUE)
+			else if(hasAltKey(params, TRUE)) altKey(usr, TRUE)
 			else rightClick(usr)
 
 		else

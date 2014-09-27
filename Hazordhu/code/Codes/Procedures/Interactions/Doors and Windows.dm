@@ -4,7 +4,7 @@ proc/is_door(obj/Built/Doors/o) return istype(o)
 mob
 	proc/_use_door(obj/Built/Doors/door)
 		if(!is_door(door))
-			return false
+			return FALSE
 
 		if(has_key("shift"))
 			return _knock_door(door)
@@ -16,8 +16,8 @@ mob
 			return door.toggle()
 
 	/obj/Built/Doors
-		var knockable = true
-		skin_door/knockable = false
+		var knockable = TRUE
+		skin_door/knockable = FALSE
 
 	proc/_knock_door(obj/Built/Doors/door) if(is_door(door))
 		if(!door.knockable) return
@@ -30,4 +30,4 @@ mob
 		for(var/mob/h in knock_hearers)
 			h.hear_sound('code/Sounds/knock_knock.wav')
 
-		return true
+		return TRUE

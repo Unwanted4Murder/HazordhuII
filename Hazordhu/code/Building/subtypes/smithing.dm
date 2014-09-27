@@ -2,19 +2,20 @@ builder/smithing
 	main_tool = /obj/Item/Tools/Hammer
 	skill = SMITHING
 	cursor = "hammer"
-	allowed_in_tutorial = true
+	allowed_in_tutorial = TRUE
 
-	var needs_anvil = true
+	var needs_anvil = TRUE
 
 	condition(mob/m)
+		if(!m.loc) return
 		if(needs_anvil && !(locate(/obj/Built/Anvil) in obounds(m, 24)))
-			return false
-		return true
+			return FALSE
+		return TRUE
 
 	anvil
 		name = "Anvil"
 		icon = 'code/Smithing/Anvil.dmi'
-		needs_anvil = false
+		needs_anvil = FALSE
 
 		desc = "A heavy metal anvil required for smithing<br />\
 				10 Bars"
@@ -22,15 +23,15 @@ builder/smithing
 
 		req = list(	BAR		=	10)
 		built = /obj/Built/Anvil
-		allowed_in_tutorial = false
+		allowed_in_tutorial = FALSE
 
-		density = true
+		density = TRUE
 
 	barred_wall
 		name = "Barred Wall"
 		icon = 'code/Smithing/Barred Wall.dmi'
 		group_only = 1
-		needs_anvil = false
+		needs_anvil = FALSE
 
 		desc = "Something to keep criminals behind, or just a better fence<br />\
 				4 Poles"
@@ -38,15 +39,15 @@ builder/smithing
 
 		req = list(	POLE	=	4)
 		built = /obj/Built/Barred_Wall
-		allowed_in_tutorial = false
+		allowed_in_tutorial = FALSE
 
-		density = true
+		density = TRUE
 
 	barred_gate
 		name = "Barred Gate"
 		icon = 'code/Smithing/Barred Gate.dmi'
 		group_only = 1
-		needs_anvil = false
+		needs_anvil = FALSE
 
 		desc = "Like a barred wall, except you can open it<br />\
 				5 Poles"
@@ -54,14 +55,14 @@ builder/smithing
 
 		req = list(	POLE	=	5)
 		built = /obj/Built/Doors/Barred_Gate
-		allowed_in_tutorial = false
+		allowed_in_tutorial = FALSE
 
-		density = true
+		density = TRUE
 
 	cauldron
 		name = "Cauldron"
 		icon = 'code/Smithing/Cauldron.dmi'
-		needs_anvil = false
+		needs_anvil = FALSE
 
 		desc = "A big bowl used to mix alchemy ingredients<br />\
 				6 Bars"
@@ -69,9 +70,9 @@ builder/smithing
 
 		req = list(	BAR		=	6)
 		built = /obj/Built/Cauldron
-		allowed_in_tutorial = false
+		allowed_in_tutorial = FALSE
 
-		density = true
+		density = TRUE
 
 	nail
 		name = "Nail"
@@ -829,7 +830,7 @@ builder/smithing
 		name = "Coin Stamp"
 		icon = 'code/tools/coin stamp.dmi'
 		icon_state = "item"
-		group_only = true
+		group_only = TRUE
 
 		desc = "Stamp your group's identification onto a stack of coins!<br />\
 				Or just remove the coins' existing stamp!<br />\

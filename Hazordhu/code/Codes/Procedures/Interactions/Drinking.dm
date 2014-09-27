@@ -19,24 +19,24 @@ mob/proc
 			return
 		if(Locked) return
 		if(Thirst < 1) return aux_output("You don't need to drink.")
-		Locked = true
+		Locked = TRUE
 		emote("begins drinking water.")
 		while(Thirst > 0)
 			status_overlay("thirst", 1)
 			Thirst --
 			sleep 1
 		emote("finishes drinking water.")
-		Locked = false
-		return true
+		Locked = FALSE
+		return TRUE
 
 	is_drinkable(atom/o)
-		if(!istype(o)) return false
+		if(!istype(o)) return FALSE
 		if(istype(o, /turf/Environment/Water))
-			if(locate(/obj/Built) in o) return false
+			if(locate(/obj/Built) in o) return FALSE
 			if(!istype(o, /turf/Environment/Water/noF) && get_season() == WINTER)
-				if(o.icon_state == "chipped") return true
-				return false
-			return true
+				if(o.icon_state == "chipped") return TRUE
+				return FALSE
+			return TRUE
 		if(istype(o, /obj/Built/Fountain))
-			if(get_season() == WINTER) return false
-			return true
+			if(get_season() == WINTER) return FALSE
+			return TRUE

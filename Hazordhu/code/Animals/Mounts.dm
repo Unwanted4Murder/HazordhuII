@@ -1,12 +1,12 @@
 mob/Animal
 	Cross(mob/m)
-		if(m == rider) return true
+		if(m == rider) return TRUE
 		return ..()
 
 mob
 	var mob/Animal/mount
 	Cross(mob/Animal/m)
-		if(m == mount) return true
+		if(m == mount) return TRUE
 		return ..()
 
 	proc/mount_animal(mob/Animal/animal)
@@ -64,7 +64,7 @@ obj/Item/Tailoring/Harness
 
 mob/Animal
 	var
-		can_harness = true
+		can_harness = TRUE
 		posted
 
 		tmp
@@ -116,18 +116,18 @@ mob/Animal
 		m.dir = dir
 
 		if(posted)
-			posted = false
-			Locked = false
-		return true
+			posted = FALSE
+			Locked = FALSE
+		return TRUE
 
 	proc/dismount(mob/humanoid/m)
 		if(!m) m = rider
 		if(istype(m))
 			if(rider != m || m.mount != src)
-				return false
+				return FALSE
 			m.mount = null
 			m.emote("gets off the [src]")
 			m.set_loc(loc, step_x, step_y)
 			m.pixel_y = 0
 			rider = null
-			return true
+			return TRUE

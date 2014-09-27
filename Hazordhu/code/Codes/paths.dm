@@ -2,7 +2,7 @@ obj/Built/Path
 	icon = 'code/Icons/Path.dmi'
 	icon_state = "11"
 	layer = TURF_LAYER + 1
-	density = false
+	density = FALSE
 	base_health = 300
 
 	Sand
@@ -63,10 +63,10 @@ obj/Built/Path
 
 				for(var/obj/cliff_border/c in t)
 					if(c.icon_state == "[get_dir(src, get_step_away(src, get_step(src, dir)))]" && c.density)
-						no = true
+						no = TRUE
 				for(var/obj/cliff_border/c in loc)
 					if(c.icon_state == "[dir]" && c.density)
-						no = true
+						no = TRUE
 
 				if(!no) d |= dir
 		icon_state = "[d && PathDirConvert[d] || 11]"

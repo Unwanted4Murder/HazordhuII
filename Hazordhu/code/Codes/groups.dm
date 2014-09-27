@@ -34,7 +34,7 @@ mob
 		return players
 
 	proc/is_stranger(mob/player/p)
-		if(!istype(p)) return false
+		if(!istype(p)) return FALSE
 		return nameShown(p) == p.stranger_name()
 
 obj
@@ -155,7 +155,7 @@ group
 				var uname = choice
 				var iname = invited.nameShown(player)
 				if("Yes" == invited.s_alert("[iname] has invited you to join their group, do you accept?","Invite","Yes","No"))
-					spawn player.s_alert("[uname] has accepted your invitation.","Accepted","Yay!")
+					player.s_alert_bg("[uname] has accepted your invitation.","Accepted","Yay!")
 					group.members += invited.key
 					group.members[invited.key] = 4
 					invited.Group = group
@@ -218,10 +218,10 @@ group
 				if(totransfer && "Yes" == player.s_alert("Are you sure you want [totransfer] to own your group?", "Transfer Ownership", "No", "Yes"))
 					group.members[totransfer] = 1
 					group.members[player.key] = 2
-					spawn player.s_alert("Your rank is now 2.","New Rank")
+					player.s_alert_bg("Your rank is now 2.","New Rank")
 					var mob/player/m
 					for(m in Players) if(m.key == totransfer) break
-					if(m) spawn m.s_alert("You are now the leader of your group.","Ownership Transferred", "OK")
+					if(m) m.s_alert_bg("You are now the leader of your group.","Ownership Transferred", "OK")
 
 			else group.out("There is no one to transfer ownership of your group to.", target = player)
 
@@ -314,23 +314,23 @@ mob/player
 		if(!making_group) return
 		var gname = winget(src, "group_create.groupname", "text")
 		if(length(gname) < 5 || length(gname) > 50)
-			spawn s_alert("Your group name must be between 5 and 50 characters!","New Group","Oh no!")
+			s_alert_bg("Your group name must be between 5 and 50 characters!","New Group","Oh no!")
 			cancel_groupcreate()
 			return
 		for(var/group/g in groups) if(g.name == gname)
-			spawn s_alert("That name is already taken.","New Group","Oh no!")
+			s_alert_bg("That name is already taken.","New Group","Oh no!")
 			cancel_groupcreate()
 			return
 		making_group.name = gname
 		making_group = null
 
 	verb/cancel_groupcreate()
-		set hidden = true
+		set hidden = TRUE
 		del making_group
-		making_group = false
+		making_group = FALSE
 
 	verb/group_create()
-		set hidden = true
+		set hidden = TRUE
 		if(making_group) return
 		if(Group) return
 		if(!isSubscriber) return aux_output("Only subscribers can create groups!")
@@ -348,7 +348,7 @@ mob/player
 			while(making_group) sleep 5
 			client.screen -= flag_design_buttons
 			winshow(src, "group_create", 0)
-			if(making_group == false) return
+			if(making_group == FALSE) return
 			grp.members[key] = 1
 			Group = grp
 			Group.update_flag()
@@ -365,7 +365,7 @@ mob/player
 	PreLogout()
 		..()
 		for(var/group/g in groups) if(key in g.members) g.Logout(src)
-
+#if !THIN_SKIN
 	Stat()
 		..()
 		var const
@@ -423,3 +423,4 @@ mob/player
 
 		if(s.len)
 			winset(src, null, list2params(s))
+#endif
