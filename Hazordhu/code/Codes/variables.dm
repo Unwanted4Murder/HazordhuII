@@ -96,7 +96,7 @@ world
 		..()
 		SetConfig("APP/admin", "Kaiochao", "role=root")
 
-		name = "Hazordhu II: Kaio's Server"
+		name = "Hazordhu II"
 
 		if(!(MAPSAVE & SAVE_FLAG))
 			name += " (NO MAP SAVE)"
