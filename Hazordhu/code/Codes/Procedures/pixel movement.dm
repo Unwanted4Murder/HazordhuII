@@ -130,7 +130,7 @@ atom
 			var abs_movement[] = vec2(abs(movement[1]), abs(movement[2]))
 
 			//	reset movement wrapper variables
-			var pre_step_size = step_size
+			// var pre_step_size = step_size
 			step_size = max(abs_movement[1], abs_movement[2])
 			pixel_moving = TRUE
 			bump_dir = 0
@@ -183,5 +183,5 @@ atom
 				pos[2] = py
 
 			pixel_moving = FALSE
-			step_size = pre_step_size
+			// step_size = pre_step_size
 #endif

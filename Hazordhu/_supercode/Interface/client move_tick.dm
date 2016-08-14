@@ -1,4 +1,8 @@
 client
+	#if DM_VERSION >= 511
+	fps = 100
+	#endif
+
 	var resolution[] = vec2_zero
 	var view_size[] = vec2_zero
 
