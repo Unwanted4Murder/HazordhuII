@@ -95,8 +95,9 @@ client
 		bg.icon = null
 		bg.mouse_opacity = 2
 		bg.screen_loc = "SOUTHWEST to NORTHEAST"
-		bg.layer = -1000
 		bg.name = ""
+		bg.layer = BACKGROUND_LAYER
+		bg.plane = -100
 		screen += bg
 
 	MouseEntered(o, l, c, p)
