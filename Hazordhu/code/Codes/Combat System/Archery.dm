@@ -227,7 +227,8 @@ obj
 		proc/move_tick_start()
 			Stackable = 0
 			density = 1
-			icon_state = angle2state(angle, 10)
+			// icon_state = angle2state(angle, 10)
+			transform = turn(initial(transform), angle)
 			vel = vec2p(init_speed, angle)
 			decel = vec2p(-decel, angle)
 

@@ -26,7 +26,6 @@
 #include "__libs\overlays\overlays.dm"
 #include "__libs\proclib\looper.dm"
 #include "__libs\proclib\plAngle.dm"
-#include "__libs\proclib\plIcon.dm"
 #include "__libs\proclib\plMath.dm"
 #include "__libs\text\_readme.dm"
 #include "__libs\text\text.dm"
