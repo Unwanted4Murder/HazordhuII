@@ -61,6 +61,7 @@ hud/box
 				//	maptext attached to bottom-left corner
 				if(!x && !y)
 					maptext_anchor = p
+					maptext_anchor.layer = 500
 
 		set_maptext()
 
