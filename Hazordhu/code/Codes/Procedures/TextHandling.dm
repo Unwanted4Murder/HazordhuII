@@ -1,8 +1,11 @@
 proc
-//	replacetext(t,t2,t3)return copytext(t,1,findtext(t,t2))+t3+copytext(t,findtext(t,t2)+length(t2),0)
+	#if DM_VERSION < 510
+	replacetext(t,t2,t3)
+		return copytext(t,1,findtext(t,t2))+t3+copytext(t,findtext(t,t2)+length(t2),0)
 	replaceall(t,t2,t3)
 		while(findtext(t,t2))t=replacetext(t,t2,t3)
 		return t
+	#endif
 	deletetext(t,t2)	return copytext(t,1,findtext(t,t2))+copytext(t,findtext(t,t2)+length(t2),0)
 	deleteall(t,t2)
 		while(findtext(t,t2))t=deletetext(t,t2)

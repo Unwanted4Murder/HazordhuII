@@ -43,7 +43,11 @@ hud/grid
 			if(cell.object)
 				animate(cell, alpha = 255, time = 1)
 				var builder/builder = cell.object
+				#if DM_VERSION < 510
 				label.set_text(replaceall("<b>[builder.name]</b>: [builder.desc]", "<br />", "\n"))
+				#else
+				label.set_text(replacetext("<b>[builder.name]</b>: [builder.desc]", "<br />", "\n"))
+				#endif
 
 		mouse_exit(hud/grid/cell/cell)
 			if(cell.object)

@@ -176,7 +176,11 @@ hud/grid
 		filled(hud/grid/cell/cell)
 			var hud/grid/crafting/label/label = get_label(cell)
 			var builder/builder = cell.object
+			#if DM_VERSION < 510
 			label.set_text(replaceall("<b>[builder.name]</b>: [builder.desc]", "<br />", "\n"))
+			#else
+			label.set_text(replacetext("<b>[builder.name]</b>: [builder.desc]", "<br />", "\n"))
+			#endif
 			label.alpha = 128
 			cell.alpha = 224
 

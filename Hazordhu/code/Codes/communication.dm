@@ -319,7 +319,11 @@ mob
 
 			if(msg)
 				msg = copytext(msg, 1, max_ooc_length)
+				#if DM_VERSION < 510
 				msg = replaceall(msg, "\n", " | ")
+				#else
+				msg = replacetext(msg, "\n", " | ")
+				#endif
 
 			if(!msg) return
 
@@ -386,7 +390,11 @@ mob
 					return
 
 		for(var/t in list("\n", "\t"))
+			#if DM_VERSION < 510
 			msg = replaceall(msg, t, " | ")
+			#else
+			msg = replacetext(msg, t, " | ")
+			#endif
 
 		if(client)
 			var log = "([current_time()])([muzzle() ? "Muffled " : ""]Say)[src]: [html_encode(msg)]"
@@ -433,7 +441,11 @@ mob
 						return
 
 			for(var/t in list("\n","\t"))
+				#if DM_VERSION < 510
 				msg = replaceall(msg, t, " | ")
+				#else
+				msg = replacetext(msg, t, " | ")
+				#endif
 
 			if(client)
 				var log = "([current_time()])([muzzle() && "Muffled "]Whisper)[src]: [html_encode(msg)]"
@@ -464,7 +476,12 @@ mob
 				if(!p.Made) return
 				if(p.Mute) return aux_output("You're muted.")
 
-			for(var/t in list("\n","\t")) msg = replaceall(msg, t, " | ")
+			for(var/t in list("\n","\t"))
+				#if DM_VERSION < 510
+				msg = replaceall(msg, t, " | ")
+				#else
+				msg = replacetext(msg, t, " | ")
+				#endif
 
 			if(client)
 				var log = "([current_time()])([muzzle() && "Muffled "]Yell)[src]: [html_encode(msg)]"
