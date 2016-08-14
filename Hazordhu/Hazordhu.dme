@@ -11,7 +11,6 @@
 
 // BEGIN_INCLUDE
 #include "___.dm"
-#include "confidential.dm"
 #include "map.dmm"
 #include "__libs\library definitions.dm"
 #include "__libs\kaiochao\map info.dm"
