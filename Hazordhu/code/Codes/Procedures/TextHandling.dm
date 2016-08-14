@@ -1,5 +1,5 @@
 proc
-	replacetext(t,t2,t3)return copytext(t,1,findtext(t,t2))+t3+copytext(t,findtext(t,t2)+length(t2),0)
+//	replacetext(t,t2,t3)return copytext(t,1,findtext(t,t2))+t3+copytext(t,findtext(t,t2)+length(t2),0)
 	replaceall(t,t2,t3)
 		while(findtext(t,t2))t=replacetext(t,t2,t3)
 		return t
