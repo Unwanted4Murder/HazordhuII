@@ -5,7 +5,8 @@ obj/click_void
 	parent_type = /obj
 	name = ""
 	icon = 'code/Icons/black.dmi'
-	layer = 0
+	plane = -100
+	layer = BACKGROUND_LAYER
 	mouse_opacity = 2
 	screen_loc = "SOUTHWEST to NORTHEAST"
 
