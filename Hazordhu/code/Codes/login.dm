@@ -94,8 +94,6 @@ mob/player
 		var mob/title/title = pick(title_list)
 		title.start_wandering(client)
 
-		winset(src, null, "command=\".configure graphics-hwmode off\n.configure graphics-hwmode on\"")
-
 		while(AtTitleScreen || client.char_creator) sleep 1
 
 		#if !THIN_SKIN
