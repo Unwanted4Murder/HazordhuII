@@ -188,7 +188,7 @@ obj
 					uses --
 					m << "The rune stone has [uses] uses left... (Subscribe to get unlimited usage!)"
 					if(uses <= 0)
-						crumble()
+						crumble(m)
 
 			#if NEW_RUNES
 			proc/Activate(mob/player/m, RuneCode)
@@ -246,7 +246,7 @@ obj
 				if(B)
 					B.Mod = (B.Mod || 0) | mod_values[destination]
 					m.aux_output("Your bow has been modified!")
-					crumble()
+					crumble(m)
 
 			proc/cast(mob/player/m)
 				if(!m.SubBens)
