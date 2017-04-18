@@ -52,7 +52,7 @@ obj
 			var id
 			var buried = TRUE
 
-			#if NEW_RUNES
+			#if NEW_RUNES && MAPSAVE
 			save_to(savedatum/s)
 				s.save_id = id
 
@@ -67,10 +67,12 @@ obj
 
 			New()
 				..()
+				#if MAPSAVE
 				#if NEW_RUNES
 				SetID()
 				#else
 				id = "[x]/[y]/[z]"
+				#endif
 				#endif
 				tag = "transporter_[id]"
 
