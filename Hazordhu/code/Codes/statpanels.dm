@@ -25,6 +25,7 @@ mob/player
 		else if(Human)	stat(human_farming)
 
 		statpanel("Forging")
+		stat("Forge required")
 		if(Orc)			stat(orc_forging)
 		else if(Human)	stat(human_forging)
 
@@ -44,43 +45,37 @@ mob/player
 		if(Orc)			stat(orc_tailoring)
 		else if(Human)	stat(human_tailoring)
 
-		var range1 = range(1, src)
-		var obj/Built
-			Cauldron/C = locate() in range1
-			Counter/Breakdown/B = locate() in range1
-			Barrel/Barrel = locate()in range1
-			Oven/O = locate() in range1
-			Range/R = locate() in range1
-			Counter/D = locate() in range1
+		statpanel("Alchemy")
+		stat("Cauldron required")
+		stat(alchemy)
+		stat("Breakdown Counter required")
+		stat(breakdown)
 
-		if(C || B)
-			statpanel("Alchemy")
-			if(C) stat(Alchemy_List)
-			if(B) stat(Breakdown_List)
+		statpanel("Grinding")
+		stat("Spinning Grinding Stone required")
+		stat(Grinding_List)
 
-		if(locate(/obj/Built/Grinding_Stone) in range1)
-			statpanel("Grinding")
-			stat(Grinding_List)
+		statpanel("Brewing")
+		stat("Barrel required")
+		stat(brewing)
 
-		if(Barrel)
-			statpanel("Brewing")
-			stat(brewing)
+		statpanel("Baking")
+		stat("Oven required")
+		if(Orc)			stat(orc_baking)
+		else if(Human)	stat(human_baking)
 
-		if(O)
-			statpanel("Baking")
-			if(Orc)			stat(orc_baking)
-			else if(Human)	stat(human_baking)
+		statpanel("Cooking")
+		stat("Cooking Range required")
+		if(Orc)			stat(orc_cooking)
+		else if(Human)	stat(human_cooking)
 
-		if(R)
-			statpanel("Cooking")
-			if(Orc)			stat(orc_cooking)
-			else if(Human)	stat(human_cooking)
+		statpanel("Food Prep")
+		stat("Counter required")
+		if(Orc)			stat(orc_food_prep)
+		else if(Human)	stat(human_food_prep)
 
-		if(D)
-			statpanel("Food Prep")
-			if(Orc)			stat(orc_food_prep)
-			else if(Human)	stat(human_food_prep)
 		..()
+
 #endif
 /*
 	var tmp
