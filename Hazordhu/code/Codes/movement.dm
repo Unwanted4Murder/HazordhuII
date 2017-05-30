@@ -91,7 +91,7 @@ mob
 			var mob/puller = mount || src
 			var dist = bounds_dist(puller, pulling_cart)
 			if(dist > 32) stop_pulling_cart()
-			else if(dist > 4) step_to(pulling_cart, puller, 0, step_size/2)
+			else if(dist > 4) step_to(pulling_cart, puller, 0, step_size)
 
 		if(dragging_built)
 			move_input = vec2_scale(move_input, 0.5)
