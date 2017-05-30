@@ -83,6 +83,8 @@ obj
 			plant
 				Stackable = FALSE
 				layer = TURF_LAYER + 1.1
+				standing = TRUE
+				bottom_offset = 8
 
 				/savedatum
 					var growth_rate
