@@ -6,6 +6,8 @@ login_changelog
 			"Plants are now layered as if they stand out of the ground.",
 			"All crafting tabs are visible at all times.",
 			"Client framerate is increased.",
+			"Stamina is no longer spent when gathering.",
+			"Tools no longer break."
 		)
 
 		fixed_bugs = list(

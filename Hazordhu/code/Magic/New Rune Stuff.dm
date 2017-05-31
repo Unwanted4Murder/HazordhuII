@@ -1,3 +1,4 @@
+#if NEW_RUNES
 var const/RUNE_CODE_LENGTH = 6
 var const/RUNES = 18
 
@@ -291,3 +292,4 @@ runes
 
 	proc/Locate(Code)
 		return codes[Code]
+#endif
