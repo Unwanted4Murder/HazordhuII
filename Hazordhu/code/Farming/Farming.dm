@@ -161,8 +161,10 @@ obj
 						update_appearance()
 
 				proc/update_appearance()
-					stage = clamp(1 + round(age / growth_freq), 1, stages)
-					icon_state = "[stage][name]"
+					var new_stage = clamp(1 + round(age / growth_freq), 1, stages)
+					if(stage != new_stage)
+						stage = new_stage
+						icon_state = "[stage][name]"
 					if(stage == stages)
 						has_crop = TRUE
 
