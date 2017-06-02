@@ -87,6 +87,8 @@ obj/Built/NewForge
 			looping = TRUE
 			var const/delta_time = 1
 			do
+				fuel_time = max(0, fuel_time - delta_time)
+
 				if(fuel_time <= 0)
 					var obj/Item/fuel = FindFuel()
 					if(fuel)
@@ -97,8 +99,6 @@ obj/Built/NewForge
 
 						UpdateStorageViewers()
 				
-				fuel_time = max(0, fuel_time - delta_time)
-
 				// Add forge time to ores. 
 				for(var/obj/Item/Ores/ore in src)
 					ore.AddForgeTime(delta_time)
