@@ -100,6 +100,7 @@ CharCreator
 		draw_hair()
 		draw_kind()
 		draw_gender()
+		draw_preview()
 
 		select_hair(locate(/CharCreator/Hair/Short) in parts)
 		select_kind(locate(/CharCreator/Kind/Human/Plainsman) in parts)
@@ -110,16 +111,64 @@ CharCreator
 		client.screen += parts
 
 	Done
-		parent_type = /obj
-		icon			= 'code/flash hud/hud icons wide.dmi'
-		layer			= 200
-		maptext			= "<font size=1 align=center valign=middle>Done"
-		maptext_width	= 48
-		screen_loc		= "CENTER+5,CENTER-3"
+		parent_type = /obj/Title_Screen
+		icon				= 'code/flash hud/hud icons wide.dmi'
+		layer				= 200
+		maptext				= "<font size=1 align=center valign=middle>Done"
+		maptext_width		= 48
+		screen_loc			= "CENTER:168,CENTER-3"
+		appearance_flags = PIXEL_SCALE
+		MouseEntered() animate_selection()
+		MouseExited() normalize_selection()
 		Click()
 			if(usr.client.char_creator)
 				if("Yes" == alert("Are you sure you want this character?", "Character Creation", "No", "Yes"))
 					usr.client.finish_char_create()
+
+	Preview
+		parent_type = /obj
+		layer = 200
+		icon = 'code/flash hud/hud icons 32.dmi'
+		screen_loc	= "CENTER:176,CENTER:-63"
+		var/obj
+			preview_hair
+			preview_body
+			preview_pants
+			preview_shirt
+		New()
+			preview_hair = new()
+			preview_body = new()
+			preview_pants = new()
+			preview_shirt = new()
+
+			preview_shirt.icon = 'Code/Hunting/Top.dmi'
+			preview_pants.icon = 'Code/Hunting/Loin Cloths.dmi'
+
+			preview_hair.layer = FLOAT_LAYER-0.1
+			preview_pants.layer = FLOAT_LAYER-0.2
+			preview_shirt.layer = FLOAT_LAYER-0.2
+			preview_body.layer = FLOAT_LAYER-0.3
+
+			overlays += preview_pants
+		proc
+			remove_hair()
+				overlays -= preview_hair
+			add_hair(CharCreator/Hair/h)
+				preview_hair.icon = h.icon
+				overlays += preview_hair
+			remove_body()
+				overlays -= preview_body
+			add_body(CharCreator/Kind/k)
+				preview_body.icon = k.icon
+				overlays += preview_body
+			add_shirt()
+				overlays += preview_shirt
+			remove_shirt()
+				overlays -= preview_shirt
+
+	proc/draw_preview()
+		preview = new()
+		client.screen += preview
 
 	proc/draw_hair()
 		hairs = new
@@ -170,8 +219,11 @@ CharCreator
 		genders = newlist(/CharCreator/Gender/Male, /CharCreator/Gender/Female)
 		parts += genders
 
+
 	var name
 	var gender
+
+	var CharCreator/Preview/preview
 
 	var CharCreator/Hair/hair
 	var CharCreator/HairColor/hair_color
@@ -189,22 +241,28 @@ CharCreator
 
 	proc/select_hair(CharCreator/Hair/h)
 		if(hair)
+			preview.remove_hair()
 			hair.underlays -= image('code/flash hud/hud icons 32.dmi', "down")
 			hair.underlays += 'code/flash hud/hud icons 32.dmi'
 		hair = h
+		preview.add_hair(hair)
 		hair.underlays -= 'code/flash hud/hud icons 32.dmi'
 		hair.underlays += image('code/flash hud/hud icons 32.dmi', "down")
 
 	proc/select_hair_color()
+		if(hair) preview.remove_hair()
 		for(var/CharCreator/Hair/h in hairs)
 			h.icon = initial(h.icon)
 			h.icon += hair_color.Color
+		if(hair) preview.add_hair(hair)
 
 	proc/select_kind(CharCreator/Kind/k)
 		if(kind)
+			preview.remove_body()
 			kind.underlays -= image('code/flash hud/hud icons 32.dmi', "down")
 			kind.underlays += 'code/flash hud/hud icons 32.dmi'
 		kind = k
+		preview.add_body(kind)
 		kind.underlays -= 'code/flash hud/hud icons 32.dmi'
 		kind.underlays += image('code/flash hud/hud icons 32.dmi', "down")
 		kind_desc.set_maptext("<font align=left valign=top>[k.desc]")
@@ -213,6 +271,7 @@ CharCreator
 
 	proc/select_gender(g)
 		gender = g
+		preview.remove_body()
 
 		for(var/CharCreator/Gender/G in genders)
 			if(G.gender == g)
@@ -223,25 +282,31 @@ CharCreator
 			if(MALE)
 				for(var/CharCreator/Kind/k in kinds)
 					k.icon = k.m_icon
+					preview.remove_shirt()
 			if(FEMALE)
 				for(var/CharCreator/Kind/k in kinds)
 					k.icon = k.f_icon
+					preview.add_shirt()
+
+		preview.add_body(kind)
 
 	Name
-		parent_type	= /obj
+		parent_type	= /obj/Title_Screen
 		maptext		= "<font size=1 align=center valign=middle>Name"
 		layer		= 200
-		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
-		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
+		appearance_flags = PIXEL_SCALE
+		MouseEntered() animate_selection()
+		MouseExited() normalize_selection()
 		Click() if(usr.client.char_creator)
 			var name = input("What is your name?", "Name", usr.client.char_creator.name)
 			usr.client.char_creator.set_name(name)
 
 	Gender
-		parent_type = /obj
+		parent_type = /obj/Title_Screen
 		layer = 200
-		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
-		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
+		appearance_flags = PIXEL_SCALE
+		MouseEntered() animate_selection()
+		MouseExited() normalize_selection()
 		Click() if(usr.client.char_creator) usr.client.char_creator.select_gender(gender)
 
 		icon = 'code/flash hud/hud icons wide.dmi'
@@ -258,16 +323,17 @@ CharCreator
 			screen_loc		= "CENTER-1,CENTER+4"
 
 	HairColor
-		parent_type		= /obj
+		parent_type		= /obj/Title_Screen
 		icon			= 'code/flash hud/hud icons wide.dmi'
-		screen_loc		= "CENTER+8,CENTER+4"
-		maptext			= "<font size=1 align=center valign=middle>Color"
+		screen_loc		= "CENTER:168,CENTER+4"
+		maptext			= "<font size=1 align=center valign=middle>Set Color"
 		maptext_width	= 48
 		layer			= 200
+		appearance_flags = PIXEL_SCALE
 
 		var Color
-		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
-		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
+		MouseEntered() animate_selection()
+		MouseExited() normalize_selection()
 		Click() if(usr.client.char_creator)
 			icon_state = "down"
 			Color = input("Select a hair color.", "Hair Color", Color) as color
@@ -275,8 +341,9 @@ CharCreator
 			usr.client.char_creator.select_hair_color(Color)
 
 	Hair
-		parent_type = /obj
+		parent_type = /obj/Title_Screen
 		layer = 200
+		appearance_flags = PIXEL_SCALE
 
 		var style
 
@@ -284,8 +351,8 @@ CharCreator
 			style = name
 			underlays = list('code/flash hud/hud icons 32.dmi')
 
-		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
-		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
+		MouseEntered() animate_selection()
+		MouseExited() normalize_selection()
 		Click() if(usr.client.char_creator) usr.client.char_creator.select_hair(src)
 
 		None		icon = 'code/Mobs/Hair/Hair.dmi'
@@ -300,8 +367,9 @@ CharCreator
 		Dreadlocks	icon = 'code/Mobs/Hair/Rasta.dmi'
 
 	Kind
-		parent_type = /obj
+		parent_type = /obj/Title_Screen
 		layer = 200
+		appearance_flags = PIXEL_SCALE
 		var m_icon
 		var f_icon
 
@@ -314,8 +382,8 @@ CharCreator
 		New()
 			underlays = list('code/flash hud/hud icons 32.dmi')
 
-		MouseEntered() animate(src, layer = 201, transform = matrix() * (4/3), time = 1)
-		MouseExited() animate(src, layer = 200, transform = matrix(), time = 1)
+		MouseEntered() animate_selection()
+		MouseExited() normalize_selection()
 		Click() if(usr.client.char_creator) usr.client.char_creator.select_kind(src)
 
 		proc/stats() return "\
@@ -393,3 +461,15 @@ CharCreator
 				max_health	=	100
 				max_stamina	=	160
 				strength	=	15
+
+obj/Title_Screen
+	proc/animate_selection(atom/a)
+		var/matrix/m = matrix()
+		m.Turn(5)
+		m.Scale(1.33)
+		animate(src, transform = m, time = 1)
+		plane = 1
+
+	proc/normalize_selection()
+		animate(src, transform = matrix(), time = 1)
+		plane = 0
