@@ -122,6 +122,8 @@ world
 
 savedatum
 	var
+		data[0]
+
 		save_x
 		save_y
 		save_z

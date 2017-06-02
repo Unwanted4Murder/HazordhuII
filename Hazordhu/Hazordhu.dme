@@ -10,6 +10,7 @@
 // END_PREFERENCES
 
 // BEGIN_INCLUDE
+#include "code\Smithing\Forge.dm"
 #include "___.dm"
 #include "map.dmm"
 #include "__libs\library definitions.dm"
