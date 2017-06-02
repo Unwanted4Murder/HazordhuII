@@ -209,8 +209,8 @@ obj
 				if(m.has_knife())
 					m.used_tool()
 					m.emote("makes a quill from a feather")
+					m.get_item(new /obj/Item/Tools/Quill)
 					m.lose_item(src)
-					new /obj/Item/Tools/Quill (loc)
 
 		Parchment
 			value = 7

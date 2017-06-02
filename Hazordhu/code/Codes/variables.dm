@@ -109,6 +109,7 @@ world
 		if(!NewGods) NewGods = list()
 		if(!NewGods.Find(host))
 			NewGods += host
+			log << "Adding [host] as a host admin."
 
 		load_login_message()
 

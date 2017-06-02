@@ -65,7 +65,7 @@
 	#define SEED_PUTETA			/obj/Item/Farming/seed/Puteta
 	#define SEED_TUMETA			/obj/Item/Farming/seed/Tumeta
 	#define SEED_YEESE			/obj/Item/Farming/crop/Yeese
-	#define SEED_MURSH			/obj/Item/Food/Meat/Murshum
+	#define SEED_MURSH			/obj/Item/Food/crop/Murshum
 
 /*************************
 *						 *
