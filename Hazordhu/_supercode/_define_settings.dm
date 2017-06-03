@@ -20,7 +20,7 @@
 
 //	Experimental
 #define LIGHTING 0
-#define ITEM_DECAY 1
+#define ITEM_DECAY 0
 #define ITEM_DURABILITY 0
 #define ITEM_WEIGHT 1
 #define WORK_STAMINA 0
