@@ -59,7 +59,7 @@ mob
 		var tmp/next_move
 
 		Move(Loc, Dir, StepX, StepY)
-			if(rider || Locked) walk(src, 0)
+			if(rider || Locked || boat) walk(src, 0)
 			if(Locked) return
 			#if !PIXEL_MOVEMENT
 			if(world.time < next_move) return
@@ -196,8 +196,7 @@ mob
 				return check_targets()
 
 			can_wander()
-				if(next_wander > world.time) return FALSE
-				return TRUE
+				return next_wander <= world.time && !(rider || boat)
 
 			ai_step()
 				if(Locked) return
