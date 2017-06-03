@@ -96,7 +96,7 @@ world
 		..()
 		SetConfig("APP/admin", "Kaiochao", "role=root")
 
-		name = "Hazordhu II"
+		name = "Hazordhu II ([BUILD])"
 
 		if(!(MAPSAVE & SAVE_FLAG))
 			name += " (NO MAP SAVE)"
@@ -109,6 +109,7 @@ world
 		if(!NewGods) NewGods = list()
 		if(!NewGods.Find(host))
 			NewGods += host
+			log << "Adding [host] as a host admin."
 
 		load_login_message()
 

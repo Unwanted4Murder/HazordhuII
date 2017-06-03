@@ -1,9 +1,9 @@
 //	shows "Test Server" in the title bar
-#define DEVMODE 0
+#define DEVMODE 1
 
 //	shows "Official Server" in the title bar
 #define OFFICIALSERVER 0
-#define BUILD 6030
+#define BUILD 6032
 
 #define MAP_OTF 0
 
@@ -20,16 +20,16 @@
 
 //	Experimental
 #define LIGHTING 0
-#define ITEM_DECAY 1
-#define ITEM_DURABILITY 1
+#define ITEM_DECAY 0
+#define ITEM_DURABILITY 0
 #define ITEM_WEIGHT 1
-#define WORK_STAMINA 1
-#define FURN_GRAB 1
+#define WORK_STAMINA 0
+#define FURN_GRAB 0
 
 #define HUD_CRAFTING 1
 #define HUD_ALL 1
 #define THIN_SKIN 0
-#define NEW_RUNES 1
+#define NEW_RUNES 0
 
 #define CHUNKS 1
 
