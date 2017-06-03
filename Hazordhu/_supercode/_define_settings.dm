@@ -3,7 +3,7 @@
 
 //	shows "Official Server" in the title bar
 #define OFFICIALSERVER 0
-#define BUILD 6031
+#define BUILD 6032
 
 #define MAP_OTF 0
 
