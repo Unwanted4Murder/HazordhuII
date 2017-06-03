@@ -43,6 +43,7 @@ obj/Built/NewForge
 		fuel_time = 0
 		on = FALSE
 	
+	#if MAPSAVE
 	save_to(savedatum/s)
 		..()
 		s.data["fuel_time"] = fuel_time
@@ -51,6 +52,7 @@ obj/Built/NewForge
 		..()
 		icon_state = ""
 		fuel_time = s.data["fuel_time"]
+	#endif
 	
 	// Implement the Forge as a container.
 	is_storage = TRUE
