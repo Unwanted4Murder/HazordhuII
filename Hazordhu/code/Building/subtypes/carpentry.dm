@@ -477,6 +477,7 @@ builder/carpentry
 	bucket
 		name = "Bucket"
 		icon = 'code/Woodworking/Bucket.dmi'
+		density = FALSE
 
 		desc = "Used to carry liquids<br />\
 				1 Nail<br />\
