@@ -176,7 +176,7 @@ builder/masonry
 
 		req = list(	BRICK	=	6,
 					TAR		=	2)
-		built = /obj/Built/Forge
+		built = /obj/Built/NewForge
 
 	oven
 		name = "Oven"
