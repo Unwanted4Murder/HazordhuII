@@ -3,6 +3,8 @@ hud/box
 	var maptext = ""
 	var maptext_width = 32
 	var maptext_height = 32
+	var maptext_x = 0
+	var maptext_y = 0
 	var x = "WEST"
 	var px = 0
 	var y = "SOUTH"
@@ -29,8 +31,10 @@ hud/box
 
 		src.client = client
 
-		src.maptext_width = 32 * width
-		src.maptext_height = 32 * height
+		src.maptext_width = 32 * width - 8
+		src.maptext_height = 32 * height - 8
+		src.maptext_x = 4
+		src.maptext_y = 4
 		src.maptext = maptext
 
 		draw()
@@ -77,6 +81,8 @@ hud/box
 
 		maptext_anchor.maptext_width = maptext_width
 		maptext_anchor.maptext_height = maptext_height
+		maptext_anchor.maptext_x = maptext_x
+		maptext_anchor.maptext_y = maptext_y
 		maptext_anchor.maptext = maptext
 
 	var visible = FALSE
