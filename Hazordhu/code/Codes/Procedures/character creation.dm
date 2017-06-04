@@ -117,7 +117,6 @@ CharCreator
 		maptext				= "<font size=1 align=center valign=middle>Done"
 		maptext_width		= 48
 		screen_loc			= "CENTER:168,CENTER-3"
-		appearance_flags = PIXEL_SCALE
 		MouseEntered() animate_selection()
 		MouseExited() normalize_selection()
 		Click()
@@ -168,6 +167,7 @@ CharCreator
 
 	proc/draw_preview()
 		preview = new()
+		parts += preview
 		client.screen += preview
 
 	proc/draw_hair()
@@ -294,7 +294,6 @@ CharCreator
 		parent_type	= /obj/Title_Screen
 		maptext		= "<font size=1 align=center valign=middle>Name"
 		layer		= 200
-		appearance_flags = PIXEL_SCALE
 		MouseEntered() animate_selection()
 		MouseExited() normalize_selection()
 		Click() if(usr.client.char_creator)
@@ -304,7 +303,6 @@ CharCreator
 	Gender
 		parent_type = /obj/Title_Screen
 		layer = 200
-		appearance_flags = PIXEL_SCALE
 		MouseEntered() animate_selection()
 		MouseExited() normalize_selection()
 		Click() if(usr.client.char_creator) usr.client.char_creator.select_gender(gender)
@@ -329,7 +327,6 @@ CharCreator
 		maptext			= "<font size=1 align=center valign=middle>Set Color"
 		maptext_width	= 48
 		layer			= 200
-		appearance_flags = PIXEL_SCALE
 
 		var Color
 		MouseEntered() animate_selection()
@@ -343,7 +340,6 @@ CharCreator
 	Hair
 		parent_type = /obj/Title_Screen
 		layer = 200
-		appearance_flags = PIXEL_SCALE
 
 		var style
 
@@ -369,7 +365,6 @@ CharCreator
 	Kind
 		parent_type = /obj/Title_Screen
 		layer = 200
-		appearance_flags = PIXEL_SCALE
 		var m_icon
 		var f_icon
 
@@ -463,13 +458,11 @@ CharCreator
 				strength	=	15
 
 obj/Title_Screen
-	proc/animate_selection(atom/a)
-		var/matrix/m = matrix()
-		m.Turn(5)
-		m.Scale(1.33)
-		animate(src, transform = m, time = 1)
-		plane = 1
+	proc
+		animate_selection()
+			animate(src, transform = matrix() * (8/7), time = 1)
+			plane = 1
 
-	proc/normalize_selection()
-		animate(src, transform = matrix(), time = 1)
-		plane = 0
+		normalize_selection()
+			animate(src, transform = matrix(), time = 1)
+			plane = 0

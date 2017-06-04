@@ -1,5 +1,4 @@
 obj/Title_Screen
-	appearance_flags = PIXEL_SCALE
 	layer = EFFECTS_LAYER
 	Hazordhu
 		icon = 'Title.dmi'
