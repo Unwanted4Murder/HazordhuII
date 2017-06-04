@@ -60,9 +60,20 @@ mob
 
 		proc/TrackCPULoop()
 			set waitfor = FALSE
+			var list/samples = list()
+			var display_period = 1
+			var next_display_time
 			while(tracking_cpu)
-				sleep 1
-				winset(src, "default", "title=\"[world.name] (CPU: [world.cpu]%)\"")
+				sleep world.tick_lag
+				samples += world.cpu
+				if(world.time >= next_display_time)
+					next_display_time = world.time + display_period
+					var average = 0
+					for(var/sample in samples)
+						average += sample
+					average /= samples.len
+					winset(src, "default", "title=\"[world.name] (CPU: [round(average, 0.01)]%)\"")
+					samples.Cut()
 			winset(src, "default", "title=\"[world.name]\"")
 
 		key_down(k)

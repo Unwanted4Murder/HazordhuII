@@ -52,24 +52,12 @@ looper
 			call(o, end_proc)()
 
 	var next_tick
-	proc/pre_tick()
-	proc/post_tick()
 	proc/tick()
-		pre_tick()
+		while(tickers.Remove(null))
 
-		var pre = "pre [callback]"
+		var tick_time = 0
 		for(var/ticker in tickers)
-			if(ticker && hascall(ticker, pre))
-				call(ticker, pre)()
-
-		for(var/ticker in tickers)
-			if(ticker && hascall(ticker, callback))
-				call(ticker, callback)()
-			else remove(ticker)
-
-		var post = "post [callback]"
-		for(var/ticker in tickers)
-			if(ticker && hascall(ticker, post))
-				call(ticker, post)()
-
-		post_tick()
+			call(ticker, callback)()
+			if(world.tick_usage > 20 && tick_time + world.tick_lag < tick_lag)
+				tick_time += world.tick_lag
+				sleep world.tick_lag
