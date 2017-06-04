@@ -29,6 +29,7 @@ obj
 				//	solves the issue of overshooting (Eks and Kaio)
 				var tmp/active
 
+				#if MAPSAVE
 				save_to(savedatum/s)
 					s.save_id = id
 
@@ -50,6 +51,7 @@ obj
 					id = s.save_id
 
 				#endif
+				#endif
 
 				#if NEW_RUNES
 				MouseEntered()
@@ -65,7 +67,7 @@ obj
 
 				New()
 					..()
-					#if NEW_RUNES
+					#if NEW_RUNES && MAPSAVE
 					SetID()
 					#else
 					if(!id) id = string(5)

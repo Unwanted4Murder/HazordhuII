@@ -71,4 +71,8 @@ obj/Item
 	Pipe/weight = WEIGHT_TINY
 
 	Mould/weight = WEIGHT_SMALL
+
+	Wood
+		Board
+			weight = WEIGHT_TINY
 #endif

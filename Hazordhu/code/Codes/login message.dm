@@ -1,4 +1,24 @@
 login_changelog
+	v6031
+		name = "6031"
+
+		additions = list(
+			"Plants are now layered as if they stand out of the ground.",
+			"All crafting tabs are visible at all times.",
+			"Client framerate is increased.",
+			"Stamina is no longer spent when gathering.",
+			"Tools no longer break."
+		)
+
+		fixed_bugs = list(
+		)
+
+		fixed_glitches = list(
+			"Character creation text appears correctly.",
+			"The map is now flush with the top of the window contents.",
+			"Medal messages no longer appear when not appropriate."
+		)
+
 	v6030
 		name = "6030"
 

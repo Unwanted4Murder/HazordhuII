@@ -92,6 +92,8 @@ map_chunk
 
 	proc
 		Entered(atom/o)
+			set background = TRUE, waitfor = FALSE
+
 			contents |= o
 
 			if(ismob(o))
@@ -99,12 +101,13 @@ map_chunk
 				if(m.client)
 					for(var/map_chunk/chunk in map.ChunkBounds(x - 1, y - 1, x + CHUNK_WIDTH + 1, y + CHUNK_HEIGHT + 1, layer.z))
 						chunk.Initialize()
-						sleep(-1)
 
 		Exited(atom/o)
 			contents -= o
 
 		Initialize()
+			set background = TRUE, waitfor = FALSE
+			
 			apparent_season = get_season()
 
 			for(var/atom/a in contents)
@@ -119,9 +122,9 @@ map_chunk
 				for(var/atom/a2 in a)
 					if(a2.season_updates && a2.apparent_season != apparent_season)
 						a2.season_update(apparent_season)
-						sleep(-1)
-
-				sleep(-1)
+				
+				if(world.tick_usage > 20)
+					sleep world.tick_lag
 
 atom
 	New()

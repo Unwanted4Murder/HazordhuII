@@ -22,9 +22,8 @@ mob/player
 
 	medalMsg(medal)
 		set waitfor = FALSE
-		if(!world.GetMedal(medal, src))
+		if(world.SetMedal(medal, src))
 			src << "<font color = [rgb(0,0,255)]>You've gained the '[medal]' medal!"
-			world.SetMedal(medal,src)
 
 	s_alert(message, title, button1, button2, button3, default)
 		var buttons[0]

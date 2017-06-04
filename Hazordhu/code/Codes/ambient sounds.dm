@@ -1,3 +1,4 @@
+var looper/SoundLooper = new("checkSound", 1)
 
 mob/player
 	var
@@ -11,17 +12,13 @@ mob/player
 
 				winterbg
 
-	//		next_sound_check
-			sound_check_delay = 0
-
 	PostLogin()
 		..()
-		spawn SoundLoop()
-
-	proc/SoundLoop()
-		for()
-			checkSound()
-			sleep(sound_check_delay || world.tick_lag)
+		SoundLooper.add(src)
+	
+	PreLogout()
+		..()
+		SoundLooper.remove(src)
 
 	proc/checkSound()
 	//	if(world.time < next_sound_check) return

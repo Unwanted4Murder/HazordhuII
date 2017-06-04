@@ -8,6 +8,11 @@ obj
 			base_health = 200
 			takes_fuel = TRUE
 
+			New()
+				..()
+				new/obj/Built/NewForge(loc)
+				del src
+
 		Oven
 			SET_TBOUNDS("5,3 to 28,10")
 			icon = 'code/Masonry/Oven.dmi'

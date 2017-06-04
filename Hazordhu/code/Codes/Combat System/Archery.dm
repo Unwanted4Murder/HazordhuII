@@ -200,6 +200,7 @@ obj
 
 			icon = initial(icon)
 			icon_state = ""
+			transform = null
 			Stackable = 1
 
 			pixel_x = 0

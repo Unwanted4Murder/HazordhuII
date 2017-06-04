@@ -87,12 +87,6 @@ mob
 				stop_dragging()
 			else step_to(dragging_body, src, 0, step_size)
 
-		if(pulling_cart)
-			var mob/puller = mount || src
-			var dist = bounds_dist(puller, pulling_cart)
-			if(dist > 32) stop_pulling_cart()
-			else if(dist > 4) step_to(pulling_cart, puller, 0, step_size/2)
-
 		if(dragging_built)
 			move_input = vec2_scale(move_input, 0.5)
 			SET_STEP_SIZE(step_size * 0.5)
@@ -156,6 +150,7 @@ mob
 
 				if(mover != src)
 					dir = mover.dir
+					step_size = mover.step_size
 					set_loc(mover.loc, mover.step_x, mover.step_y)
 
 					moved(., mover)
@@ -169,6 +164,12 @@ mob
 
 				if(hascall(mover, "moved"))
 					call(mover, "moved")(., src)
+
+				if(pulling_cart)
+					var mob/puller = mount || src
+					var dist = bounds_dist(puller, pulling_cart)
+					if(dist > 32) stop_pulling_cart()
+					else if(dist > 4) step_to(pulling_cart, puller, 0, step_size)
 
 			if(mount) dir = mount.dir
 

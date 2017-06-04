@@ -61,6 +61,11 @@ obj
 				be_emptied(mob/humanoid/m)
 					if(m.Locked) return
 
+					m.Locked = TRUE
+					var answer = alert(m, "Do you want to empty the cauldron?", "Cauldron", "No", "Yes")
+					m.Locked = FALSE
+					if(answer == "No") return
+
 					m.emote("begins emptying the cauldron")
 					m._do_work(30)
 					m.emote("finishes emptying the cauldron")

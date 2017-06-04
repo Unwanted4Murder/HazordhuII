@@ -71,8 +71,7 @@ turf/Environment
 					continue
 
 				//	the spawned wild plant's age will be random
-				plant.age = randn(0, plant.growth_freq * (plant.stages - 1))
-				plant.update_appearance()
+				plant.set_age(randn(0, plant.growth_freq * (plant.stages - 1)))
 
 obj
 	Item
@@ -83,6 +82,8 @@ obj
 			plant
 				Stackable = FALSE
 				layer = TURF_LAYER + 1.1
+				standing = TRUE
+				bottom_offset = 8
 
 				/savedatum
 					var growth_rate
@@ -114,7 +115,7 @@ obj
 				New()
 					if(loc) for(var/obj/Item/Farming/plant/plant in obounds()) del plant
 					..()
-					update_appearance()
+					update_stage()
 					farming_loop.add(src)
 
 				Del()
@@ -147,24 +148,35 @@ obj
 
 				Get()
 
-				proc/grow()
-				//	the plant stops growing when the season changes to one it doesn't like
-				//	or if it's not in a proper environment
-					if((grow_underground && z == 1) || (!(get_season() in growing_seasons[type])))
+				proc
+					grow()
+						// the plant stops growing when the season changes to one it doesn't like
+						// or if it's not in a proper environment
+						if((grow_underground && z == 1) || (!(get_season() in growing_seasons[type])))
+							stop_growing()
+
+						if(growth_rate)
+							set_age(age + growth_rate / 60)
+
+					set_age(value)
+						age = value
+						update_stage()
+
+					update_stage()
+						var new_stage = clamp(1 + round(age / growth_freq), 1, stages)
+						if(stage != new_stage)
+							stage = new_stage
+							icon_state = "[stage][name]"
+						if(stage == stages)
+							has_crop = TRUE
+							stop_growing()
+
+					die()
+						del src
+
+					stop_growing()
 						growth_rate = 0
 						farming_loop.remove(src)
-
-					if(growth_rate)
-						age += growth_rate / 60
-						update_appearance()
-
-				proc/update_appearance()
-					stage = clamp(1 + round(age / growth_freq), 1, stages)
-					icon_state = "[stage][name]"
-					if(stage == stages)
-						has_crop = TRUE
-
-				proc/die() del src
 
 			crop
 				var Hunger

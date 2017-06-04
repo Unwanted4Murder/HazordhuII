@@ -18,14 +18,7 @@ obj/Arrow
 //	Returns the turf of an object.
 //	For example,  the turf of an item inside a player is the player's loc.
 proc/turf_of(atom/object)
-	if(!object) return
-	if(isturf(object)) return object
-	if(isarea(object)) return locate(object.x, object.y, object.z)
-	if(!object.loc) return null
-	if(object.z) return locate(object.x, object.y, object.z)
-	var atom/container = object.loc.loc
-	while(!isturf(container)) container = container.loc
-	return container
+	return get_step(object, 0)
 
 client/Click(atom/object, l, c, pa)
 	var p[] = params2list(pa)
@@ -340,22 +333,24 @@ mob
 		verb/who()
 			src << output(null, "who.who_output")
 
+			var is_admin = is_admin(src)
+
 			for(var/mob/player/m in (AdminsOnline | Players))
 				if(!m.client) continue
 
 				var display = m.key
 
 				//	show m's name for him/herself
-				if(isAdmin) display	= "([m.nameShown(m)]) [display]"
-				if(m.isAdmin)
+				if(is_admin) display	= "([m.nameShown(m)]) [display]"
+				if(is_admin(m))
 					if(m.ghost_logged)
-						if(isAdmin)
+						if(is_admin)
 							display = "(Ghost-Logged) [display]"
 						else continue
 					display += "-Admin-"
 				if(m.isSubscriber) display += "-Subscriber-"
 				if(m.isBYONDMember) display += "-BYOND Member-"
-				if(isAdmin)
+				if(is_admin)
 					var p = list2params(list(
 						"src" = "\ref[src]",
 						"action" = "checkid",

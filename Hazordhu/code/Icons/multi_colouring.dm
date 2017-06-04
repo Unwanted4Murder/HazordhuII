@@ -49,14 +49,14 @@ obj/Item
 		Helmet
 			Plate_Helmet_Plume_Visor
 				col_icon = 'plume.dmi'
-				ctrlKey(mob/m,right)
-					if(right && loc == m)
+				use_alt(mob/humanoid/m)
+					if(!m.is_equipped(src))
 						icon = Multi_Color(col_icon, m)
 
 			Plate_Helmet_Plume
 				col_icon = 'plume.dmi'
-				ctrlKey(mob/m,right)
-					if(right && loc == m)
+				use_alt(mob/humanoid/m)
+					if(!m.is_equipped(src))
 						icon = Multi_Color(col_icon, m)
 		Back
 			Plated_Cape

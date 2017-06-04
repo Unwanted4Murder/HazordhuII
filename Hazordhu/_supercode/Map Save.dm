@@ -122,6 +122,8 @@ world
 
 savedatum
 	var
+		data[0]
+
 		save_x
 		save_y
 		save_z
@@ -349,8 +351,7 @@ savedatum
 
 			if(istype(item,/obj/Item/Farming/plant))
 				var obj/Item/Farming/plant/plant = item
-				plant.age = save_age
-				plant.update_appearance()
+				plant.set_age(save_age)
 
 			if(istype(item, /obj/Built))
 				for(var/mob/Animal/a in item.loc)

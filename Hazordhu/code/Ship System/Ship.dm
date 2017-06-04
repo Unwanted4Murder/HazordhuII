@@ -97,6 +97,9 @@ obj/Built
 			update_passengers()
 
 		proc/update_passengers()
+			for(var/atom/movable/m in passengers)
+				m.step_size = step_size
+
 			if(passengers.len < 1) return
 			var mob/a = passengers[1]
 			if(a)

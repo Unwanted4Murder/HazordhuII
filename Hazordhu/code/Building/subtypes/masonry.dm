@@ -4,6 +4,54 @@ builder/masonry
 	cursor = "trowel"
 
 	density = TRUE
+	
+	dig_dirt
+		main_tool = /obj/Item/Tools/Shovel
+		name = "Dig"
+		icon = 'code/Mining/Dirt.dmi'
+		desc = "Dig with a Shovel for 3x Dirt.<br>\
+			Only on Grass or Dirt terrain."
+		density = FALSE
+		build_amount = 3
+		built = /obj/Item/Ores/Dirt
+
+		valid_loc(turf/t) 
+			return t.name == "Grass" || t.name == "Dirt"
+	
+	dig_sand
+		main_tool = /obj/Item/Tools/Shovel
+		name = "Dig Sand"
+		icon = 'code/Mining/Sand.dmi'
+		desc = "Dig with a Shovel for 3x Sand.<br>\
+			Only on Sand terrain."
+		density = FALSE
+		build_amount = 3
+		built = /obj/Item/Ores/Sand
+
+		valid_loc(turf/t)
+			return t.name == "Sand"
+
+	path
+		main_tool = /obj/Item/Tools/Shovel
+		name = "Dirt Path"
+		icon = 'code/Icons/Path.dmi'
+		desc = "A simple dirt path. <br />\
+				1 Dirt"
+		req = list(DIRT = 1)
+		built = /obj/Built/Path
+
+		density = FALSE
+
+	sand_path
+		main_tool = /obj/Item/Tools/Shovel
+		name = "Sand Path"
+		icon = 'code/Icons/Sand Path.dmi'
+		desc = "A simple sand path. <br />\
+				1 Sand"
+		req = list(SAND = 1)
+		built = /obj/Built/Path/Sand
+
+		density = FALSE
 
 	brick
 		name = "Brick"
@@ -84,27 +132,6 @@ builder/masonry
 
 		density = FALSE
 
-	path
-		main_tool = /obj/Item/Tools/Shovel
-		name = "Dirt Path"
-		icon = 'code/Icons/Path.dmi'
-		desc = "A simple dirt path. <br />\
-				1 Dirt"
-		req = list(DIRT = 1)
-		built = /obj/Built/Path
-
-		density = FALSE
-
-	sand_path
-		main_tool = /obj/Item/Tools/Shovel
-		name = "Sand Path"
-		icon = 'code/Icons/Sand Path.dmi'
-		desc = "A simple sand path. <br />\
-				1 Sand"
-		req = list(SAND = 1)
-		built = /obj/Built/Path/Sand
-
-		density = FALSE
 
 	cobble_path
 		main_tool = /obj/Item/Tools/Trowel
@@ -149,7 +176,7 @@ builder/masonry
 
 		req = list(	BRICK	=	6,
 					TAR		=	2)
-		built = /obj/Built/Forge
+		built = /obj/Built/NewForge
 
 	oven
 		name = "Oven"

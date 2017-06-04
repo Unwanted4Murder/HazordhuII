@@ -191,6 +191,7 @@
 #include "code\Skill Levels\skill levels.dm"
 #include "code\Smithing\Binders.dm"
 #include "code\Smithing\Coin Stamp.dm"
+#include "code\Smithing\Forge.dm"
 #include "code\Smithing\Smithing.dm"
 #include "code\Sounds\Sounds.dm"
 #include "code\Tailoring\Tailoring.dm"

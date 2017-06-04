@@ -216,10 +216,13 @@ obj
 					return locate(/obj/Item/Metal/Lock) in haslock
 
 				proc/toggle_lock()
-					if(icon_state == "open") return
 					if(is_locked())
 						unlock()
-					else lock()
+					else
+						if(icon_state == "open")
+							for(var/mob/player/m in lookers)
+								hide_storage(m)
+						lock()
 
 				proc/is_locked() return icon_state == "chest_locked"
 				proc/lock() icon_state = "chest_locked"

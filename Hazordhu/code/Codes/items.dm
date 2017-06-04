@@ -202,6 +202,11 @@ obj/Item
 				storage = m.storage
 				if(!storage || !storage.is_storage || !storage.can_store(src))
 					return
+			
+			if(istype(storage, /obj/Built/NewForge))
+				if(istype(m) && !(m.is_equipped(/obj/Item/Tools/Tongs) || m.equip(locate(/obj/Item/Tools/Tongs) in m)))
+					m.aux_output("You need Tongs equipped to transfer with a forge.")
+					return
 
 			if(storage.Item_Limit - storage.Items >= weight)
 				. = TRUE
@@ -241,6 +246,11 @@ obj/Item
 
 		unstore_item(mob/m, do_bulk)
 			if(!m.storage) return
+
+			if(istype(m.storage, /obj/Built/NewForge))
+				if(istype(m) && !(m.is_equipped(/obj/Item/Tools/Tongs) || m.equip(locate(/obj/Item/Tools/Tongs) in m)))
+					m.aux_output("You need Tongs equipped to transfer with a forge.")
+					return
 
 			if(m.Item_Limit - m.Items >= weight)
 				. = TRUE
@@ -394,6 +404,9 @@ obj/Item
 				Stack_Check()
 				return . || 1
 
+		LoseAmount(amount)
+			Stack_Check(amount)
+
 		Stack_Check(remove = 0)
 			Stacked -= remove
 
@@ -413,6 +426,13 @@ obj/Item
 			else if(Stackable)
 				for(var/obj/Item/o in (isturf(loc) ? bounds() : loc))
 					if(o.Stackable && o != src && o.type == type)
+						if(istype(src, /obj/Item/Ores))
+							var obj/Item/Ores
+								src_ore = src
+								other_ore = o
+							if(src_ore.ForgeTime() != other_ore.ForgeTime())
+								continue
+								
 						if(istype(src, /obj/Item/Food/Meat))
 							var obj/Item/Food/Meat
 								meat1 = src
