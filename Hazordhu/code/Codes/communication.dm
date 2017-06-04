@@ -333,22 +333,24 @@ mob
 		verb/who()
 			src << output(null, "who.who_output")
 
+			var is_admin = is_admin(src)
+
 			for(var/mob/player/m in (AdminsOnline | Players))
 				if(!m.client) continue
 
 				var display = m.key
 
 				//	show m's name for him/herself
-				if(isAdmin) display	= "([m.nameShown(m)]) [display]"
-				if(m.isAdmin)
+				if(is_admin) display	= "([m.nameShown(m)]) [display]"
+				if(is_admin(m))
 					if(m.ghost_logged)
-						if(isAdmin)
+						if(is_admin)
 							display = "(Ghost-Logged) [display]"
 						else continue
 					display += "-Admin-"
 				if(m.isSubscriber) display += "-Subscriber-"
 				if(m.isBYONDMember) display += "-BYOND Member-"
-				if(isAdmin)
+				if(is_admin)
 					var p = list2params(list(
 						"src" = "\ref[src]",
 						"action" = "checkid",

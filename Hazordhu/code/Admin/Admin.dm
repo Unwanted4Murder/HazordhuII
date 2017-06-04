@@ -1,3 +1,17 @@
+proc
+	is_admin(arg)
+		var key
+		if(istext(arg))
+			key = arg
+		else if(istype(arg, /client))
+			var client/client = arg
+			key = client.key
+		else if(istype(arg, /mob))
+			var mob/mob = arg
+			key = mob.key
+		return \
+			(ckey(key) in Admins) || \
+			(ckey(key) in NewGods)
 
 var const/login_message_save = "Data/login message.sav"
 proc/save_login_message()
@@ -38,7 +52,7 @@ client
 		. = ..()
 		if("action" in hlist)
 			if(hlist["action"] == "admin_tele")
-				if(!Admins.Find(key)) return
+				if(!is_admin(key)) return
 				var dx = text2num(hlist["dx"])
 				var dy = text2num(hlist["dy"])
 				var dz = text2num(hlist["dz"])
@@ -55,8 +69,24 @@ mob
 
 				tracking_cpu = FALSE
 
+				_is_admin
+
 			OOC_Color
 			ghost_logged = 0
+		
+		proc
+			AdminCheck()
+				if(is_admin(src))
+					verbs += typesof(/mob/Admin/verb)
+					AdminsOnline.Add(src)
+					client.control_freak = FALSE
+					_is_admin = TRUE
+
+				else if(_is_admin)
+					verbs -= typesof(/mob/Admin/verb)
+					AdminsOnline.Remove(src)
+					client.control_freak = TRUE
+					_is_admin = FALSE
 
 		proc/TrackCPULoop()
 			set waitfor = FALSE
@@ -77,8 +107,11 @@ mob
 			winset(src, "default", "title=\"[world.name]\"")
 
 		key_down(k)
-			if(k == "q") if(key in Admins) call(src, "admin panel")()
-			else ..()
+			if(k == "q") 
+				if(is_admin(src)) 
+					call(src, "admin panel")()
+			else 
+				..()
 
 		var tmp/devmode = 0
 		proc/choosePlayer(message, title, default, container = Players)
@@ -96,6 +129,59 @@ mob
 		parent_type = /mob/player
 
 		verb
+			add_admin()
+				var
+					const
+						ADD_KEY = "(By BYOND Key)"
+					
+				var list/options = list(ADD_KEY)
+
+				for(var/client/client)
+					if(client.key)
+						options += client.key
+				
+				var choice = input(src, 
+					"Who should be an admin?", "Add Admin"
+				) as null | anything in options
+
+				if(!choice)
+					return
+				
+				var new_key
+
+				if(choice == ADD_KEY)
+					new_key = input(src, 
+						"What is the BYOND key of the player who should be an admin?",
+						"Add Admin by BYOND Key") as null | text
+
+					if(!new_key) 
+						return
+				
+				else
+					new_key = choice
+
+				new_key = ckey(new_key)
+				NewGods += new_key
+				AdminsOnline << "[key] added \"[new_key]\" as an admin."
+				LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] added \"[new_key]\" as an admin.<br>")
+
+				for(var/mob/player/player)
+					if(player.client && ckey(player.key) == ckey(new_key))
+						player.AdminCheck()
+						player << "You are now an admin."
+						break
+			
+			remove_admin(remove_key in NewGods)
+				NewGods -= remove_key
+				AdminsOnline << "[key] removed \"[remove_key]\" as an admin."
+				LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] removed \"[remove_key]\" as an admin.<br>")
+				
+				for(var/mob/player/player)
+					if(player.client && ckey(player.key) == ckey(remove_key))
+						player.AdminCheck()
+						player << "You are no longer an admin."
+						break
+			
 			give_hair_recolor()
 				var mob/player/M = choosePlayer("Who gets a hair recolor?", "Hair Recolor")
 				M.HairColor = input(M, "Choose your new hair color!", "Hair Recolor", M.HairColor) as color
@@ -141,7 +227,7 @@ mob
 						Admin Help:\t[M.can_admin_help ? "Enabled" : "Disabled"]",
 						"Player Permissions") as null|anything in list("OOC", "Combat", "Admin Help"))
 					if("OOC")
-						if(M.key in Admins)
+						if(is_admin(M))
 							usr << "You can't do that to an Admin."
 							return
 
@@ -155,7 +241,7 @@ mob
 							world << "[key] has OOC muted [M.key]."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has OOC muted [M.key]<br>")
 					if("Combat")
-						if(M.key in Admins)
+						if(is_admin(M))
 							usr << "You can't do that to an Admin."
 							return
 						if(!M.pvp)
@@ -169,7 +255,7 @@ mob
 							M << "[key] has disabled your combat."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has disabled combat for [M.key]<br>")
 					if("Admin Help")
-						if(M.key in Admins)
+						if(is_admin(M))
 							usr << "You can't do that to an Admin."
 							return
 						if(!M.can_admin_help)
@@ -179,9 +265,7 @@ mob
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has enabled admin help for [M.key]<br>")
 						else
 							M.can_admin_help = FALSE
-							for(var/mob/m)
-								if(m.key in Admins)
-									m << "[key] has disabled Admin Help for [M] ([M.key])."
+							AdminsOnline << "[key] has disabled Admin Help for [M] ([M.key])."
 							M << "[key] has disabled your Admin Help access."
 							LogAction("([time2text(world.realtime,"MM DD hh:mm")])(Admin)[key] has disabled admin help for [M.key]<br>")
 
@@ -248,20 +332,18 @@ mob
 				client.perspective = EYE_PERSPECTIVE
 
 			Ghostlogout()
-				//if(key in Admins) return
 				Players -= src
 				ghost_logged = TRUE
 				for(var/mob/player/m)
-					if(m.key in Admins)
+					if(is_admin(m))
 						m << "[key] has logged out. (Ghost)"
 					m << "<i>[key] has logged out.</i>"
 
 			Ghostlogin()
-				//if(key in Admins) return
 				Players |= src
 				ghost_logged = FALSE
 				for(var/mob/player/m)
-					if(m.key in Admins)
+					if(is_admin(m))
 						m << "[key] has logged in. (Ghost)"
 					m << "<i>[key] has logged in.</i>"
 
@@ -448,7 +530,7 @@ mob
 				var mob/player/M = choosePlayer("Who will you mute/unmute?", "Mute")
 				if(!M) return
 
-				if(M.key in Admins)
+				if(is_admin(M))
 					usr << "You can't mute an admin."
 					return
 
@@ -465,7 +547,7 @@ mob
 			Boot()
 				var mob/player/M = choosePlayer("Who will you kick out of the world?", "Boot")
 				if(!M) return
-				if(M.key in Admins)
+				if(is_admin(M))
 					usr << "You can't boot an admin."
 					return
 				world << "[key] has booted [M.key]."
@@ -503,8 +585,8 @@ mob
 				var default="File"
 				var typeof = M.vars[variable]
 				if(ismob(M))
-					if((M.key in Admins) && M != src)
-						usr<<"You can't edit an admin."
+					if(M != src && is_admin(M))
+						usr<<"You can't edit another admin."
 						return
 
 				if(isnull(typeof))

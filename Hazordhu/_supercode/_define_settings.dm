@@ -18,6 +18,9 @@
 
 #define PLAYERSAVE 1
 
+// Is multikeying (multiple simultaneous characters on the same PC) not allowed?
+#define NO_MULTIKEY 0
+
 //	Experimental
 #define LIGHTING 0
 #define ITEM_DECAY 0

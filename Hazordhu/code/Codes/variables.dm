@@ -27,13 +27,13 @@ var
 	NewGods[0]
 
 	Admins[] = list(
-		"F0lak",
-		"Ayemel",
-		"Ceojac",
-		"Eksadus",
-		"Kai",
-		"Kaiochao",
-		"Zerstorung"
+		"f0lak",
+		"ayemel",
+		"ceojac",
+		"eksadus",
+		"kai",
+		"kaiochao",
+		"zerstorung"
 	)
 
 	StaffLog = ""
@@ -107,8 +107,13 @@ world
 			var savefile/s = new (newgods_save)
 			s["newgods"] >> NewGods
 		if(!NewGods) NewGods = list()
-		if(!NewGods.Find(host))
-			NewGods += host
+		else
+			for(var/k in NewGods)
+				if(k != ckey(k))
+					NewGods -= k
+					NewGods |= ckey(k)
+		if(!(ckey(host) in NewGods))
+			NewGods += ckey(host)
 			log << "Adding [host] as a host admin."
 
 		load_login_message()
@@ -146,7 +151,6 @@ mob
 
 		tmp
 			isSubscriber
-			isAdmin
 			isBYONDMember
 
 		MemBens = 0

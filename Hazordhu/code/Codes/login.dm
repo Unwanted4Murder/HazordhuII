@@ -8,8 +8,6 @@ var Players[0]
 //	a list containing online admins.
 var AdminsOnline[0]
 
-proc/is_admin(mob/player/p) return istype(p) && (p.key in Admins)
-
 world
 	mob = /mob/player
 
@@ -38,11 +36,7 @@ mob/player
 
 		cid = client.computer_id
 
-		if(Admins.Find(key) || NewGods.Find(key))
-			verbs += typesof(/mob/Admin/verb)
-			AdminsOnline.Add(src)
-			isAdmin = TRUE
-			client.control_freak = FALSE
+		AdminCheck()
 
 		set_loc()
 
@@ -53,17 +47,16 @@ mob/player
 
 		AdminsOnline << "<i>[key] is logging in.</i>"
 
-	#if 0 // multikeying allowed?
+		#if NO_MULTIKEY
 		for(var/client/C)
 			if(C == client) continue
-			if(C.mob && C.mob.isAdmin) continue
-			if(key in Admins) continue
+			if(is_admin(C))) continue
 			else
 				if(C.computer_id == client.computer_id)
 					spawn(-1) s_alert("Only one user can be logged in from your computer at a time.", "Invalid Login", "OK")
 					del src
 					return
-	#endif
+		#endif
 
 		client.screen += newlist(	/obj/Title_Screen/Hazordhu,
 									/obj/Title_Screen/II,
