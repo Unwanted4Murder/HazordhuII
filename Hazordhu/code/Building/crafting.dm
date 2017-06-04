@@ -108,15 +108,18 @@ builder
 		if(can_craft(p))
 			p.dragging_builder = TRUE
 			p.BuildGrid.show(src)
+			p.client.mouse_pointer_icon = icon(icon, icon_state)
 
 	MouseUp()
 		var mob/player/p = usr
 		p.dragging_builder = FALSE
 		p.BuildGrid.hide()
+		p.client.mouse_pointer_icon = 'code/icons/pointer.dmi'
 
 	MouseDrop(BuildGrid/build_cell/cell)
 		var mob/player/p = usr
 		p.dragging_builder = FALSE
+		p.client.mouse_pointer_icon = 'code/icons/pointer.dmi'
 
 		if(istype(cell))
 			var build_loc = cell.loc
