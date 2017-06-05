@@ -13,7 +13,7 @@
 #else
 
 //	Set this instead of the var to get a warning
-#define MAPSAVE	ALL_FLAG
+#define MAPSAVE 0 // ALL_FLAG
 #endif
 
 #define PLAYERSAVE 1
