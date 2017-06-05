@@ -34,7 +34,6 @@ obj/Title_Screen
 		icon = 'TitleLoad.dmi'
 		opacity = 0
 		name = "Load Existing Character"
-		invisibility = 5
 		screen_loc = "CENTER-2:16,CENTER-4"
 		MouseEntered() animate_selection()
 		MouseExited() normalize_selection()

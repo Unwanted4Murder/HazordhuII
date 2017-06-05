@@ -60,13 +60,12 @@ mob/player
 
 		client.screen += newlist(	/obj/Title_Screen/Hazordhu,
 									/obj/Title_Screen/II,
-									/obj/Title_Screen/Loadgame2,
 									/obj/Title_Screen/Newgame2)
 
 		world.log << "([time2text(world.realtime,"MM DD hh:mm")])[src] logs in."
 
 	#if PLAYERSAVE
-		if(fexists(save_path())) see_invisible = 5
+		if(fexists(save_path())) client.screen += new/obj/Title_Screen/Loadgame2
 	#endif
 
 		icon = null
