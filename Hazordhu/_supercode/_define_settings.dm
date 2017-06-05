@@ -1,5 +1,5 @@
 //	shows "Test Server" in the title bar
-#define DEVMODE 1
+#define DEVMODE 0
 
 //	shows "Official Server" in the title bar
 #define OFFICIALSERVER 0
