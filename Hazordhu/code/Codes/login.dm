@@ -187,9 +187,7 @@ mob/player
 
 		season_update()
 		season_update()
-#if !THIN_SKIN
-		typing_check()
-#endif
+
 	Logout()
 		PreLogout()
 
