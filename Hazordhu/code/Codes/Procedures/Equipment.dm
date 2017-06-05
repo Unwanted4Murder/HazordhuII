@@ -63,6 +63,7 @@ obj/Item
 mob/player
 	PostLogin()
 		..()
+		appearance_flags |= KEEP_TOGETHER
 		for(var/obj/Item/item in Equipment())
 			item.equipped_by(src)
 
