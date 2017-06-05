@@ -11,6 +11,7 @@ var const
 	TAILORING	=	"Tailoring"
 	ALCHEMY		=	"Alchemy"
 	COOKING		=	"Cooking"
+	FISHING   = "Fishing"
 
 mob/player
 	var skill_levels[]
@@ -19,7 +20,9 @@ mob/player
 		..()
 		if(!skill_levels)
 			skill_levels = new
-			for(var/skill in typesof(/skill_level) - /skill_level)
+
+		for(var/skill in typesof(/skill_level) - /skill_level)
+			if(!get_skill(skill))
 				skill_levels += new skill (src)
 
 		for(var/skill_level/skill in skill_levels)
@@ -199,3 +202,10 @@ skill_level
 		apply(obj/Item/i)
 			if("Hunger" in i.vars)
 				i.vars["Hunger"] += hunger_bonus()
+	
+	fishing
+		name = "Fishing"
+
+		proc
+			Duration() return max(0, 80 - level * 5)
+			FishChance() return min(100, 40 + level * 5)

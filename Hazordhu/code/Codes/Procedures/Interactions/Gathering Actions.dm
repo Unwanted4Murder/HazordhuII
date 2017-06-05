@@ -37,10 +37,25 @@ mob/proc
 	_fish(turf/Environment/Water/o)
 		used_tool()
 		emote("starts fishing")
-		_do_work(80)
-		if(prob(40))
+
+		var
+			duration = 80
+			chance = 40
+		if(istype(src, /mob/player))
+			var mob/player/player = src
+			var skill_level/fishing/fishing = player.get_skill(/skill_level/fishing)
+			duration = fishing.Duration()
+			chance = fishing.FishChance()
+
+		_do_work(duration)
+		if(prob(chance))
 			emote("fails to catch anything")
 		else
 			emote("catches a fish")
 			new /obj/Item/Food/Meat/Fish (loc)
+		
+		if(istype(src, /mob/player))
+			var mob/player/player = src
+			player.gain_experience(FISHING, 1)
+
 		return TRUE
