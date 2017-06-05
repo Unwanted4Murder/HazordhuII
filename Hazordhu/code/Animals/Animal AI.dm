@@ -6,7 +6,7 @@ client
 	proc/wake_animals()
 		if(virtual_turf)
 			var extended_view = "[view_size[1] + 1]x[view_size[2] + 1]"
-			for(var/mob/Animal/a in ohearers(extended_view, virtual_turf))
+			for(var/mob/Animal/a in orange(extended_view, virtual_turf))
 				if(!a.ai_active)
 					a.ai_wake(mob)
 
