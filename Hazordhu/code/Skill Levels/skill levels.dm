@@ -27,6 +27,8 @@ mob/player
 
 		for(var/skill_level/skill in skill_levels)
 			skill.owner = src
+		
+		display_skills()
 
 	proc/get_skill(name)
 		if(!name) return
@@ -64,11 +66,16 @@ mob/player
 			src << output("[skill.level || 0] ([skill.percent * 100 || 0]%)", "skill_level_grid:2,[n]")
 		winset(src, "skill_level_grid", "cells=2x[n]")
 
-	#if !THIN_SKIN
-	Stat()
-		..()
-		display_skills()
-	#endif
+	proc/display_skill(skill_level/skill)
+		var n = skill_levels.Find(skill)
+		src << output(skill.name, "skill_level_grid:1,[n]")
+		src << output("[skill.level || 0] ([skill.percent * 100 || 0]%)", "skill_level_grid:2,[n]")
+
+	// #if !THIN_SKIN
+	// Stat()
+	// 	..()
+	// 	display_skills()
+	// #endif
 
 skill_level
 	var name = ""
@@ -88,6 +95,7 @@ skill_level
 		if(n <= 0) return
 		level += n
 		owner << "Leveled up[n > 1 ? " ([n] times)" : ""]: [name] ([level])"
+		owner.display_skill(src)
 
 	proc/gain_experience(n = 1)
 		experience += n
@@ -96,9 +104,11 @@ skill_level
 			experience -= max_experience
 			levels ++
 			max_experience = get_max_experience(level + levels)
-		if(levels) level_up(levels)
-
 		percent = experience / max_experience
+		if(levels)
+			level_up(levels)
+		else
+			owner.display_skill(src)
 
 	//	affect an object based on level, e.g. better quality items
 	proc/apply(obj/o)
