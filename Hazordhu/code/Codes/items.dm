@@ -202,7 +202,7 @@ obj/Item
 				storage = m.storage
 				if(!storage || !storage.is_storage || !storage.can_store(src))
 					return
-
+			
 			if(istype(storage, /obj/Built/NewForge))
 				if(istype(m) && !(m.is_equipped(/obj/Item/Tools/Tongs) || m.equip(locate(/obj/Item/Tools/Tongs) in m)))
 					m.aux_output("You need Tongs equipped to transfer with a forge.")
@@ -382,13 +382,6 @@ obj/Item
 		Get(mob/humanoid/m)
 			if(!m.can_get(src)) return
 
-			var
-				dx = m.Cx() - Cx()
-				dy = m.Cy() - Cy()
-			if(dx || dy)
-				animate(src,pixel_w = dx,pixel_z = dy,time = 2)
-				sleep(2)
-
 			if(istype(src, /obj/Item/Clothing/Bag))
 				winshow(m, "Storage", 0)
 
@@ -439,7 +432,7 @@ obj/Item
 								other_ore = o
 							if(src_ore.ForgeTime() != other_ore.ForgeTime())
 								continue
-
+								
 						if(istype(src, /obj/Item/Food/Meat))
 							var obj/Item/Food/Meat
 								meat1 = src
