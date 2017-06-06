@@ -383,8 +383,8 @@ obj/Item
 			if(!m.can_get(src)) return
 
 			var
-				dx = m.Cx() - Cx()
-				dy = m.Cy() - Cy()
+				dx = m.cx() - cx()
+				dy = m.cy() - cy()
 			if(dx || dy)
 				animate(src,pixel_w = dx,pixel_z = dy,time = 2)
 				sleep(2)
