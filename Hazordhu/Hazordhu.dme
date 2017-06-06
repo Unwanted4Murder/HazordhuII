@@ -13,6 +13,7 @@
 #include "___.dm"
 #include "map.dmm"
 #include "__libs\library definitions.dm"
+#include "__libs\kaiochao\absolute positions.dm"
 #include "__libs\kaiochao\map info.dm"
 #include "__libs\kaiochao\mouse buttons.dm"
 #include "__libs\kaiochao\mouse.dm"
